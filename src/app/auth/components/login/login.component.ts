@@ -10,14 +10,17 @@ import { AuthService } from '../../auth.service';
 export class LoginComponent {
 
   public readonly form = this.fb.nonNullable.group({
-    email: ['', [Validators.required]],
+    email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]]
   })
 
   constructor(private authService: AuthService, private fb: FormBuilder) { }
 
   public login() {
+    if (!this.form.valid) {
+      return;
+    }
+
     this.authService.login(this.form.controls.email.value, this.form.controls.password.value)
   }
-
 }

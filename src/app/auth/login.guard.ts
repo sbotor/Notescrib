@@ -7,7 +7,6 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { paths } from '../app-routing.module';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -28,7 +27,7 @@ export class LoginGuard implements CanActivate {
       return true;
     }
 
-    this.router.navigate([paths.login]);
+    this.router.navigate(['login']);
     return false;
   }
 }

@@ -18,7 +18,7 @@ export class WorkspaceListComponent implements OnInit {
 
   ngOnInit(): void {
     this.workspacesService.getWorkspaces({
-      pageNumber: 1,
+      page: 1,
       pageSize: 10,
       orderBy: 'name',
       direction: SortingDirection.Ascending

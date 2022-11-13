@@ -1,0 +1,17 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="onToggleSidenav()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <a mat-flat-button routerLink="" color="primary">
+    <mat-icon>home</mat-icon>
+  </a>
+
+  <span class="spacer"></span>
+
+  <div *ngIf="userLoggedIn(); else elseBlock">
+    {{ getUsername() | async }}
+  </div>
+  <ng-template #elseBlock>
+    <a mat-button routerLink="login">Login</a>
+  </ng-template>
+</mat-toolbar>

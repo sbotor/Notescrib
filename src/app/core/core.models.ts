@@ -1,5 +1,5 @@
 export interface PagingRequest {
-  pageNumber: number;
+  page: number;
   pageSize: number;
 }
 
@@ -15,7 +15,7 @@ export enum SortingDirection {
 
 export interface PagedList<T> {
   data: T[];
-  pageNumber: number;
+  page: number;
   pageSize: number;
   totalCount: number;
   totalPageCount: number;

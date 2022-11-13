@@ -1,4 +1,4 @@
-export interface SharingDetails {
+export interface SharingInfo {
   visibility: Visibility,
   allowedUserIds: string[]
 }
