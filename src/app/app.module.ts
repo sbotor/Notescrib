@@ -10,6 +10,7 @@ import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatSidenavModule } from '@angular/material/sidenav'
 import { MatIconModule } from '@angular/material/icon'
 import { MatCardModule } from '@angular/material/card'
+import { MatDialogModule } from '@angular/material/dialog'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,6 +21,8 @@ import { WorkspaceListComponent } from './workspaces/components/workspace-list/w
 import { HeaderComponent } from './core/components/header/header.component';
 import { httpInterceptorsProviders as httpInterceptorProviders } from './app.interceptors';
 import { LoginPromptComponent } from './home/components/login-prompt/login-prompt.component';
+import { EditWorkspaceDialogComponent } from './workspaces/components/edit-workspace-dialog/edit-workspace-dialog.component';
+import { ConfirmationDialogComponent } from './core/components/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,9 @@ import { LoginPromptComponent } from './home/components/login-prompt/login-promp
     LoginComponent,
     WorkspaceListComponent,
     HeaderComponent,
-    LoginPromptComponent
+    LoginPromptComponent,
+    EditWorkspaceDialogComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -44,6 +49,7 @@ import { LoginPromptComponent } from './home/components/login-prompt/login-promp
     MatSidenavModule,
     MatIconModule,
     MatCardModule,
+    MatDialogModule,
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

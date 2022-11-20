@@ -9,8 +9,8 @@ export interface SortingRequest {
 }
 
 export enum SortingDirection {
-  Ascending,
-  Descending,
+  Ascending = "Ascending",
+  Descending = "Descending",
 }
 
 export interface PagedList<T> {

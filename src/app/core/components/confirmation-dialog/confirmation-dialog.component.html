@@ -1,0 +1,9 @@
+<h3 mat-dialog-title> {{ data.title ?? 'Confirmation' }} </h3>
+
+<div mat-dialog-content>
+  {{ data.value ?? 'Are you sure?' }}
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="close(false)">Cancel</button>
+  <button mat-button (click)="close(true)">Ok</button>
+</div>

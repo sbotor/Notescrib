@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AuthService } from '../../auth.service';
+import { Router } from '@angular/router';
+import { take } from 'rxjs';
+import { AuthService } from '../../auth-api.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +16,7 @@ export class LoginComponent {
     password: ['', [Validators.required]]
   })
 
-  constructor(private authService: AuthService, private fb: FormBuilder) { }
+  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router) { }
 
   public login() {
     if (!this.form.valid) {
@@ -22,5 +24,7 @@ export class LoginComponent {
     }
 
     this.authService.login(this.form.controls.email.value, this.form.controls.password.value)
+      .pipe(take(1))
+      .subscribe(() => this.router.navigate(['workspaces']))
   }
 }

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
-import { ReplaySubject, take } from 'rxjs';
+import { ReplaySubject, Subject, take } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UserDetails } from '../users/users.models';
 import { TokenResponse } from './auth.models';
@@ -23,6 +23,8 @@ export class AuthService {
   constructor(private client: HttpClient) {}
 
   public login(email: string, password: string) {
+    var loggedInSubject = new Subject<void>();
+
     this.client
       .post<TokenResponse>(environment.baseApiUrl + 'identity/auth', {
         email,
@@ -32,7 +34,12 @@ export class AuthService {
       .subscribe((x) => {
         this.userSubject.next(x.user);
         localStorage.setItem(AuthService.JWT_KEY, x.token);
+
+        loggedInSubject.next();
+        loggedInSubject.complete();
       });
+
+    return loggedInSubject.asObservable();
   }
 
   public isLoggedIn() {

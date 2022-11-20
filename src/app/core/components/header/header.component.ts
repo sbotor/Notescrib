@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { map, Observable, take } from 'rxjs';
-import { AuthService } from 'src/app/auth/auth.service';
+import { AuthService } from 'src/app/auth/auth-api.service';
 import { UserDetails } from 'src/app/users/users.models';
 
 @Component({
@@ -12,9 +13,11 @@ export class HeaderComponent implements OnInit {
 
   @Output() public toggleSidenav = new EventEmitter();
 
-  constructor(private authService: AuthService) { }
+  public username$ = this.authService.user$.pipe(take(1), map(x => x?.email));
 
-  ngOnInit(): void {
+  constructor(private authService: AuthService, private router: Router) { }
+
+  ngOnInit() {
     this.authService.fetchUser();
   }
 
@@ -26,7 +29,12 @@ export class HeaderComponent implements OnInit {
     return this.authService.isLoggedIn();
   }
 
+  public logout() {
+    this.authService.logout();
+    this.router.navigate([''])
+  }
+
   public getUsername() {
-    return this.authService.user$.pipe(take(1), map(x => x?.email));
+    return undefined;
   }
 }

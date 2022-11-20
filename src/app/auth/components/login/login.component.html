@@ -1,19 +1,22 @@
-<mat-card class="form" color="">
+<mat-card class="card">
   <mat-card-title>Log in</mat-card-title>
 
-  <mat-card-content [formGroup]="form" class="form">
-    <p>
+  <mat-card-content [formGroup]="form">
+
+    <div>
       <mat-form-field>
         <mat-label>Email</mat-label>
         <input type="email" formControlName="email" matInput />
       </mat-form-field>
-    </p>
-    <p>
+    </div>
+
+    <div>
       <mat-form-field>
         <mat-label>Password</mat-label>
         <input type="password" formControlName="password" matInput />
       </mat-form-field>
-    </p>
+    </div>
+
     <button mat-button (click)="login()">Log in</button>
   </mat-card-content>
 
