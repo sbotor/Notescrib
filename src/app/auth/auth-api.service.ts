@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { ReplaySubject, Subject, take } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { UserDetails } from '../users/users.models';
+import { UserDetails } from '../features/users/users.models';
 import { TokenResponse } from './auth.models';
 
 @Injectable({

@@ -1,4 +1,4 @@
-import { PagingRequest, SortingRequest } from "../core/core.models";
+import { PagingRequest, SortingRequest } from "../../core/core.models";
 
 export interface GetWorkspacesRequest extends PagingRequest, SortingRequest {
 }

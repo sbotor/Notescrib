@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { PagedList } from '../core/core.models';
+import { PagedList } from '../../core/core.models';
 import {
   GetWorkspacesRequest,
   WorkspaceDetails,

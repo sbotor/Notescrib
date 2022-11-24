@@ -1,0 +1,24 @@
+<mat-toolbar>
+  <h1>My workspaces</h1>
+  <button mat-button (click)="openWorkspaceDialog()">Add <mat-icon color="accent">add</mat-icon></button>
+</mat-toolbar>
+
+<div class="list">
+  <mat-card *ngFor="let workspace of workspaces$ | async">
+
+    <mat-card-header>
+      <mat-card-title>{{ workspace.name }}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-actions style="display: flex; justify-content: space-between;">
+      <div>
+        <button mat-button (click)="openWorkspaceDialog(workspace)">EDIT</button>
+        <button mat-button (click)="openDeleteDialog(workspace)">DELETE</button>
+      </div>
+      <div>
+        <button mat-button (click)="openWorkspaceDialog(workspace)">OPEN <mat-icon>folder_open</mat-icon></button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+
+</div>

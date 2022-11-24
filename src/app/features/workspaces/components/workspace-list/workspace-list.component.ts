@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject, map, switchMap, take } from 'rxjs';
+import { BehaviorSubject, map, switchMap, take, tap } from 'rxjs';
 import { SortingDirection } from 'src/app/core/core.models';
-import { DialogData } from 'src/app/core/dialog.models';
+import { ConfirmationDialogData, DialogData } from 'src/app/core/dialog.models';
 import { WorkspacesApiService } from '../../workspaces-api.service';
 import { WorkspaceOverview } from '../../workspaces.models';
 import { EditWorkspaceDialogComponent } from '../edit-workspace-dialog/edit-workspace-dialog.component';
@@ -15,6 +15,7 @@ import { ConfirmationDialogComponent } from 'src/app/core/components/confirmatio
   styleUrls: ['./workspace-list.component.scss'],
 })
 export class WorkspaceListComponent implements OnInit {
+
   private page = 1;
   private pageSize = 10;
 
@@ -22,6 +23,8 @@ export class WorkspaceListComponent implements OnInit {
   public workspaces$ = this.refreshSubject.pipe(
     switchMap(() => this.getWorkspaces())
   );
+
+  public isLoading = true;
 
   constructor(
     private workspacesService: WorkspacesApiService,
@@ -40,7 +43,7 @@ export class WorkspaceListComponent implements OnInit {
         orderBy: 'name',
         direction: SortingDirection.Ascending,
       })
-      .pipe(map((x) => x.data));
+      .pipe(map((x) => x.data), tap(_ => this.isLoading = false));
   }
 
   public openWorkspaceDialog(workspace?: WorkspaceOverview) {
@@ -51,7 +54,14 @@ export class WorkspaceListComponent implements OnInit {
     const data = {
       title: 'Are you sure?',
       value: `Do you want to remove ${workspace.name}?`,
-    };
+      confirmButton: {
+        label: 'Ok',
+        color: 'warn'
+      },
+      cancelButton: {
+        label: 'Cancel'
+      }
+    } as ConfirmationDialogData;
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, { data });
 
     dialogRef.afterClosed().subscribe((x: boolean) => {
