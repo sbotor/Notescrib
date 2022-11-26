@@ -1,11 +1,11 @@
 export interface PagingRequest {
-  page: number;
-  pageSize: number;
+  page?: number;
+  pageSize?: number;
 }
 
 export interface SortingRequest {
-  direction: SortingDirection;
-  orderBy: string;
+  direction?: SortingDirection;
+  orderBy?: string;
 }
 
 export enum SortingDirection {

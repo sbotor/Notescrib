@@ -2,7 +2,6 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { map, take } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth-api.service';
-import { UserDetails } from 'src/app/features/users/users.models';
 
 @Component({
   selector: 'app-header',
@@ -13,7 +12,7 @@ export class HeaderComponent implements OnInit {
 
   @Output() public toggleSidenav = new EventEmitter();
 
-  public username$ = this.authService.user$.pipe(take(1), map(x => x?.email));
+  public username$ = this.authService.username$;
 
   constructor(private authService: AuthService, private router: Router) { }
 

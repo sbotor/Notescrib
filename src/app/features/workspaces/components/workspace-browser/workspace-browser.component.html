@@ -1,1 +1,20 @@
-<p>workspace-browser works!</p>
+<div *ngIf="workspaceDetails$ | async as details; else spinner;">
+  <mat-toolbar>
+    <button mat-icon-button (click)="drawer.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>{{ details.name }}</span>
+  </mat-toolbar>
+
+  <mat-drawer-container>
+    <mat-drawer #drawer mode="side">
+      <app-folder-tree [workspaceDetails]="details"></app-folder-tree>
+    </mat-drawer>
+
+    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Numquam accusantium odit eveniet eaque dolore. Sunt at, atque eius minima doloremque, harum quae adipisci dolorem nobis doloribus assumenda saepe soluta ipsa?
+  </mat-drawer-container>
+</div>
+
+<ng-template #spinner class="centered">
+  <mat-spinner></mat-spinner>
+</ng-template>

@@ -1,24 +1,28 @@
-<mat-toolbar>
+<mat-toolbar class="mat-elevation-z8">
   <h1>My workspaces</h1>
   <button mat-button (click)="openWorkspaceDialog()">Add <mat-icon color="accent">add</mat-icon></button>
 </mat-toolbar>
 
-<div class="list">
-  <mat-card *ngFor="let workspace of workspaces$ | async">
+<div *ngIf="workspaces$ | async as workspaces; else spinner" class="list">
+  <mat-card *ngFor="let workspace of workspaces" class="mat-elevation-z6">
 
     <mat-card-header>
       <mat-card-title>{{ workspace.name }}</mat-card-title>
     </mat-card-header>
 
-    <mat-card-actions style="display: flex; justify-content: space-between;">
+    <mat-card-actions class="card-actions">
       <div>
         <button mat-button (click)="openWorkspaceDialog(workspace)">EDIT</button>
         <button mat-button (click)="openDeleteDialog(workspace)">DELETE</button>
       </div>
       <div>
-        <button mat-button (click)="openWorkspaceDialog(workspace)">OPEN <mat-icon>folder_open</mat-icon></button>
+        <a mat-button routerLink="{{ workspace.id }}">OPEN <mat-icon>folder_open</mat-icon></a>
       </div>
     </mat-card-actions>
   </mat-card>
 
 </div>
+
+<ng-template #spinner class="centered">
+  <mat-spinner></mat-spinner>
+</ng-template>

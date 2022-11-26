@@ -13,6 +13,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,10 +24,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { WorkspaceListComponent } from './features/workspaces/components/workspace-list/workspace-list.component';
 import { HeaderComponent } from './core/components/header/header.component';
 import { httpInterceptorProviders } from './app.interceptors';
-import { LoginPromptComponent } from './home/components/login-prompt/login-prompt.component';
+import { HomeComponent } from './home/components/home-component/home.component';
 import { EditWorkspaceDialogComponent } from './features/workspaces/components/edit-workspace-dialog/edit-workspace-dialog.component';
 import { ConfirmationDialogComponent } from './core/components/confirmation-dialog/confirmation-dialog.component';
 import { WorkspaceBrowserComponent } from './features/workspaces/components/workspace-browser/workspace-browser.component';
+import { FolderTreeComponent } from './features/workspaces/folder-tree/folder-tree.component';
 
 @NgModule({
   declarations: [
@@ -33,10 +36,11 @@ import { WorkspaceBrowserComponent } from './features/workspaces/components/work
     LoginComponent,
     WorkspaceListComponent,
     HeaderComponent,
-    LoginPromptComponent,
+    HomeComponent,
     EditWorkspaceDialogComponent,
     ConfirmationDialogComponent,
     WorkspaceBrowserComponent,
+    FolderTreeComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,6 +60,8 @@ import { WorkspaceBrowserComponent } from './features/workspaces/components/work
     MatDialogModule,
     MatMenuModule,
     MatSnackBarModule,
+    MatTreeModule,
+    MatProgressSpinnerModule,
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],

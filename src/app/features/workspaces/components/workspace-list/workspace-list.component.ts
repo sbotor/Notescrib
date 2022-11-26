@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, map, switchMap, take, tap } from 'rxjs';
 import { SortingDirection } from 'src/app/core/core.models';
-import { ConfirmationDialogData, DialogData } from 'src/app/core/dialog.models';
+import { ConfirmationDialogData } from 'src/app/core/dialog.models';
 import { WorkspacesApiService } from '../../workspaces-api.service';
 import { WorkspaceOverview } from '../../workspaces.models';
 import { EditWorkspaceDialogComponent } from '../edit-workspace-dialog/edit-workspace-dialog.component';
@@ -20,11 +20,9 @@ export class WorkspaceListComponent implements OnInit {
   private pageSize = 10;
 
   private refreshSubject = new BehaviorSubject<undefined>(undefined);
-  public workspaces$ = this.refreshSubject.pipe(
+  public readonly workspaces$ = this.refreshSubject.pipe(
     switchMap(() => this.getWorkspaces())
   );
-
-  public isLoading = true;
 
   constructor(
     private workspacesService: WorkspacesApiService,
@@ -39,11 +37,9 @@ export class WorkspaceListComponent implements OnInit {
     return this.workspacesService
       .getWorkspaces({
         page: this.page,
-        pageSize: this.pageSize,
-        orderBy: 'name',
-        direction: SortingDirection.Ascending,
+        pageSize: this.pageSize
       })
-      .pipe(map((x) => x.data), tap(_ => this.isLoading = false));
+      .pipe(map((x) => x.data));
   }
 
   public openWorkspaceDialog(workspace?: WorkspaceOverview) {

@@ -3,12 +3,12 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { PagedList } from '../../core/core.models';
 import {
-  GetWorkspacesRequest,
   WorkspaceDetails,
   WorkspaceOverview,
 } from './workspaces.models';
 import {
   CreateWorkspaceRequest,
+  GetWorkspacesRequest,
   UpdateFolderRequest,
   UpdateWorkspaceRequest,
 } from './workspaces.requests';

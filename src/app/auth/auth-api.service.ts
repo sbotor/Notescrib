@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
-import { ReplaySubject, Subject, take } from 'rxjs';
+import { map, ReplaySubject, Subject, take } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UserDetails } from '../features/users/users.models';
 import { TokenResponse } from './auth.models';
@@ -19,6 +19,7 @@ export class AuthService {
   }
 
   public user$ = this.userSubject.asObservable();
+  public username$ = this.user$.pipe(take(1), map(x => x?.email));
 
   constructor(private client: HttpClient) {}
 

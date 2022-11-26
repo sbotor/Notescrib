@@ -1,0 +1,7 @@
+<div *ngIf="isLoggedIn(); else elseBlock;">
+  <h1 class="header">Hello, {{ username$ | async }}</h1>
+</div>
+
+<ng-template #elseBlock>
+  <h1 class="header">Please, login <a routerLink="login">here</a></h1>
+</ng-template>

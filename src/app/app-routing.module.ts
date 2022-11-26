@@ -3,13 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './auth/components/login/login.component';
 import { LoggedOutGuardGuard as LoggedOutGuard } from './auth/guards/logged-out.guard';
 import { LoginGuard } from './auth/guards/login.guard';
-import { LoginPromptComponent } from './home/components/login-prompt/login-prompt.component';
+import { HomeComponent } from './home/components/home-component/home.component';
 import { WorkspaceListComponent } from './features/workspaces/components/workspace-list/workspace-list.component';
+import { WorkspaceBrowserComponent } from './features/workspaces/components/workspace-browser/workspace-browser.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: LoginPromptComponent,
+    component: HomeComponent,
   },
   {
     path: 'login',
@@ -19,6 +20,11 @@ const routes: Routes = [
   {
     path: 'workspaces',
     component: WorkspaceListComponent,
+    canActivate: [LoginGuard],
+  },
+  {
+    path: 'workspaces/:id',
+    component: WorkspaceBrowserComponent,
     canActivate: [LoginGuard],
   },
 ];
