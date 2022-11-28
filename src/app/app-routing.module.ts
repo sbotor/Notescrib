@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './auth/components/login/login.component';
-import { LoggedOutGuardGuard as LoggedOutGuard } from './auth/guards/logged-out.guard';
-import { LoginGuard } from './auth/guards/login.guard';
+import { MustBeLoggedOutGuard } from './auth/guards/must-be-logged-out.guard';
+import { MustBeLoggedInGuard } from './auth/guards/must-be-logged-in.guard';
 import { HomeComponent } from './home/components/home-component/home.component';
-import { WorkspaceListComponent } from './features/workspaces/components/workspace-list/workspace-list.component';
-import { WorkspaceBrowserComponent } from './features/workspaces/components/workspace-browser/workspace-browser.component';
 
 const routes: Routes = [
   {
@@ -14,19 +11,14 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent,
-    canActivate: [LoggedOutGuard]
+    loadChildren: () => import('./features/login/login.module').then(x => x.LoginModule),
+    canActivate: [MustBeLoggedOutGuard]
   },
   {
     path: 'workspaces',
-    component: WorkspaceListComponent,
-    canActivate: [LoginGuard],
-  },
-  {
-    path: 'workspaces/:id',
-    component: WorkspaceBrowserComponent,
-    canActivate: [LoginGuard],
-  },
+    loadChildren: () => import('./features/workspaces/workspaces.module').then(x => x.WorkspacesModule),
+    canActivate: [MustBeLoggedInGuard],
+  }
 ];
 
 @NgModule({

@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
-import { map, ReplaySubject, Subject, take } from 'rxjs';
+import { map, ReplaySubject, Subject } from 'rxjs';
+import { UsersApiService } from 'src/app/features/users/users-api.service';
+import { UserDetails } from 'src/app/features/users/users.models';
 import { environment } from 'src/environments/environment';
-import { UsersApiService } from '../features/users/users-api.service';
-import { UserDetails } from '../features/users/users.models';
 import { TokenResponse } from './auth.models';
 
 @Injectable({
@@ -20,10 +20,7 @@ export class AuthService {
   }
 
   public user$ = this.userSubject.asObservable();
-  public username$ = this.user$.pipe(
-    take(1),
-    map((x) => x?.email)
-  );
+  public username$ = this.user$.pipe(map((x) => x?.email));
 
   constructor(
     private client: HttpClient,
@@ -38,7 +35,6 @@ export class AuthService {
         email,
         password,
       })
-      .pipe(take(1))
       .subscribe((x) => {
         this.userSubject.next(x.user);
         localStorage.setItem(AuthService.JWT_KEY, x.token);
@@ -77,7 +73,6 @@ export class AuthService {
 
     this.usersService
       .getCurrentUser()
-      .pipe(take(1))
       .subscribe((x) => {
         this.userSubject.next(x);
       });

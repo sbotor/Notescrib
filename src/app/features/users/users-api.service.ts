@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { take } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UserDetails } from './users.models';
 import { CreateUserRequest } from './users.requests';
@@ -18,6 +17,6 @@ export class UsersApiService {
   }
 
   public getCurrentUser() {
-    return this.client.get<UserDetails>(UsersApiService.URL).pipe(take(1));
+    return this.client.get<UserDetails>(UsersApiService.URL);
   }
 }

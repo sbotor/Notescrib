@@ -1,17 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { take } from 'rxjs';
-import { UsersApiService } from 'src/app/features/users/users-api.service';
-import { AuthService } from '../../auth.service';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
+import { UsersApiService } from '../../../users/users-api.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
+  private subs = new Subscription();
+
   public readonly loginForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
@@ -31,18 +33,23 @@ export class LoginComponent {
     private readonly snackBar: MatSnackBar
   ) {}
 
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
+
   public login() {
     if (!this.loginForm.valid) {
       return;
     }
 
-    this.authService
-      .login(
-        this.loginForm.controls.email.value,
-        this.loginForm.controls.password.value
-      )
-      .pipe(take(1))
-      .subscribe(() => this.router.navigate(['workspaces']));
+    this.subs.add(
+      this.authService
+        .login(
+          this.loginForm.controls.email.value,
+          this.loginForm.controls.password.value
+        )
+        .subscribe(() => this.router.navigate(['workspaces']))
+    );
   }
 
   public register() {
@@ -58,13 +65,14 @@ export class LoginComponent {
       return;
     }
 
-    this.usersService
-      .createUser({
-        email: controls.email.value,
-        password: controls.password.value,
-        passwordConfirmation: controls.passwordConfirmation.value,
-      })
-      .pipe(take(1))
-      .subscribe(() => this.router.navigate(['']));
+    this.subs.add(
+      this.usersService
+        .createUser({
+          email: controls.email.value,
+          password: controls.password.value,
+          passwordConfirmation: controls.passwordConfirmation.value,
+        })
+        .subscribe(() => this.router.navigate(['']))
+    );
   }
 }

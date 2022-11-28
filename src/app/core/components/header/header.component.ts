@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, take } from 'rxjs';
+import { map } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
@@ -10,7 +10,8 @@ import { AuthService } from 'src/app/auth/auth.service';
 })
 export class HeaderComponent implements OnInit {
 
-  @Output() public toggleSidenav = new EventEmitter();
+  @Output()
+  public toggleSidenav = new EventEmitter();
 
   public username$ = this.authService.username$;
 
@@ -31,9 +32,5 @@ export class HeaderComponent implements OnInit {
   public logout() {
     this.authService.logout();
     this.router.navigate([''])
-  }
-
-  public getUsername() {
-    return undefined;
   }
 }

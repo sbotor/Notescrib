@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject, map, switchMap, take } from 'rxjs';
+import { BehaviorSubject, map, Subscription, switchMap, take } from 'rxjs';
 import { ConfirmationDialogData } from 'src/app/core/dialog.models';
 import { WorkspacesApiService } from '../../workspaces-api.service';
 import { WorkspaceOverview } from '../../workspaces.models';
@@ -14,13 +14,14 @@ import { ConfirmationDialogComponent } from 'src/app/core/components/confirmatio
   styleUrls: ['./workspace-list.component.scss'],
 })
 export class WorkspaceListComponent implements OnInit {
+  private readonly page = 1;
+  private readonly pageSize = 10;
 
-  private page = 1;
-  private pageSize = 10;
+  private readonly subs = new Subscription();
 
-  private refreshSubject = new BehaviorSubject<undefined>(undefined);
+  private readonly refreshSubject = new BehaviorSubject<undefined>(undefined);
   public readonly workspaces$ = this.refreshSubject.pipe(
-    switchMap(() => this.getWorkspaces())
+    switchMap(() => this.fetchWorkspaces())
   );
 
   constructor(
@@ -32,11 +33,11 @@ export class WorkspaceListComponent implements OnInit {
     this.refreshSubject.next(undefined);
   }
 
-  private getWorkspaces() {
+  private fetchWorkspaces() {
     return this.workspacesService
       .getWorkspaces({
         page: this.page,
-        pageSize: this.pageSize
+        pageSize: this.pageSize,
       })
       .pipe(map((x) => x.data));
   }
@@ -51,24 +52,30 @@ export class WorkspaceListComponent implements OnInit {
       value: `Do you want to remove ${workspace.name}?`,
       confirmButton: {
         label: 'Ok',
-        color: 'warn'
+        color: 'warn',
       },
       cancelButton: {
-        label: 'Cancel'
-      }
+        label: 'Cancel',
+      },
     } as ConfirmationDialogData;
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, { data });
 
-    dialogRef.afterClosed().subscribe((x: boolean) => {
-      if (!x) {
-        return;
-      }
+    this.subs.add(
+      this.dialog
+        .open(ConfirmationDialogComponent, { data })
+        .afterClosed()
+        .subscribe((x: boolean) => {
+          if (!x) {
+            return;
+          }
 
-      this.workspacesService
-        .deleteWorkspace(workspace.id)
-        .pipe(take(1))
-        .subscribe(() => this.refreshSubject.next(undefined));
-    });
+          this.subs.add(
+            this.workspacesService
+              .deleteWorkspace(workspace.id)
+              .pipe(take(1))
+              .subscribe(() => this.refreshSubject.next(undefined))
+          );
+        })
+    );
   }
 
   private openCreateDialog() {
@@ -85,7 +92,6 @@ export class WorkspaceListComponent implements OnInit {
 
       this.workspacesService
         .createWorkspace({ name: x.name })
-        .pipe(take(1))
         .subscribe(() => this.refreshSubject.next(undefined));
     });
   }
@@ -105,7 +111,6 @@ export class WorkspaceListComponent implements OnInit {
 
       this.workspacesService
         .updateWorkspace(workspace.id, { name: x.name })
-        .pipe(take(1))
         .subscribe(() => this.refreshSubject.next(undefined));
     });
   }

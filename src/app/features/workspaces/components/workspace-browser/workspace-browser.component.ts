@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { ReplaySubject, take } from 'rxjs';
+import { ReplaySubject, Subscription, take } from 'rxjs';
 import { ConfirmationDialogComponent } from 'src/app/core/components/confirmation-dialog/confirmation-dialog.component';
-import { NotesApiService } from 'src/app/features/notes/notes-api.service';
+import { WorkspaceContentsService } from '../../workspace-contents.service';
 import { WorkspacesApiService } from '../../workspaces-api.service';
 import { WorkspaceDetails } from '../../workspaces.models';
 import { EditFolderData } from '../edit-folder-dialog/edit-folder-data';
@@ -18,8 +18,9 @@ import {
   templateUrl: './workspace-browser.component.html',
   styleUrls: ['./workspace-browser.component.scss'],
 })
-export class WorkspaceBrowserComponent {
+export class WorkspaceBrowserComponent implements OnDestroy {
   private workspaceId = '';
+  private readonly subs = new Subscription();
 
   private readonly workspaceSubject = new ReplaySubject<WorkspaceDetails>(1);
   public readonly workspaceDetails$ = this.workspaceSubject.asObservable();
@@ -27,13 +28,17 @@ export class WorkspaceBrowserComponent {
   constructor(
     route: ActivatedRoute,
     private workspacesService: WorkspacesApiService,
-    private notesService: NotesApiService,
+    private contentsService: WorkspaceContentsService,
     private dialog: MatDialog
   ) {
-    route.paramMap.pipe(take(1)).subscribe((x) => {
+    route.paramMap.subscribe((x) => {
       this.workspaceId = x.get('id') ?? '';
       this.fetchWorkspaceDetails();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 
   public handleTreeMenuAction(data: MenuAction) {
@@ -52,45 +57,55 @@ export class WorkspaceBrowserComponent {
       throw new Error('Workspace ID is empty.');
     }
 
-    this.workspacesService
-      .getWorkspaceDetails(this.workspaceId)
-      .pipe(take(1))
-      .subscribe((x) => this.workspaceSubject.next(x));
+    this.subs.add(
+      this.workspacesService
+        .getWorkspaceDetails(this.workspaceId)
+        .subscribe((x) => this.workspaceSubject.next(x))
+    );
   }
 
   private createFolder(item: FolderFlatNodeItem) {
-    this.dialog
-      .open(EditFolderDialogComponent, { data: { title: 'Add folder' } })
-      .afterClosed()
-      .subscribe((x: EditFolderData) => {
-        if (!x) {
-          return;
-        }
+    this.subs.add(
+      this.dialog
+        .open(EditFolderDialogComponent, { data: { title: 'Add folder' } })
+        .afterClosed()
+        .subscribe((x: EditFolderData) => {
+          if (!x) {
+            return;
+          }
 
-        const parentId = item.id ? item.id : undefined;
-        this.workspacesService
-          .createFolder(this.workspaceId, {
-            name: x.name,
-            parentId: parentId,
-          })
-          .pipe(take(1))
-          .subscribe(() => this.fetchWorkspaceDetails());
-      });
+          const parentId = item.id ? item.id : undefined;
+          this.subs.add(
+            this.workspacesService
+              .createFolder(this.workspaceId, {
+                name: x.name,
+                parentId: parentId,
+              })
+              .subscribe(() => this.fetchWorkspaceDetails())
+          );
+        })
+    );
   }
 
   private deleteFolder(item: FolderFlatNodeItem) {
-    this.dialog
-      .open(ConfirmationDialogComponent, { data: { title: `Do you want to remove ${item.name}?` } })
-      .afterClosed()
-      .subscribe((x: EditFolderData) => {
-        if (!x) {
-          return;
-        }
+    this.subs.add(
+      this.dialog
+        .open(ConfirmationDialogComponent, {
+          data: { title: `Do you want to remove ${item.name}?` },
+        })
+        .afterClosed()
+        .subscribe((x: EditFolderData) => {
+          if (!x) {
+            return;
+          }
 
-        this.workspacesService
-          .deleteFolder(this.workspaceId, item.id)
-          .pipe(take(1))
-          .subscribe(() => this.fetchWorkspaceDetails());
-      });
+          this.subs.add(
+            this.workspacesService
+              .deleteFolder(this.workspaceId, item.id)
+              .pipe(take(1))
+              .subscribe(() => this.fetchWorkspaceDetails())
+          );
+        })
+    );
   }
 }
