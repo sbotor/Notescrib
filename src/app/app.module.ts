@@ -29,7 +29,8 @@ import { HomeComponent } from './home/components/home-component/home.component';
 import { EditWorkspaceDialogComponent } from './features/workspaces/components/edit-workspace-dialog/edit-workspace-dialog.component';
 import { ConfirmationDialogComponent } from './core/components/confirmation-dialog/confirmation-dialog.component';
 import { WorkspaceBrowserComponent } from './features/workspaces/components/workspace-browser/workspace-browser.component';
-import { FolderTreeComponent } from './features/workspaces/folder-tree/folder-tree.component';
+import { FolderTreeComponent } from './features/workspaces/components/folder-tree/folder-tree.component';
+import { EditFolderDialogComponent } from './features/workspaces/components/edit-folder-dialog/edit-folder-dialog.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { FolderTreeComponent } from './features/workspaces/folder-tree/folder-tr
     ConfirmationDialogComponent,
     WorkspaceBrowserComponent,
     FolderTreeComponent,
+    EditFolderDialogComponent,
   ],
   imports: [
     BrowserModule,

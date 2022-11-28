@@ -12,7 +12,7 @@ export interface UpdateWorkspaceRequest extends CreateWorkspaceRequest {
 
 export interface CreateFolderRequest {
   name: string;
-  parent?: string;
+  parentId?: string;
 }
 
 export interface UpdateFolderRequest extends CreateFolderRequest {

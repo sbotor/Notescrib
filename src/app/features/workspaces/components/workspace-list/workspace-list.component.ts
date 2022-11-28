@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject, map, switchMap, take, tap } from 'rxjs';
-import { SortingDirection } from 'src/app/core/core.models';
+import { BehaviorSubject, map, switchMap, take } from 'rxjs';
 import { ConfirmationDialogData } from 'src/app/core/dialog.models';
 import { WorkspacesApiService } from '../../workspaces-api.service';
 import { WorkspaceOverview } from '../../workspaces.models';
@@ -94,18 +93,18 @@ export class WorkspaceListComponent implements OnInit {
   private openEditDialog(workspace: WorkspaceOverview) {
     const data = {
       title: 'Edit workspace',
-      value: { id: workspace.id, name: workspace.name },
+      value: { name: workspace.name },
     };
 
     const dialogRef = this.dialog.open(EditWorkspaceDialogComponent, { data });
 
     dialogRef.afterClosed().subscribe((x?: EditWorkspaceData) => {
-      if (!x?.id) {
+      if (!x) {
         return;
       }
 
       this.workspacesService
-        .updateWorkspace(x.id, { name: x.name })
+        .updateWorkspace(workspace.id, { name: x.name })
         .pipe(take(1))
         .subscribe(() => this.refreshSubject.next(undefined));
     });

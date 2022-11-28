@@ -1,4 +1,4 @@
-<div *ngIf="workspaceDetails$ | async as details; else spinner;">
+<div *ngIf="workspaceDetails$ | async as details; else spinner;" class="full-height">
   <mat-toolbar>
     <button mat-icon-button (click)="drawer.toggle()">
       <mat-icon>menu</mat-icon>
@@ -6,15 +6,18 @@
     <span>{{ details.name }}</span>
   </mat-toolbar>
 
-  <mat-drawer-container>
-    <mat-drawer #drawer mode="side" class="tree-container">
-      <app-folder-tree [workspaceDetails]="details"></app-folder-tree>
+  <mat-drawer-container class="full-height">
+    <mat-drawer #drawer mode="side" [opened]="true" class="tree-container">
+      <app-folder-tree [workspaceDetails]="details" (menuAction)="handleTreeMenuAction($event)"></app-folder-tree>
     </mat-drawer>
 
-    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Numquam accusantium odit eveniet eaque dolore. Sunt at, atque eius minima doloremque, harum quae adipisci dolorem nobis doloribus assumenda saepe soluta ipsa?
+    <div class="main-content">
+      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Numquam accusantium odit eveniet eaque dolore. Sunt at,
+      atque eius minima doloremque, harum quae adipisci dolorem nobis doloribus assumenda saepe soluta ipsa?
+    </div>
   </mat-drawer-container>
 </div>
 
-<ng-template #spinner class="centered">
+<ng-template #spinner class="centered full-height">
   <mat-spinner></mat-spinner>
 </ng-template>

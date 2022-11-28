@@ -1,0 +1,17 @@
+<h3 mat-dialog-title> {{ data.title }} </h3>
+
+<div mat-dialog-content>
+  <div [formGroup]="form" class="vertical-form">
+    <p>
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input type="text" formControlName="name" matInput />
+      </mat-form-field>
+    </p>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="close(false)">Cancel</button>
+  <button mat-button (click)="close(true)">Ok</button>
+</div>

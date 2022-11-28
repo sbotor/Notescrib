@@ -1,12 +1,10 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { PagedList } from '../../core/core.models';
+import { WorkspaceDetails, WorkspaceOverview } from './workspaces.models';
 import {
-  WorkspaceDetails,
-  WorkspaceOverview,
-} from './workspaces.models';
-import {
+  CreateFolderRequest,
   CreateWorkspaceRequest,
   GetWorkspacesRequest,
   UpdateFolderRequest,
@@ -37,14 +35,16 @@ export class WorkspacesApiService {
   }
 
   public getWorkspaceDetails(id: string) {
-    return this.client.get<WorkspaceDetails>(WorkspacesApiService.URL + `/${id}`);
+    return this.client.get<WorkspaceDetails>(
+      WorkspacesApiService.URL + `/${id}`
+    );
   }
 
   public deleteWorkspace(id: string) {
     return this.client.delete(WorkspacesApiService.URL + `/${id}`);
   }
 
-  public createFolder(workspaceId: string, request: CreateWorkspaceRequest) {
+  public createFolder(workspaceId: string, request: CreateFolderRequest) {
     return this.client.post(
       `${WorkspacesApiService.URL}/${workspaceId}/folder`,
       request
@@ -63,6 +63,8 @@ export class WorkspacesApiService {
   }
 
   public deleteFolder(workspaceId: string, folderId: string) {
-    return this.client.delete(`${WorkspacesApiService.URL}/${workspaceId}/folder/${folderId}`);
+    return this.client.delete(
+      `${WorkspacesApiService.URL}/${workspaceId}/folder/${folderId}`
+    );
   }
 }

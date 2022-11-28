@@ -14,10 +14,11 @@ export class EditWorkspaceDialogComponent implements OnInit {
   public readonly form = this.fb.nonNullable.group({ name: ['', [Validators.required]] });
 
   constructor(
-    public fb: FormBuilder,
-    protected dialogRef: MatDialogRef<EditWorkspaceDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) protected data: DialogData<EditWorkspaceData>
+    private readonly fb: FormBuilder,
+    private readonly dialogRef: MatDialogRef<EditWorkspaceDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public readonly data: DialogData<EditWorkspaceData>
   ) {}
+
   ngOnInit() {
     if (this.data.value) {
       this.form.controls.name.setValue(this.data.value?.name);
@@ -31,7 +32,6 @@ export class EditWorkspaceDialogComponent implements OnInit {
       data = undefined;
     } else {
       data = {
-        id: this.data.value?.id,
         name: this.form.controls.name.value
       }
     }
