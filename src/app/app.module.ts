@@ -15,6 +15,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -62,6 +63,7 @@ import { FolderTreeComponent } from './features/workspaces/folder-tree/folder-tr
     MatSnackBarModule,
     MatTreeModule,
     MatProgressSpinnerModule,
+    MatTabsModule,
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],

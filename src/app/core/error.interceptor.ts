@@ -20,7 +20,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
         this.snackBar.open(
-          `An error has occured (${err.status}): '${err.message}'`,
+          `An error has occured (${err.status}): '${err.error}'`,
           'Close',
           { duration: 3000 }
         );

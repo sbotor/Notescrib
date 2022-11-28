@@ -17,7 +17,7 @@ import {
   providedIn: 'root',
 })
 export class WorkspacesApiService {
-  private static readonly URL = environment.baseApiUrl + 'workspaces/';
+  private static readonly URL = environment.baseApiUrl + '/workspaces';
 
   constructor(private client: HttpClient) {}
 
@@ -33,20 +33,20 @@ export class WorkspacesApiService {
   }
 
   public updateWorkspace(id: string, request: UpdateWorkspaceRequest) {
-    return this.client.put(WorkspacesApiService.URL + id, request);
+    return this.client.put(WorkspacesApiService.URL + `/${id}`, request);
   }
 
   public getWorkspaceDetails(id: string) {
-    return this.client.get<WorkspaceDetails>(WorkspacesApiService.URL + id);
+    return this.client.get<WorkspaceDetails>(WorkspacesApiService.URL + `/${id}`);
   }
 
   public deleteWorkspace(id: string) {
-    return this.client.delete(WorkspacesApiService.URL + id);
+    return this.client.delete(WorkspacesApiService.URL + `/${id}`);
   }
 
   public createFolder(workspaceId: string, request: CreateWorkspaceRequest) {
     return this.client.post(
-      `${WorkspacesApiService.URL}${workspaceId}/folder`,
+      `${WorkspacesApiService.URL}/${workspaceId}/folder`,
       request
     );
   }
@@ -57,12 +57,12 @@ export class WorkspacesApiService {
     request: UpdateFolderRequest
   ) {
     return this.client.put(
-      `${WorkspacesApiService.URL}${workspaceId}/folder/${folderId}`,
+      `${WorkspacesApiService.URL}/${workspaceId}/folder/${folderId}`,
       request
     );
   }
 
   public deleteFolder(workspaceId: string, folderId: string) {
-    return this.client.delete(`${WorkspacesApiService.URL}${workspaceId}/folder/${folderId}`);
+    return this.client.delete(`${WorkspacesApiService.URL}/${workspaceId}/folder/${folderId}`);
   }
 }

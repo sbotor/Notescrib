@@ -3,7 +3,7 @@
   <button mat-button (click)="openWorkspaceDialog()">Add <mat-icon color="accent">add</mat-icon></button>
 </mat-toolbar>
 
-<div *ngIf="workspaces$ | async as workspaces; else spinner" class="list">
+<div *ngIf="workspaces$ | async as workspaces; else spinner" class="workspace-grid">
   <mat-card *ngFor="let workspace of workspaces" class="mat-elevation-z6">
 
     <mat-card-header>

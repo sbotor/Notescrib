@@ -1,8 +1,9 @@
-.list {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  gap: 10px;
-  margin: 15px;
+.workspace-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: start;
+  gap: 5px;
 }
 
 .actions {
@@ -22,4 +23,8 @@
 .card-actions {
   display: flex;
   justify-content: space-between;
+}
+
+.toolbar {
+  margin-bottom: 10px;
 }

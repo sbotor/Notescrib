@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { map, ReplaySubject, Subject, take } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { UsersApiService } from '../features/users/users-api.service';
 import { UserDetails } from '../features/users/users.models';
 import { TokenResponse } from './auth.models';
 
@@ -19,15 +20,21 @@ export class AuthService {
   }
 
   public user$ = this.userSubject.asObservable();
-  public username$ = this.user$.pipe(take(1), map(x => x?.email));
+  public username$ = this.user$.pipe(
+    take(1),
+    map((x) => x?.email)
+  );
 
-  constructor(private client: HttpClient) {}
+  constructor(
+    private client: HttpClient,
+    private usersService: UsersApiService
+  ) {}
 
   public login(email: string, password: string) {
     var loggedInSubject = new Subject<void>();
 
     this.client
-      .post<TokenResponse>(environment.baseApiUrl + 'identity/auth', {
+      .post<TokenResponse>(environment.baseApiUrl + '/identity/auth', {
         email,
         password,
       })
@@ -68,8 +75,8 @@ export class AuthService {
       return;
     }
 
-    this.client
-      .get<UserDetails>(environment.baseApiUrl + 'identity/users')
+    this.usersService
+      .getCurrentUser()
       .pipe(take(1))
       .subscribe((x) => {
         this.userSubject.next(x);
