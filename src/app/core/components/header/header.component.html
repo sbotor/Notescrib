@@ -3,13 +3,16 @@
     <mat-icon>home</mat-icon>
   </a>
 
-  <div *ngIf="userLoggedIn()">
-    <a mat-button routerLink="workspaces">Workspaces</a>
+  <div *ngFor="let item of getItems()">
+    <a *ngIf="!isCurrentRoute(item.link); else currentRoute" mat-button routerLink="{{ item.link }}">{{ item.label }}</a>
+    <ng-template #currentRoute>
+      <a mat-stroked-button class="current-route" routerLink="{{ item.link }}">{{ item.label }}</a>
+    </ng-template>
   </div>
 
   <span class="spacer"></span>
 
-  <div *ngIf="userLoggedIn(); else elseBlock">
+  <div *ngIf="isUserLoggedIn(); else elseBlock">
     <span>{{ username$ | async }}</span>
     <button mat-button (click)="logout()">Logout</button>
   </div>

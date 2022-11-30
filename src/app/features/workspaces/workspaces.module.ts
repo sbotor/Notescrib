@@ -3,10 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { WorkspacesRoutingModule } from './workspaces-routing.module';
 import { WorkspaceListComponent } from './components/workspace-list/workspace-list.component';
-import { EditWorkspaceDialogComponent } from './components/edit-workspace-dialog/edit-workspace-dialog.component';
-import { WorkspaceBrowserComponent } from './components/workspace-browser/workspace-browser.component';
-import { FolderTreeComponent } from './components/folder-tree/folder-tree.component';
-import { EditFolderDialogComponent } from './components/edit-folder-dialog/edit-folder-dialog.component';
+import { EditWorkspaceDialogComponent } from './components/dialogs/edit-workspace-dialog/edit-workspace-dialog.component';
+import { WorkspaceBrowserComponent } from './components/workspace-browser/workspace-browser.component';import { EditFolderDialogComponent } from './components/dialogs/edit-folder-dialog/edit-folder-dialog.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -27,7 +25,6 @@ import { MatButtonModule } from '@angular/material/button';
     WorkspaceListComponent,
     EditWorkspaceDialogComponent,
     WorkspaceBrowserComponent,
-    FolderTreeComponent,
     EditFolderDialogComponent,
   ],
   imports: [

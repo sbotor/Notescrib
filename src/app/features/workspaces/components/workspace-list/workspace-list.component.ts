@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject, map, Subscription, switchMap, take } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { ConfirmationDialogData } from 'src/app/core/dialog.models';
 import { WorkspacesApiService } from '../../workspaces-api.service';
 import { WorkspaceOverview } from '../../workspaces.models';
-import { EditWorkspaceDialogComponent } from '../edit-workspace-dialog/edit-workspace-dialog.component';
-import { EditWorkspaceData } from '../edit-workspace-dialog/edit-workspace-data';
+import { EditWorkspaceDialogComponent } from '../dialogs/edit-workspace-dialog/edit-workspace-dialog.component';
+import { EditWorkspaceData } from '../dialogs/edit-workspace-dialog/edit-workspace-data';
 import { ConfirmationDialogComponent } from 'src/app/core/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
@@ -13,33 +13,23 @@ import { ConfirmationDialogComponent } from 'src/app/core/components/confirmatio
   templateUrl: './workspace-list.component.html',
   styleUrls: ['./workspace-list.component.scss'],
 })
-export class WorkspaceListComponent implements OnInit {
-  private readonly page = 1;
-  private readonly pageSize = 10;
-
+export class WorkspaceListComponent implements OnInit, OnDestroy {
   private readonly subs = new Subscription();
 
-  private readonly refreshSubject = new BehaviorSubject<undefined>(undefined);
-  public readonly workspaces$ = this.refreshSubject.pipe(
-    switchMap(() => this.fetchWorkspaces())
-  );
+  private readonly workspacesSubject = new Subject<WorkspaceOverview[]>();
+  public readonly workspaces$ = this.workspacesSubject.asObservable();
 
   constructor(
-    private workspacesService: WorkspacesApiService,
+    private workspacesApi: WorkspacesApiService,
     private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.refreshSubject.next(undefined);
+    this.fetchWorkspaces();
   }
 
-  private fetchWorkspaces() {
-    return this.workspacesService
-      .getWorkspaces({
-        page: this.page,
-        pageSize: this.pageSize,
-      })
-      .pipe(map((x) => x.data));
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 
   public openWorkspaceDialog(workspace?: WorkspaceOverview) {
@@ -69,12 +59,19 @@ export class WorkspaceListComponent implements OnInit {
           }
 
           this.subs.add(
-            this.workspacesService
+            this.workspacesApi
               .deleteWorkspace(workspace.id)
-              .pipe(take(1))
-              .subscribe(() => this.refreshSubject.next(undefined))
+              .subscribe(() => this.fetchWorkspaces())
           );
         })
+    );
+  }
+
+  private fetchWorkspaces() {
+    this.subs.add(
+      this.workspacesApi
+        .getWorkspaces({ page: 1, pageSize: 50 })
+        .subscribe((x) => this.workspacesSubject.next(x.data))
     );
   }
 
@@ -90,9 +87,9 @@ export class WorkspaceListComponent implements OnInit {
         return;
       }
 
-      this.workspacesService
+      this.workspacesApi
         .createWorkspace({ name: x.name })
-        .subscribe(() => this.refreshSubject.next(undefined));
+        .subscribe(() => this.fetchWorkspaces());
     });
   }
 
@@ -109,9 +106,9 @@ export class WorkspaceListComponent implements OnInit {
         return;
       }
 
-      this.workspacesService
+      this.workspacesApi
         .updateWorkspace(workspace.id, { name: x.name })
-        .subscribe(() => this.refreshSubject.next(undefined));
+        .subscribe(() => this.fetchWorkspaces());
     });
   }
 }
