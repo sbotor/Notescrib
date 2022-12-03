@@ -20,6 +20,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
+import { BrowserTileComponent } from './components/browser-tile/browser-tile.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { MatDividerModule } from '@angular/material/divider';
     EditWorkspaceDialogComponent,
     WorkspaceBrowserComponent,
     EditFolderDialogComponent,
+    BrowserTileComponent,
   ],
   imports: [
     CommonModule,

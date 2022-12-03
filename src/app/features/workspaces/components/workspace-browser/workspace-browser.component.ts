@@ -1,71 +1,66 @@
-import { Component, OnDestroy } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { EditFolderData } from '../dialogs/edit-folder-dialog/edit-folder-data';
-import { EditFolderDialogComponent } from '../dialogs/edit-folder-dialog/edit-folder-dialog.component';
-import { BrowserItem } from './workspace-browser.models';
-import { WorkspaceBrowserService } from './workspace-browser.service';
+import { WorkspaceBrowserService } from '../../services/workspace-browser.service';
+import { BrowserDialogService } from '../../services/browser-dialog.service';
+import NavigationInfo from './navigation-info';
 
 @Component({
   selector: 'app-workspace-browser',
   templateUrl: './workspace-browser.component.html',
   styleUrls: ['./workspace-browser.component.scss'],
 })
-export class WorkspaceBrowserComponent implements OnDestroy {
+export class WorkspaceBrowserComponent implements OnInit, OnDestroy {
   private readonly subs = new Subscription();
   private workspaceId = '';
 
-  public readonly workspace$ = this.workspaceService.workspace$;
-  public readonly items$ = this.workspaceService.currentItems$;
+  public readonly workspace$ = this.browserService.workspace$;
+  public readonly items$ = this.browserService.currentItems$;
+
+  public readonly navInfo: NavigationInfo;
 
   constructor(
     route: ActivatedRoute,
-    private workspaceService: WorkspaceBrowserService,
-    private dialog: MatDialog
+    private readonly browserService: WorkspaceBrowserService,
+    public readonly dialog: BrowserDialogService
   ) {
     this.subs.add(
       route.paramMap.subscribe((x) => {
         this.workspaceId = x.get('id') ?? '';
-        this.workspaceService.fetchWorkspaceDetails(this.workspaceId);
+        this.browserService.fetchWorkspaceDetails(this.workspaceId);
       })
     );
+
+    this.navInfo = this.browserService.getNavInfo();
+  }
+
+  ngOnInit(): void {
+    this.browserService.selectItem(undefined);
   }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
 
-  public isRoot() {
-    return this.workspaceService.navigator.canNavigateUp();
+  public handleContainerClick(event: MouseEvent) {
+    if (event.target instanceof Element) {
+      const element = <Element>event.target;
+      if (element.id === 'items-container') {
+        this.browserService.selectItem(undefined);
+      }
+    }
   }
 
-  public currentPath() {
-    return this.workspaceService.navigator.getCurrentPath();
+  public isItemSelected() {
+    return !!this.browserService.getSelectedItem();
   }
 
-  public selectItem(item: BrowserItem) {
-    this.workspaceService.selectItem(item);
+  public formatPath(rootName: string) {
+    const path = this.navInfo.getCurrentPath();
+    return path ? `${rootName}/${path}` : rootName;
   }
 
-  public selectedItem() {
-    return this.workspaceService.getSelectedItem();
-  }
-
-  public openCreateFolderDialog() {
-    this.subs.add(
-      this.dialog
-        .open(EditFolderDialogComponent, {
-          data: { title: 'Add folder' },
-        })
-        .afterClosed()
-        .subscribe((x: EditFolderData) => {
-          if (!x) {
-            return;
-          }
-
-          this.workspaceService.addFolder(x.name);
-        })
-    );
+  public navigateUp() {
+    this.browserService.navigateUp();
   }
 }

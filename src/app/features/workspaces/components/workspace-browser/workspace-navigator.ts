@@ -1,13 +1,15 @@
 import { FolderOverview } from '../../workspaces.models';
+import NavigationInfo from './navigation-info';
 
-export class WorkspaceNavigator {
+export default class WorkspaceNavigator implements NavigationInfo {
   private navigationStack: FolderOverview[] = [];
-  private currentFolder?: FolderOverview;
 
   constructor(private roots: FolderOverview[]) {}
 
   public getCurrentFolder() {
-    return this.currentFolder;
+    return this.navigationStack.length < 1
+      ? undefined
+      : this.navigationStack[this.navigationStack.length - 1];
   }
 
   public getCurrentPath() {
@@ -19,13 +21,13 @@ export class WorkspaceNavigator {
   }
 
   public down(id: string) {
-    if (!this.currentFolder) {
-      return this.findChild(this.roots, id);
-    }
+    const currentFolder = this.getCurrentFolder();
+    const target = currentFolder
+      ? currentFolder.children
+      : this.roots;
 
-    const found = this.findChild(this.currentFolder.children, id);
-    this.navigationStack.push(this.currentFolder);
-    this.currentFolder = found;
+    const found = this.findChild(target, id);
+    this.navigationStack.push(found);
 
     return found;
   }
@@ -39,20 +41,12 @@ export class WorkspaceNavigator {
       throw new Error('There is no parent to go up to.');
     }
 
-    return this.navigationStack.pop()!;
-  }
-
-  public peekParent() {
-    if (!this.canNavigateUp()) {
-      return undefined;
-    }
-
-    return this.navigationStack[this.navigationStack.length - 1];
+    this.navigationStack.pop();
+    return this.getCurrentFolder();
   }
 
   public reset(roots: FolderOverview[]) {
     this.navigationStack = [];
-    this.currentFolder = undefined;
     this.roots = roots;
   }
 

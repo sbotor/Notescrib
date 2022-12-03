@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogData } from 'src/app/core/dialog.models';
@@ -9,7 +9,7 @@ import { EditFolderData } from './edit-folder-data';
   templateUrl: './edit-folder-dialog.component.html',
   styleUrls: ['./edit-folder-dialog.component.scss'],
 })
-export class EditFolderDialogComponent {
+export class EditFolderDialogComponent implements OnInit {
   public readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],
   });
@@ -19,6 +19,12 @@ export class EditFolderDialogComponent {
     private readonly dialogRef: MatDialogRef<EditFolderDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public readonly data: DialogData<EditFolderData>
   ) {}
+
+  ngOnInit(): void {
+    if (this.data.value) {
+      this.form.controls.name.setValue(this.data.value.name);
+    }
+  }
 
   public close(success: boolean) {
     let data: EditFolderData | undefined;

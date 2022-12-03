@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { map, ReplaySubject, concatMap, of } from 'rxjs';
 import { NotesApiService } from 'src/app/features/notes/notes-api.service';
 import { NoteOverview } from 'src/app/features/notes/notes.models';
-import { WorkspacesApiService } from '../../workspaces-api.service';
-import { FolderOverview, WorkspaceDetails } from '../../workspaces.models';
-import { BrowserItem } from './workspace-browser.models';
-import { WorkspaceNavigator } from './workspace-navigator';
+import { WorkspacesApiService } from '../workspaces-api.service';
+import { FolderOverview, WorkspaceDetails } from '../workspaces.models';
+import { BrowserItem } from '../components/workspace-browser/workspace-browser.models';
+import WorkspaceNavigator from '../components/workspace-browser/workspace-navigator';
+import NavigationInfo from '../components/workspace-browser/navigation-info';
 
 @Injectable({
   providedIn: 'root',
@@ -14,14 +15,13 @@ export class WorkspaceBrowserService {
   private readonly notes = new Map<string, NoteOverview[]>();
   private workspaceId = '';
   private selectedItem?: BrowserItem;
+  private readonly navigator = new WorkspaceNavigator([]);
 
   private readonly workspaceSubject = new ReplaySubject<WorkspaceDetails>();
   public readonly workspace$ = this.workspaceSubject.asObservable();
 
   private readonly itemsSubject = new ReplaySubject<BrowserItem[]>();
   public readonly currentItems$ = this.itemsSubject.asObservable();
-
-  public readonly navigator = new WorkspaceNavigator([]);
 
   constructor(
     private workspacesApi: WorkspacesApiService,
@@ -42,18 +42,24 @@ export class WorkspaceBrowserService {
     });
   }
 
+  public getNavInfo() {
+    return <NavigationInfo>this.navigator;
+  }
+
   public navigateUp() {
-    this.updateCurrentItems(this.navigator.up());
+    const up = this.navigator.up();
+    this.updateCurrentItems(up);
     this.selectedItem = undefined;
   }
 
-  public navigateDow(folderId: string) {
-    this.updateCurrentItems(this.navigator.down(folderId));
+  public navigateDown(folderId: string) {
+    const down = this.navigator.down(folderId);
+    this.updateCurrentItems(down);
     this.selectedItem = undefined;
   }
 
   public addFolder(name: string) {
-    const parent = this.navigator.peekParent();
+    const parent = this.navigator.getCurrentFolder();
     const parentId = parent?.id;
 
     this.workspacesApi
@@ -64,8 +70,25 @@ export class WorkspaceBrowserService {
           throw new Error('No id returned.');
         }
         target.push(x);
+        target.sort((a, b) => a.name.localeCompare(b.name));
         this.updateCurrentItems(parent);
       });
+  }
+
+  public updateFolder(item: BrowserItem, name: string) {
+    this.workspacesApi
+      .updateFolder(this.workspaceId, item.id, { name })
+      .subscribe(() => (item.name = name));
+  }
+
+  public removeFolder(id: string) {
+    this.workspacesApi.deleteFolder(this.workspaceId, id).subscribe(() => {
+      const folders =
+        this.navigator.getCurrentFolder()?.children ?? this.navigator.getRoots();
+
+      folders.splice(folders.findIndex(x => x.id === id), 1);
+      this.updateCurrentItems();
+    });
   }
 
   public getSelectedItem() {

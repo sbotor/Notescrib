@@ -1,7 +1,3 @@
-@import 'src/theme.scss';
-
-$primary: map-get($theme, primary);
-
 :host {
   height: 100%;
 }
@@ -10,21 +6,9 @@ $primary: map-get($theme, primary);
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  align-content: flex-start;
   flex-wrap: wrap;
   gap: 20px;
   padding: 20px;
-}
-
-.browser-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.browser-item-button {
-  padding-top: 10px;
-}
-
-.selected-item {
-  border: 1px solid mat-color($primary);
+  height: 100%;
 }
