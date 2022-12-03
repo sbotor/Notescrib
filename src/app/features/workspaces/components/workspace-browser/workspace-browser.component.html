@@ -1,3 +1,40 @@
-<mat-toolbar>
-  {{ name$ | async }}
-</mat-toolbar>
+<div *ngIf="workspace$ | async as workspace; else spinner">
+  <mat-toolbar>
+    <button *ngIf="!isRoot()" mat-icon-button>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span>{{ currentPath() ?? workspace.name }}</span>
+
+    <span class="toolbar-spacer"></span>
+
+    <button mat-icon-button [matMenuTriggerFor]="newItemMenu">
+      <mat-icon>library_add</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <div *ngIf="items$ | async as items; else spinner" class="items-container">
+    <button mat-button *ngFor="let item of items" (click)="selectItem(item)"
+      [class]="selectedItem()?.id === item.id ? 'browser-item-button selected-item' : 'browser-item-button'">
+      <div class="browser-item">
+        <mat-icon *ngIf="!item.isNote">folder</mat-icon>
+        <mat-icon *ngIf="item.isNote">insert_drive_file</mat-icon>
+        <span>{{ item.name }}</span>
+      </div>
+    </button>
+  </div>
+</div>
+
+<mat-menu #newItemMenu>
+  <button mat-menu-item (click)="openCreateFolderDialog()">
+    <mat-icon>create_new_folder</mat-icon>
+    <span>New folder</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>note_add</mat-icon>
+    <span>New note</span>
+  </button>
+</mat-menu>
+
+<ng-template #spinner>
+  <mat-spinner></mat-spinner>
+</ng-template>

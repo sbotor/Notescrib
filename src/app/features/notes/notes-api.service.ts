@@ -9,7 +9,7 @@ import { CreateNoteRequest, GetNotesRequest } from './notes.requests';
   providedIn: 'root',
 })
 export class NotesApiService {
-  private static readonly URL = environment.baseApiUrl + 'notes/';
+  private static readonly URL = environment.baseApiUrl + '/notes';
 
   constructor(private client: HttpClient) {}
 

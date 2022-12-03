@@ -1,8 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PagedList } from '../../core/core.models';
-import { WorkspaceDetails, WorkspaceOverview } from './workspaces.models';
+import {
+  FolderOverview,
+  WorkspaceDetails,
+  WorkspaceOverview,
+} from './workspaces.models';
 import {
   CreateFolderRequest,
   CreateWorkspaceRequest,
@@ -27,7 +32,7 @@ export class WorkspacesApiService {
   }
 
   public createWorkspace(request: CreateWorkspaceRequest) {
-    return this.client.post(WorkspacesApiService.URL, request);
+    return this.client.post<WorkspaceDetails>(WorkspacesApiService.URL, request);
   }
 
   public updateWorkspace(id: string, request: UpdateWorkspaceRequest) {
@@ -45,7 +50,7 @@ export class WorkspacesApiService {
   }
 
   public createFolder(workspaceId: string, request: CreateFolderRequest) {
-    return this.client.post(
+    return this.client.post<FolderOverview>(
       `${WorkspacesApiService.URL}/${workspaceId}/folder`,
       request
     );

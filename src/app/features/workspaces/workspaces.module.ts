@@ -19,6 +19,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatToolbarModule,
     MatMenuModule,
     MatButtonModule,
+    MatDividerModule,
   ],
 })
 export class WorkspacesModule {}
