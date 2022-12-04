@@ -17,8 +17,6 @@ export class WorkspaceBrowserComponent implements OnInit, OnDestroy {
   public readonly workspace$ = this.browserService.workspace$;
   public readonly items$ = this.browserService.currentItems$;
 
-  public readonly navInfo: NavigationInfo;
-
   constructor(
     route: ActivatedRoute,
     private readonly browserService: WorkspaceBrowserService,
@@ -30,8 +28,6 @@ export class WorkspaceBrowserComponent implements OnInit, OnDestroy {
         this.browserService.fetchWorkspaceDetails(this.workspaceId);
       })
     );
-
-    this.navInfo = this.browserService.getNavInfo();
   }
 
   ngOnInit(): void {
@@ -49,18 +45,5 @@ export class WorkspaceBrowserComponent implements OnInit, OnDestroy {
         this.browserService.selectItem(undefined);
       }
     }
-  }
-
-  public isItemSelected() {
-    return !!this.browserService.getSelectedItem();
-  }
-
-  public formatPath(rootName: string) {
-    const path = this.navInfo.getCurrentPath();
-    return path ? `${rootName}/${path}` : rootName;
-  }
-
-  public navigateUp() {
-    this.browserService.navigateUp();
   }
 }

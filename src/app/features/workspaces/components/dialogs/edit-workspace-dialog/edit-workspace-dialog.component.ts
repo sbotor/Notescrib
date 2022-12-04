@@ -1,7 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { DialogData } from 'src/app/core/dialog.models';
+import ignoreFalsy from 'src/app/core/operators/ignoreFalsy';
 import { EditWorkspaceData } from './edit-workspace-data';
 
 @Component({
@@ -10,8 +15,9 @@ import { EditWorkspaceData } from './edit-workspace-data';
   styleUrls: ['./edit-workspace-dialog.component.scss'],
 })
 export class EditWorkspaceDialogComponent implements OnInit {
-
-  public readonly form = this.fb.nonNullable.group({ name: ['', [Validators.required]] });
+  public readonly form = this.fb.nonNullable.group({
+    name: ['', [Validators.required]],
+  });
 
   constructor(
     private readonly fb: FormBuilder,
@@ -32,10 +38,21 @@ export class EditWorkspaceDialogComponent implements OnInit {
       data = undefined;
     } else {
       data = {
-        name: this.form.controls.name.value
-      }
+        name: this.form.controls.name.value,
+      };
     }
 
     this.dialogRef.close(data);
+  }
+
+  public static open(service: MatDialog, data: DialogData<EditWorkspaceData>) {
+    return service
+      .open<
+        EditWorkspaceDialogComponent,
+        DialogData<EditWorkspaceData>,
+        EditWorkspaceData
+      >(EditWorkspaceDialogComponent, { data })
+      .afterClosed()
+      .pipe(ignoreFalsy());
   }
 }

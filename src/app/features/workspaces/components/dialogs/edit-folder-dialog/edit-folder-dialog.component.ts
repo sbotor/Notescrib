@@ -1,7 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { DialogData } from 'src/app/core/dialog.models';
+import ignoreFalsy from 'src/app/core/operators/ignoreFalsy';
 import { EditFolderData } from './edit-folder-data';
 
 @Component({
@@ -33,10 +38,21 @@ export class EditFolderDialogComponent implements OnInit {
       data = undefined;
     } else {
       data = {
-        name: this.form.controls.name.value
+        name: this.form.controls.name.value,
       };
     }
 
     this.dialogRef.close(data);
+  }
+
+  public static open(service: MatDialog, data: DialogData<EditFolderData>) {
+    return service
+      .open<
+        EditFolderDialogComponent,
+        DialogData<EditFolderData>,
+        EditFolderData
+      >(EditFolderDialogComponent, { data })
+      .afterClosed()
+      .pipe(ignoreFalsy());
   }
 }

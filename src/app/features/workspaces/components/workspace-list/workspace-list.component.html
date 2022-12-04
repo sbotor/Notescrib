@@ -1,5 +1,6 @@
 <mat-toolbar class="toolbar mat-elevation-z8">
-  <h1>My workspaces </h1>
+  <span>My workspaces</span>
+  <span class="toolbar-spacer"></span>
   <button mat-button (click)="openWorkspaceDialog()"> <mat-icon>add</mat-icon>Add new</button>
 </mat-toolbar>
 
@@ -9,6 +10,9 @@
     <mat-card-header>
       <mat-card-title>{{ workspace.name }}</mat-card-title>
     </mat-card-header>
+
+    <p><b>Created:</b> {{ workspace.created | date:'d MMM y, h:mm a' }}</p>
+    <p><b>Updated:</b> {{ workspace.updated ? (workspace.updated | date:'d MMM y, h:mm a') : 'never' }}</p>
 
     <mat-card-actions class="card-actions">
       <div>

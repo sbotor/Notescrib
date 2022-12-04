@@ -19,8 +19,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider';
 import { BrowserTileComponent } from './components/browser-tile/browser-tile.component';
+import { BrowserToolbarComponent } from './components/browser-toolbar/browser-toolbar.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +29,7 @@ import { BrowserTileComponent } from './components/browser-tile/browser-tile.com
     WorkspaceBrowserComponent,
     EditFolderDialogComponent,
     BrowserTileComponent,
+    BrowserToolbarComponent,
   ],
   imports: [
     CommonModule,
@@ -46,7 +47,6 @@ import { BrowserTileComponent } from './components/browser-tile/browser-tile.com
     MatToolbarModule,
     MatMenuModule,
     MatButtonModule,
-    MatDividerModule,
   ],
 })
 export class WorkspacesModule {}

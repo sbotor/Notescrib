@@ -17,52 +17,32 @@ export class BrowserDialogService {
 
   public editFolder() {
     const item = this.browserService.getSelectedItem()!;
+    const data = {
+      title: 'Edit folder',
+      value: { name: item.name, id: item.id },
+    } as DialogData<EditFolderData>;
 
-    this.dialog
-      .open(EditFolderDialogComponent, {
-        data: {
-          title: 'Edit folder',
-          value: { name: item.name, id: item.id },
-        } as DialogData<EditFolderData>,
-      })
-      .afterClosed()
-      .subscribe((x: EditFolderData) => {
-        if (!x) {
-          return;
-        }
-        this.browserService.updateFolder(item, x.name);
-      });
+    EditFolderDialogComponent.open(this.dialog, data).subscribe((x) =>
+      this.browserService.updateFolder(item, x.name)
+    );
   }
 
   public removeFolder() {
     const item = this.browserService.getSelectedItem()!;
+    const data = {
+      value: `Do you want to remove ${item.name}?`,
+    } as ConfirmationDialogData;
 
-    this.dialog
-      .open(ConfirmationDialogComponent, {
-        data: {
-          value: `Do you want to remove ${item.name}?`,
-        } as ConfirmationDialogData,
-      })
-      .afterClosed()
-      .subscribe((x: boolean) => {
-        if (!x) {
-          return;
-        }
-        this.browserService.removeFolder(item.id);
-      });
+    ConfirmationDialogComponent.open(this.dialog, data).subscribe(() =>
+      this.browserService.removeFolder(item.id)
+    );
   }
 
   public createFolder() {
-    this.dialog
-      .open(EditFolderDialogComponent, {
-        data: { title: 'Add folder' },
-      })
-      .afterClosed()
-      .subscribe((x: EditFolderData) => {
-        if (!x) {
-          return;
-        }
-        this.browserService.addFolder(x.name);
-      });
+    const data = { title: 'Add folder' } as DialogData<EditFolderData>;
+
+    EditFolderDialogComponent.open(this.dialog, data).subscribe((x) =>
+      this.browserService.addFolder(x.name)
+    );
   }
 }
