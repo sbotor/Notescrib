@@ -21,6 +21,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserTileComponent } from './components/browser-tile/browser-tile.component';
 import { BrowserToolbarComponent } from './components/browser-toolbar/browser-toolbar.component';
+import { WorkspaceBrowserService } from './services/workspace-browser.service';
+import { BrowserDialogService } from './services/browser-dialog.service';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -47,6 +50,11 @@ import { BrowserToolbarComponent } from './components/browser-toolbar/browser-to
     MatToolbarModule,
     MatMenuModule,
     MatButtonModule,
+    MatSelectModule
   ],
+  providers: [
+    WorkspaceBrowserService,
+    BrowserDialogService
+  ]
 })
 export class WorkspacesModule {}

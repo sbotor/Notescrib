@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { WorkspaceBrowserService } from '../../services/workspace-browser.service';
 import { BrowserDialogService } from '../../services/browser-dialog.service';
-import NavigationInfo from './navigation-info';
 
 @Component({
   selector: 'app-workspace-browser',

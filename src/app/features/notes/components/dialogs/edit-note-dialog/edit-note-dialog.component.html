@@ -8,6 +8,16 @@
         <input type="text" formControlName="name" matInput />
       </mat-form-field>
     </p>
+    <p>
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <mat-select formControlName="visibility">
+          <mat-option *ngFor="let option of getVisibilityOptions(); trackBy: trackOption" [value]="option.value">
+            {{ option.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </p>
   </div>
 </div>
 

@@ -9,7 +9,7 @@ import {
 import { BrowserItem } from '../workspace-browser/workspace-browser.models';
 import { WorkspaceBrowserService } from '../../services/workspace-browser.service';
 import { fromEvent, merge, debounceTime, Subscription } from 'rxjs';
-import { MatButton } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-browser-tile',
@@ -22,7 +22,11 @@ export class BrowserTileComponent implements AfterViewInit, OnDestroy {
   @Input()
   public item?: BrowserItem;
 
-  constructor(private readonly hostRef: ElementRef, private readonly browserService: WorkspaceBrowserService) {}
+  constructor(
+    private readonly hostRef: ElementRef,
+    private readonly browserService: WorkspaceBrowserService,
+    private readonly router: Router
+  ) {}
 
   ngAfterViewInit(): void {
     this.clicksSub = this.setupClicks();
@@ -59,7 +63,9 @@ export class BrowserTileComponent implements AfterViewInit, OnDestroy {
     }
 
     if (!this.item.isNote) {
-      this.browserService.navigateDown(this.item?.id);
+      this.browserService.navigateDown(this.item.id);
+    } else {
+      this.router.navigate(['note', this.item.id]);
     }
   }
 

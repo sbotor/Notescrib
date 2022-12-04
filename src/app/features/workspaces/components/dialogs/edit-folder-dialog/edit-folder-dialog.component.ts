@@ -34,12 +34,15 @@ export class EditFolderDialogComponent implements OnInit {
   public close(success: boolean) {
     let data: EditFolderData | undefined;
 
-    if (!this.form.valid || !success) {
-      data = undefined;
-    } else {
+    if (success) {
+      if (!this.form.valid) {
+        return;
+      }
       data = {
         name: this.form.controls.name.value,
       };
+    } else {
+      data = undefined;
     }
 
     this.dialogRef.close(data);

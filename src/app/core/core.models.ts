@@ -27,8 +27,13 @@ export interface SharingInfo {
 }
 
 export enum Visibility {
-  Private,
-  Hidden,
-  Public
+  Private = 'Private',
+  Hidden = 'Hidden',
+  Public = 'Public'
+}
+
+export interface SelectOption {
+  label: string;
+  value: string;
 }
 

@@ -18,6 +18,11 @@ const routes: Routes = [
     path: 'workspaces',
     loadChildren: () => import('./features/workspaces/workspaces.module').then(x => x.WorkspacesModule),
     canActivate: [MustBeLoggedInGuard],
+  },
+  {
+    path: 'note',
+    loadChildren: () => import('./features/notes/notes.module').then(x => x.NotesModule),
+    canActivate: [MustBeLoggedInGuard],
   }
 ];
 

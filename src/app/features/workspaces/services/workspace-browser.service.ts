@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { map, ReplaySubject, concatMap, of } from 'rxjs';
+import {
+  map,
+  ReplaySubject,
+  concatMap,
+  of
+} from 'rxjs';
 import { NotesApiService } from 'src/app/features/notes/notes-api.service';
 import { NoteOverview } from 'src/app/features/notes/notes.models';
 import { WorkspacesApiService } from '../workspaces-api.service';
@@ -7,10 +12,10 @@ import { FolderOverview, WorkspaceDetails } from '../workspaces.models';
 import { BrowserItem } from '../components/workspace-browser/workspace-browser.models';
 import WorkspaceNavigator from '../components/workspace-browser/workspace-navigator';
 import NavigationInfo from '../components/workspace-browser/navigation-info';
+import { EditNoteData } from '../../notes/components/dialogs/edit-note-dialog/edit-note-data';
+import { CreateNoteRequest } from '../../notes/notes.requests';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class WorkspaceBrowserService {
   private readonly notes = new Map<string, NoteOverview[]>();
   private workspaceId = '';
@@ -84,11 +89,28 @@ export class WorkspaceBrowserService {
   public removeFolder(id: string) {
     this.workspacesApi.deleteFolder(this.workspaceId, id).subscribe(() => {
       const folders =
-        this.navigator.getCurrentFolder()?.children ?? this.navigator.getRoots();
+        this.navigator.getCurrentFolder()?.children ??
+        this.navigator.getRoots();
 
-      folders.splice(folders.findIndex(x => x.id === id), 1);
+      folders.splice(
+        folders.findIndex((x) => x.id === id),
+        1
+      );
       this.updateCurrentItems();
     });
+  }
+
+  public addNote(data: EditNoteData) {
+    const currentFolder = this.navigator.getCurrentFolder();
+    const request = {
+      name: data.name,
+      workspaceId: this.workspaceId,
+      folderId: currentFolder?.id,
+      sharingInfo: data.sharingInfo,
+      labels: data.labels,
+    } as CreateNoteRequest;
+
+    this.notesApi.createNote(request).subscribe(_ => this.updateCurrentItems(currentFolder, true));
   }
 
   public getSelectedItem() {
@@ -99,9 +121,9 @@ export class WorkspaceBrowserService {
     this.selectedItem = item;
   }
 
-  private updateCurrentItems(folder?: FolderOverview) {
+  private updateCurrentItems(folder?: FolderOverview, refreshNotes = false) {
     const children = folder?.children ?? this.navigator.getRoots();
-    const folderId = folder?.id ?? '';
+    const folderId = folder?.id ?? '*';
 
     const items: BrowserItem[] = children.map((x) => ({
       id: x.id,
@@ -109,17 +131,19 @@ export class WorkspaceBrowserService {
       isNote: false,
     }));
 
-    this.getNotes(folderId).subscribe((x) => {
+    this.getNotes(folderId, refreshNotes).subscribe((x) => {
       const notes = x.map((n) => ({ id: n.id, name: n.name, isNote: true }));
       items.push(...notes);
       this.itemsSubject.next(items);
     });
   }
 
-  private getNotes(folderId: string) {
-    const found = this.notes.get(folderId);
-    if (found) {
-      return of(found);
+  private getNotes(folderId: string, refresh = false) {
+    if (!refresh) {
+      const found = this.notes.get(folderId);
+      if (found) {
+        return of(found);
+      }
     }
 
     return this.workspaceSubject.pipe(

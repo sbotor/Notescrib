@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PagedList } from 'src/app/core/core.models';
 import { environment } from 'src/environments/environment';
@@ -20,6 +20,6 @@ export class NotesApiService {
   }
 
   public createNote(request: CreateNoteRequest) {
-    this.client.post(NotesApiService.URL, request);
+    return this.client.post<NoteOverview>(NotesApiService.URL, request);
   }
 }
