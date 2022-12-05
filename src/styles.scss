@@ -1,12 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import '~codemirror/lib/codemirror.css';
+@import '~codemirror/theme/material.css';
+
 html, body {
   margin: 0;
   height: 100%;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+}
+
 app-root {
-  height: 100%;
+  flex: 1 1 auto;
 }
 
 .centered {
@@ -16,7 +24,7 @@ app-root {
 }
 
 .full-height {
-  height: 100%;
+  flex: 1 1 auto;
 }
 
 .full-width {

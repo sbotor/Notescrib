@@ -1,0 +1,28 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+.editor-container {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-toolbar {
+  flex: 0 1 auto;
+}
+
+.editor-area {
+  flex: 1 1 auto;
+  padding: 15px;
+}
+
+.editor-area:focus {
+  outline: none;
+}
+
+.preview-area {
+  flex: 1 1 auto;
+}

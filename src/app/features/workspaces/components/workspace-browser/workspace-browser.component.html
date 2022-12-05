@@ -1,4 +1,4 @@
-<div *ngIf="workspace$ | async as workspace; else spinner" class="full-height">
+<div *ngIf="workspace$ | async as workspace; else spinner" class="wrapper">
   <app-browser-toolbar [workspace]="workspace"></app-browser-toolbar>
 
   <div id="items-container" *ngIf="items$ | async as items; else spinner" class="items-container"

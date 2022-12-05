@@ -32,9 +32,7 @@
               "src/styles.scss",
               "src/theme.scss"
             ],
-            "scripts": [
-              "node_modules/simplemde-antd/dist/simplemde.min.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -104,9 +102,7 @@
               "src/styles.scss",
               "src/theme.scss"
             ],
-            "scripts": [
-              "node_modules/simplemde-antd/dist/simplemde.min.js"
-            ]
+            "scripts": []
           }
         }
       }

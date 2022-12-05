@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  map,
-  ReplaySubject,
-  concatMap,
-  of
-} from 'rxjs';
+import { map, ReplaySubject, concatMap, of, take } from 'rxjs';
 import { NotesApiService } from 'src/app/features/notes/notes-api.service';
 import { NoteOverview } from 'src/app/features/notes/notes.models';
 import { WorkspacesApiService } from '../workspaces-api.service';
@@ -22,10 +17,10 @@ export class WorkspaceBrowserService {
   private selectedItem?: BrowserItem;
   private readonly navigator = new WorkspaceNavigator([]);
 
-  private readonly workspaceSubject = new ReplaySubject<WorkspaceDetails>();
+  private readonly workspaceSubject = new ReplaySubject<WorkspaceDetails>(1);
   public readonly workspace$ = this.workspaceSubject.asObservable();
 
-  private readonly itemsSubject = new ReplaySubject<BrowserItem[]>();
+  private readonly itemsSubject = new ReplaySubject<BrowserItem[]>(1);
   public readonly currentItems$ = this.itemsSubject.asObservable();
 
   constructor(
@@ -110,7 +105,9 @@ export class WorkspaceBrowserService {
       labels: data.labels,
     } as CreateNoteRequest;
 
-    this.notesApi.createNote(request).subscribe(_ => this.updateCurrentItems(currentFolder, true));
+    this.notesApi
+      .createNote(request)
+      .subscribe((_) => this.updateCurrentItems(currentFolder, true));
   }
 
   public getSelectedItem() {
@@ -131,11 +128,13 @@ export class WorkspaceBrowserService {
       isNote: false,
     }));
 
-    this.getNotes(folderId, refreshNotes).subscribe((x) => {
-      const notes = x.map((n) => ({ id: n.id, name: n.name, isNote: true }));
-      items.push(...notes);
-      this.itemsSubject.next(items);
-    });
+    this.getNotes(folderId, refreshNotes)
+      .subscribe((x) => {
+        this.notes.set(folderId, x);
+        const notes = x.map((n) => ({ id: n.id, name: n.name, isNote: true }));
+        items.push(...notes);
+        this.itemsSubject.next(items);
+      });
   }
 
   private getNotes(folderId: string, refresh = false) {
@@ -147,6 +146,7 @@ export class WorkspaceBrowserService {
     }
 
     return this.workspaceSubject.pipe(
+      take(1),
       concatMap((x) =>
         this.notesApi.getNotes({
           workspaceId: x.id,
