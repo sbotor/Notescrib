@@ -1,5 +1,5 @@
 <div *ngIf="isLoggedIn(); else elseBlock;">
-  <h1 class="header">Hello, {{ username$ | async }}</h1>
+  <h1 class="header">Hello, {{username$ | async}}</h1>
 </div>
 
 <ng-template #elseBlock>

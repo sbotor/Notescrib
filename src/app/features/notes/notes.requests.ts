@@ -1,4 +1,6 @@
-import { PagingRequest, SharingInfo, SortingRequest } from "src/app/core/core.models";
+import { SortingRequest } from "src/app/core/core.models";
+import { PagingRequest } from "src/app/core/paging.models";
+import { SharingInfo } from "src/app/core/sharing.models";
 
 export interface CreateNoteRequest {
   name: string;

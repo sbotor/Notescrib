@@ -1,11 +1,9 @@
-<div mat-dialog-title> {{ data.title ?? 'Confirm' }} </div>
+<div mat-dialog-title>{{data.title ?? 'Confirm'}}</div>
 
 <div mat-dialog-content>
-  {{ data.value ?? 'Are you sure?' }}
+  {{data.value ?? 'Are you sure?'}}
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="close(false)" [color]="data.cancelButton?.color">{{ data.cancelButton?.label ?? 'Cancel'
-    }}</button>
-  <button mat-button (click)="close(true)" [color]="data.confirmButton?.color">{{ data.confirmButton?.label ?? 'OK'
-    }}</button>
+  <button mat-button (click)="close(false)" [color]="data.cancelButton?.color">{{data.cancelButton?.label ?? 'Cancel'}}</button>
+  <button mat-button (click)="close(true)" [color]="data.confirmButton?.color">{{data.confirmButton?.label ?? 'OK'}}</button>
 </div>

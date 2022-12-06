@@ -16,13 +16,18 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { LayoutComponent } from './core/components/layout/layout.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     HomeComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    LayoutComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,6 +41,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatDialogModule,
     MatButtonModule,
     MatSnackBarModule,
+    MatSidenavModule,
+    MatListModule,
+    MatMenuModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],

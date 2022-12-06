@@ -1,22 +1,28 @@
-<mat-toolbar color="primary" class="toolbar">
+<mat-toolbar class="header" color="primary">
+  <button mat-icon-button (click)="onSidenavToggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
   <a mat-icon-button routerLink="/">
     <mat-icon>home</mat-icon>
   </a>
 
-  <div *ngFor="let item of getItems()">
-    <a *ngIf="!isCurrentRoute(item.link); else currentRoute" mat-button routerLink="{{ item.link }}">{{ item.label }}</a>
-    <ng-template #currentRoute>
-      <a mat-flat-button class="current-route" routerLink="{{ item.link }}">{{ item.label }}</a>
-    </ng-template>
-  </div>
-
   <span class="toolbar-spacer"></span>
 
   <div *ngIf="isUserLoggedIn(); else elseBlock">
-    <span>{{ username$ | async }}</span>
-    <button mat-button (click)="logout()">Logout</button>
+    <button mat-button [matMenuTriggerFor]="userMenu">
+      <mat-icon class="icon">person</mat-icon>
+      <mat-icon class="icon">keyboard_arrow_down</mat-icon>
+    </button>
   </div>
   <ng-template #elseBlock>
     <a mat-button routerLink="login">Login</a>
   </ng-template>
+
 </mat-toolbar>
+
+<mat-menu #userMenu>
+  <ng-template matMenuContent>
+    <button mat-menu-item disabled>{{username$ | async}}</button>
+    <button mat-menu-item (click)="logout()">Logout</button>
+  </ng-template>
+</mat-menu>

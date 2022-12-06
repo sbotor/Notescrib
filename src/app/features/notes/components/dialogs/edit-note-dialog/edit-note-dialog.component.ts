@@ -5,9 +5,10 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { SelectOption, Visibility } from 'src/app/core/core.models';
+import { SelectOption } from 'src/app/core/core.models';
 import { DialogData } from 'src/app/core/dialog.models';
 import ignoreFalsy from 'src/app/core/operators/ignoreFalsy';
+import { Visibility } from 'src/app/core/sharing.models';
 import { EditNoteData } from './edit-note-data';
 
 @Component({

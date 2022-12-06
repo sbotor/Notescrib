@@ -6,6 +6,7 @@ import { WorkspaceOverview } from '../../workspaces.models';
 import { EditWorkspaceDialogComponent } from '../dialogs/edit-workspace-dialog/edit-workspace-dialog.component';
 import { ConfirmationDialogComponent } from 'src/app/core/components/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { PagedList, } from 'src/app/core/paging.models';
 
 @Component({
   selector: 'app-workspace-list',
@@ -15,7 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class WorkspaceListComponent implements OnInit, OnDestroy {
   private readonly subs = new Subscription();
 
-  private readonly workspacesSubject = new ReplaySubject<WorkspaceOverview[]>();
+  private readonly workspacesSubject = new ReplaySubject<PagedList<WorkspaceOverview>>();
   public readonly workspaces$ = this.workspacesSubject.asObservable();
 
   constructor(
@@ -82,8 +83,8 @@ export class WorkspaceListComponent implements OnInit, OnDestroy {
   private fetchWorkspaces() {
     this.subs.add(
       this.workspacesApi
-        .getWorkspaces({ page: 1, pageSize: 50 })
-        .subscribe((x) => this.workspacesSubject.next(x.data))
+        .getWorkspaces({ page: 1, pageSize: 10 })
+        .subscribe((x) => this.workspacesSubject.next(x))
     );
   }
 }

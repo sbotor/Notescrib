@@ -1,7 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
-import { HeaderItem } from './header-item';
 
 @Component({
   selector: 'app-header',
@@ -10,13 +9,9 @@ import { HeaderItem } from './header-item';
 })
 export class HeaderComponent implements OnInit {
   @Output()
-  public toggleSidenav = new EventEmitter();
+  public sidenavToggle = new EventEmitter();
 
-  public username$ = this.authService.username$;
-
-  private readonly items: HeaderItem[] = [
-    { label: 'Workspaces', link: '/workspaces', loggedInOnly: true },
-  ];
+  public readonly username$ = this.authService.username$;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -25,7 +20,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public onToggleSidenav() {
-    this.toggleSidenav.emit();
+    this.sidenavToggle.emit();
   }
 
   public isUserLoggedIn() {
@@ -37,11 +32,7 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  public getItems() {
-    return this.items.filter((x) => !x.loggedInOnly || this.isUserLoggedIn());
-  }
-
-  public isCurrentRoute(link: string) {
-    return this.router.url.startsWith(link);
+  public onSidenavToggle() {
+    this.sidenavToggle.emit();
   }
 }

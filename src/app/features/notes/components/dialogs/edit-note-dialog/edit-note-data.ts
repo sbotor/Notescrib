@@ -1,4 +1,4 @@
-import { SharingInfo } from "src/app/core/core.models";
+import { SharingInfo } from "src/app/core/sharing.models";
 
 export interface EditNoteData {
   name: string;

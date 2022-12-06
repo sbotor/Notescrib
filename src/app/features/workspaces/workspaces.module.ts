@@ -22,9 +22,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -44,14 +44,14 @@ import { MatMenuModule } from '@angular/material/menu';
     MatFormFieldModule,
     MatTreeModule,
     MatSidenavModule,
-    MatProgressSpinnerModule,
     MatIconModule,
-    MatCardModule,
     MatDialogModule,
     MatToolbarModule,
     MatMenuModule,
     MatButtonModule,
     MatSelectModule,
+    MatListModule,
+    MatProgressBarModule,
   ],
   providers: [WorkspaceBrowserService, BrowserDialogService],
 })

@@ -1,7 +1,7 @@
-<div *ngIf="workspace$ | async as workspace; else spinner" class="wrapper">
+<div *ngIf="workspace$ | async as workspace; else loading" class="wrapper">
   <app-browser-toolbar [workspace]="workspace"></app-browser-toolbar>
 
-  <div id="items-container" *ngIf="items$ | async as items; else spinner" class="items-container"
+  <div id="items-container" *ngIf="items$ | async as items; else loading" class="items-container"
     (click)="handleContainerClick($event)">
     <div *ngFor="let item of items">
       <app-browser-tile [item]="item"></app-browser-tile>
@@ -9,6 +9,6 @@
   </div>
 </div>
 
-<ng-template #spinner>
-  <mat-spinner></mat-spinner>
+<ng-template #loading>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </ng-template>

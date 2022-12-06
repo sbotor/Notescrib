@@ -1,32 +1,5 @@
-.workspace-grid {
+:host {
+  flex: 1 1 auto;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  gap: 5px;
-  padding: 10px;
-}
-
-.actions {
-  display: flex;
-  justify-content: space-around;
-}
-
-.content {
-  display: flex;
-  justify-content: center;
-}
-
-.open-button {
-  width: 75%;
-}
-
-.card-actions {
-  display: flex;
-  justify-content: space-between;
-}
-
-.toolbar {
-  margin-bottom: 10px;
-  gap: 10px;
+  flex-direction: column;
 }

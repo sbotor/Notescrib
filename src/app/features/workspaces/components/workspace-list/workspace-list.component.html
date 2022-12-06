@@ -1,32 +1,32 @@
-<mat-toolbar class="toolbar">
-  <span>My workspaces</span>
+<mat-toolbar>
+  <span>Workspaces</span>
   <span class="toolbar-spacer"></span>
-  <button mat-button (click)="openWorkspaceDialog()"> <mat-icon>add</mat-icon>Add new</button>
+  <button mat-icon-button (click)="openWorkspaceDialog()">
+    <mat-icon>add</mat-icon>
+  </button>
 </mat-toolbar>
 
-<div *ngIf="workspaces$ | async as workspaces; else spinner" class="workspace-grid">
-  <mat-card *ngFor="let workspace of workspaces" class="mat-elevation-z6">
-
-    <mat-card-header>
-      <mat-card-title>{{ workspace.name }}</mat-card-title>
-    </mat-card-header>
-
-    <p><b>Created:</b> {{ workspace.created | date:'d MMM y, h:mm a' }}</p>
-    <p><b>Updated:</b> {{ workspace.updated ? (workspace.updated | date:'d MMM y, h:mm a') : 'never' }}</p>
-
-    <mat-card-actions class="card-actions">
-      <div>
-        <button mat-button (click)="openWorkspaceDialog(workspace)">EDIT</button>
-        <button mat-button (click)="openDeleteDialog(workspace)">DELETE</button>
+<div *ngIf="workspaces$ | async as workspaces; else loading" class="flex-fill flex-col">
+  <mat-list class="flex-fill">
+    <mat-list-item *ngFor="let workspace of workspaces.data">
+      <mat-icon matListItemIcon>library_books</mat-icon>
+      <div matListItemTitle>{{workspace.name}}</div>
+      <div matListItemLine>{{(workspace.updated ?? workspace.created) | date:'d MMM y, h:mm a'}}</div>
+      <div matListItemMeta>
+        <button mat-icon-button (click)="openWorkspaceDialog(workspace)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="openDeleteDialog(workspace)" color="warn">
+          <mat-icon>delete</mat-icon>
+        </button>
       </div>
-      <div>
-        <a mat-button routerLink="{{ workspace.id }}">OPEN <mat-icon>folder_open</mat-icon></a>
+      <div matListItemLine>
+        <button mat-button [routerLink]="workspace.id">Open</button>
       </div>
-    </mat-card-actions>
-  </mat-card>
-
+    </mat-list-item>
+  </mat-list>
 </div>
 
-<ng-template #spinner class="centered">
-  <mat-spinner></mat-spinner>
+<ng-template #loading>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </ng-template>

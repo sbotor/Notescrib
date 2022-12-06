@@ -1,4 +1,4 @@
-<div mat-dialog-title> {{ data.title }} </div>
+<div mat-dialog-title>{{data.title}}</div>
 
 <div mat-dialog-content>
   <div [formGroup]="form" class="vertical-form">
@@ -13,7 +13,7 @@
         <mat-label>Name</mat-label>
         <mat-select formControlName="visibility">
           <mat-option *ngFor="let option of getVisibilityOptions(); trackBy: trackOption" [value]="option.value">
-            {{ option.label }}
+            {{option.label}}
           </mat-option>
         </mat-select>
       </mat-form-field>
