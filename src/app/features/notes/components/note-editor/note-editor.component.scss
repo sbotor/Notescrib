@@ -14,15 +14,6 @@
   flex: 0 1 auto;
 }
 
-.editor-area {
-  flex: 1 1 auto;
-  padding: 15px;
-}
-
-.editor-area:focus {
-  outline: none;
-}
-
-.preview-area {
-  flex: 1 1 auto;
+::ng-deep .CodeMirror {
+  height: auto;
 }

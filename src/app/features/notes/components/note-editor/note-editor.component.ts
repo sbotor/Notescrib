@@ -17,8 +17,7 @@ export class NoteEditorComponent implements AfterViewInit, OnDestroy {
   private noteId = '';
 
   public readonly options = {
-    theme: 'material',
-    mode: 'markdown'
+    mode: 'gfm',
   }
 
   public content = '';

@@ -53,9 +53,9 @@ export class EditNoteDialogComponent implements OnInit {
         name: controls.name.value,
         sharingInfo: {
           visibility: controls.visibility.value,
-          allowedUserIds: []
+          allowedUserIds: [],
         },
-        labels: []
+        labels: [],
       };
     } else {
       data = undefined;

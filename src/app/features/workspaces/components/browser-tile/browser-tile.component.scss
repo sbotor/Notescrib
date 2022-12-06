@@ -1,5 +1,3 @@
-@import 'src/theme.scss';
-
 .browser-item {
   display: flex;
   flex-direction: column;
@@ -17,5 +15,5 @@
 }
 
 .selected-item {
-  background-color: mat-color($primary);
+  border: 1px solid black;
 }
