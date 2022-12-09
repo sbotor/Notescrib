@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { WorkspaceBrowserService } from '../../services/workspace-browser.service';
 import { BrowserDialogService } from '../../services/browser-dialog.service';
@@ -11,23 +10,15 @@ import { BrowserDialogService } from '../../services/browser-dialog.service';
 })
 export class WorkspaceBrowserComponent implements OnInit, OnDestroy {
   private readonly subs = new Subscription();
-  private workspaceId = '';
 
   public readonly workspace$ = this.browserService.workspace$;
-  public readonly items$ = this.browserService.currentItems$;
+  public readonly folders$ = this.browserService.folders$;
+  public readonly notes$ = this.browserService.notes$;
 
   constructor(
-    route: ActivatedRoute,
     private readonly browserService: WorkspaceBrowserService,
     public readonly dialog: BrowserDialogService
-  ) {
-    this.subs.add(
-      route.paramMap.subscribe((x) => {
-        this.workspaceId = x.get('id') ?? '';
-        this.browserService.fetchWorkspaceDetails(this.workspaceId);
-      })
-    );
-  }
+  ) {}
 
   ngOnInit(): void {
     this.browserService.selectItem(undefined);

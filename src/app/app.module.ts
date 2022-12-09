@@ -20,6 +20,7 @@ import { LayoutComponent } from './core/components/layout/layout.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatSnackBarModule,
     MatSidenavModule,
     MatListModule,
-    MatMenuModule
+    MatMenuModule,
+    MatProgressBarModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],

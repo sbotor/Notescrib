@@ -15,7 +15,7 @@ const routes: Routes = [
     canActivate: [MustBeLoggedOutGuard]
   },
   {
-    path: 'workspaces',
+    path: 'workspace',
     loadChildren: () => import('./features/workspaces/workspaces.module').then(x => x.WorkspacesModule),
     canActivate: [MustBeLoggedInGuard],
   },

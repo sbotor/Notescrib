@@ -21,7 +21,7 @@
         </button>
       </div>
       <div matListItemLine>
-        <button mat-button [routerLink]="workspace.id">Open</button>
+        <button mat-button (click)="onSelectWorkspace(workspace.id)">Select</button>
       </div>
     </mat-list-item>
   </mat-list>

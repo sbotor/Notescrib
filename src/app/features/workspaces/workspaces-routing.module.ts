@@ -6,12 +6,12 @@ import { WorkspaceListComponent } from './components/workspace-list/workspace-li
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'list',
     component: WorkspaceListComponent,
     canActivate: [MustBeLoggedInGuard],
   },
   {
-    path: ':id',
+    path: '',
     component: WorkspaceBrowserComponent,
     canActivate: [MustBeLoggedInGuard],
   },

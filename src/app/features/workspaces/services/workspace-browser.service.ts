@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
-import { map, ReplaySubject, concatMap, of, take } from 'rxjs';
+import { map, ReplaySubject, concatMap, of, take, tap } from 'rxjs';
 import { NotesApiService } from 'src/app/features/notes/notes-api.service';
 import { NoteOverview } from 'src/app/features/notes/notes.models';
 import { WorkspacesApiService } from '../workspaces-api.service';
-import { FolderOverview, WorkspaceDetails } from '../workspaces.models';
+import { FolderOverview } from '../workspaces.models';
 import { BrowserItem } from '../components/workspace-browser/workspace-browser.models';
 import WorkspaceNavigator from '../components/workspace-browser/workspace-navigator';
 import NavigationInfo from '../components/workspace-browser/navigation-info';
 import { EditNoteData } from '../../notes/components/dialogs/edit-note-dialog/edit-note-data';
 import { CreateNoteRequest } from '../../notes/notes.requests';
+import { CurrentWorkspaceService } from './current-workspace.service';
+import ignoreFalsy from 'src/app/core/operators/ignoreFalsy';
 
 @Injectable()
 export class WorkspaceBrowserService {
@@ -17,30 +19,19 @@ export class WorkspaceBrowserService {
   private selectedItem?: BrowserItem;
   private readonly navigator = new WorkspaceNavigator([]);
 
-  private readonly workspaceSubject = new ReplaySubject<WorkspaceDetails>(1);
-  public readonly workspace$ = this.workspaceSubject.asObservable();
+  public readonly workspace$ = this.fetchWorkspace();
 
-  private readonly itemsSubject = new ReplaySubject<BrowserItem[]>(1);
-  public readonly currentItems$ = this.itemsSubject.asObservable();
+  private readonly foldersSubject = new ReplaySubject<FolderOverview[]>(1);
+  public readonly folders$ = this.foldersSubject.asObservable();
+
+  private readonly notesSubject = new ReplaySubject<NoteOverview[]>(1);
+  public readonly notes$ = this.notesSubject.asObservable();
 
   constructor(
-    private workspacesApi: WorkspacesApiService,
-    private notesApi: NotesApiService
+    public readonly current: CurrentWorkspaceService,
+    private readonly workspacesApi: WorkspacesApiService,
+    private readonly notesApi: NotesApiService
   ) {}
-
-  public fetchWorkspaceDetails(id: string) {
-    if (!id) {
-      throw new Error('Workspace ID is empty.');
-    }
-
-    this.workspacesApi.getWorkspaceDetails(id).subscribe((x) => {
-      this.navigator.reset(x.folderTree);
-      this.notes.clear();
-      this.workspaceId = x.id;
-      this.workspaceSubject.next(x);
-      this.updateCurrentItems();
-    });
-  }
 
   public getNavInfo() {
     return <NavigationInfo>this.navigator;
@@ -118,23 +109,29 @@ export class WorkspaceBrowserService {
     this.selectedItem = item;
   }
 
+  private fetchWorkspace() {
+    return this.current.workspace$.pipe(
+      take(1),
+      ignoreFalsy(),
+      tap((x) => {
+        this.navigator.reset(x.folderTree);
+        this.notes.clear();
+        this.workspaceId = x?.id;
+        this.updateCurrentItems();
+      })
+    );
+  }
+
   private updateCurrentItems(folder?: FolderOverview, refreshNotes = false) {
     const children = folder?.children ?? this.navigator.getRoots();
     const folderId = folder?.id ?? '*';
 
-    const items: BrowserItem[] = children.map((x) => ({
-      id: x.id,
-      name: x.name,
-      isNote: false,
-    }));
+    this.foldersSubject.next(children);
 
-    this.getNotes(folderId, refreshNotes)
-      .subscribe((x) => {
-        this.notes.set(folderId, x);
-        const notes = x.map((n) => ({ id: n.id, name: n.name, isNote: true }));
-        items.push(...notes);
-        this.itemsSubject.next(items);
-      });
+    this.getNotes(folderId, refreshNotes).subscribe((x) => {
+      this.notes.set(folderId, x);
+      this.notesSubject.next(x);
+    });
   }
 
   private getNotes(folderId: string, refresh = false) {
@@ -145,11 +142,11 @@ export class WorkspaceBrowserService {
       }
     }
 
-    return this.workspaceSubject.pipe(
+    return this.current.workspace$.pipe(
       take(1),
       concatMap((x) =>
         this.notesApi.getNotes({
-          workspaceId: x.id,
+          workspaceId: this.workspaceId,
           folderId,
           page: 1,
           pageSize: 50,

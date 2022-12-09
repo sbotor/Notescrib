@@ -6,7 +6,9 @@ import { WorkspaceOverview } from '../../workspaces.models';
 import { EditWorkspaceDialogComponent } from '../dialogs/edit-workspace-dialog/edit-workspace-dialog.component';
 import { ConfirmationDialogComponent } from 'src/app/core/components/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { PagedList, } from 'src/app/core/paging.models';
+import { PagedList } from 'src/app/core/paging.models';
+import { Router } from '@angular/router';
+import { CurrentWorkspaceService } from '../../services/current-workspace.service';
 
 @Component({
   selector: 'app-workspace-list',
@@ -16,12 +18,16 @@ import { PagedList, } from 'src/app/core/paging.models';
 export class WorkspaceListComponent implements OnInit, OnDestroy {
   private readonly subs = new Subscription();
 
-  private readonly workspacesSubject = new ReplaySubject<PagedList<WorkspaceOverview>>();
+  private readonly workspacesSubject = new ReplaySubject<
+    PagedList<WorkspaceOverview>
+  >();
   public readonly workspaces$ = this.workspacesSubject.asObservable();
 
   constructor(
-    private workspacesApi: WorkspacesApiService,
-    private dialog: MatDialog
+    private readonly workspacesApi: WorkspacesApiService,
+    private readonly currentWorkspace: CurrentWorkspaceService,
+    private readonly dialog: MatDialog,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
@@ -46,6 +52,18 @@ export class WorkspaceListComponent implements OnInit, OnDestroy {
       ConfirmationDialogComponent.open(this.dialog, data)
         .pipe(concatMap(() => this.workspacesApi.deleteWorkspace(workspace.id)))
         .subscribe(() => this.fetchWorkspaces())
+    );
+  }
+
+  public onSelectWorkspace(id: string) {
+    this.subs.add(
+      this.currentWorkspace.switchWorkspace(id).subscribe((x) => {
+        if (!x) {
+          throw new Error('Error fetching the workspace.');
+        }
+
+        this.router.navigate(['workspace']);
+      })
     );
   }
 

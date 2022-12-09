@@ -1,9 +1,15 @@
 <app-header (sidenavToggle)="sidenav.toggle()"></app-header>
 
-<mat-sidenav-container class="flex-fill">
+<mat-sidenav-container class="flex-fill" autosize>
   <mat-sidenav #sidenav mode="side">
+    <mat-list>
+    </mat-list>
     <mat-nav-list>
-      <mat-list-item routerLink="workspaces">Workspaces</mat-list-item>
+      <div *ngIf="workspaceName$ | async as workspaceName; else loading" mat-subheader>
+        <b>{{workspaceName ?? "No workspace"}}</b>
+      </div>
+      <mat-list-item routerLink="workspace">Contents</mat-list-item>
+      <mat-list-item routerLink="workspace/list">Switch workspace</mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
 
@@ -11,3 +17,8 @@
     <router-outlet></router-outlet>
   </div>
 </mat-sidenav-container>
+
+<ng-template #loading>
+  <mat-progress-bar></mat-progress-bar>
+</ng-template>
+

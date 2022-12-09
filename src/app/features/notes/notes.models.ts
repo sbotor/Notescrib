@@ -7,4 +7,6 @@ export interface NoteOverview {
   folderId: string;
   ownerId: string;
   sharingInfo: SharingInfo;
+  created: Date;
+  updated?: Date;
 }
