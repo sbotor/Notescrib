@@ -1,19 +1,17 @@
-export interface WorkspaceOverview {
-  id: string;
-  ownerId: string;
-  name: string;
-  created: Date;
-  updated?: Date
-}
+import { NoteOverview } from "../notes/notes.models";
 
-export interface WorkspaceDetails extends WorkspaceOverview {
-  folderTree: FolderOverview[];
-}
-
-export interface FolderOverview {
+export interface FolderInfoBase {
   id: string;
   name: string;
-  children: FolderOverview[];
   created: Date;
   updated?: Date;
+}
+
+export interface FolderOverview extends FolderInfoBase {
+  children: FolderOverview[];
+}
+
+export interface FolderDetails extends FolderInfoBase {
+  children: FolderInfoBase[];
+  notes: NoteOverview[];
 }

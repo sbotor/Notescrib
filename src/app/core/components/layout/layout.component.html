@@ -1,15 +1,10 @@
-<app-header (sidenavToggle)="sidenav.toggle()"></app-header>
+<app-header (sidenavToggle)="layout.toggleNavbar()"></app-header>
 
 <mat-sidenav-container class="flex-fill" autosize>
-  <mat-sidenav #sidenav mode="side">
-    <mat-list>
-    </mat-list>
-    <mat-nav-list>
-      <div *ngIf="workspaceName$ | async as workspaceName; else loading" mat-subheader>
-        <b>{{workspaceName ?? "No workspace"}}</b>
-      </div>
-      <mat-list-item routerLink="workspace">Contents</mat-list-item>
-      <mat-list-item routerLink="workspace/list">Switch workspace</mat-list-item>
+  <mat-sidenav #sidenav mode="side" [opened]="layout.isNavbarOpened()">
+    <mat-nav-list *ngIf="isUserLoggedIn(); else loginNavList">
+      <mat-list-item routerLink="workspace/browse">Browse notes</mat-list-item>
+      <mat-list-item routerLink="workspace/browse" disabled>Search notes</mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
 
@@ -22,3 +17,8 @@
   <mat-progress-bar></mat-progress-bar>
 </ng-template>
 
+<ng-template #loginNavList>
+  <mat-nav-list>
+    <mat-list-item routerLink="login">Log in</mat-list-item>
+  </mat-nav-list>
+</ng-template>

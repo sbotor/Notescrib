@@ -17,13 +17,15 @@ export class BrowserDialogService {
 
   public editFolder() {
     const item = this.browserService.getSelectedItem()!;
+    console.log(item);
+
     const data = {
       title: 'Edit folder',
       value: { name: item.name, id: item.id },
     } as DialogData<EditFolderData>;
 
     EditFolderDialogComponent.open(this.dialog, data).subscribe((x) =>
-      this.browserService.updateFolder(item, x.name)
+      this.browserService.updateFolder(x)
     );
   }
 

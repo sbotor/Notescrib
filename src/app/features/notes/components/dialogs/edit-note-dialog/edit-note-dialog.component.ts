@@ -57,6 +57,7 @@ export class EditNoteDialogComponent implements OnInit {
           allowedUserIds: [],
         },
         labels: [],
+        id: this.data.value?.id
       };
     } else {
       data = undefined;

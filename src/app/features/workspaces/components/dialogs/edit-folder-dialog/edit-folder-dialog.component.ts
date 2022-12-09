@@ -36,6 +36,7 @@ export class EditFolderDialogComponent implements OnInit {
       }
       data = {
         name: this.form.controls.name.value,
+        id: this.data.value?.id
       };
     } else {
       data = undefined;

@@ -23,8 +23,8 @@ export class AuthService {
   public username$ = this.user$.pipe(map((x) => x?.email));
 
   constructor(
-    private client: HttpClient,
-    private usersService: UsersApiService
+    private readonly client: HttpClient,
+    private readonly usersService: UsersApiService
   ) {}
 
   public login(email: string, password: string) {

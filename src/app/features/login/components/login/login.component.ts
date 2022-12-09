@@ -48,7 +48,7 @@ export class LoginComponent implements OnDestroy {
           this.loginForm.controls.email.value,
           this.loginForm.controls.password.value
         )
-        .subscribe(() => this.router.navigate(['workspace']))
+        .subscribe(() => this.router.navigate(['workspace/browse']))
     );
   }
 

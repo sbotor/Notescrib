@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { BrowserDialogService } from '../../services/browser-dialog.service';
 import { WorkspaceBrowserService } from '../../services/workspace-browser.service';
-import { WorkspaceDetails } from '../../workspaces.models';
+import { FolderDetails } from '../../workspaces.models';
 import NavigationInfo from '../workspace-browser/navigation-info';
 
 @Component({
@@ -11,7 +11,7 @@ import NavigationInfo from '../workspace-browser/navigation-info';
 })
 export class BrowserToolbarComponent {
   @Input()
-  public workspace?: WorkspaceDetails;
+  public folder?: FolderDetails;
 
   public readonly navInfo: NavigationInfo;
 
@@ -26,9 +26,8 @@ export class BrowserToolbarComponent {
     return !!this.browserService.getSelectedItem();
   }
 
-  public formatPath(rootName: string) {
-    const path = this.navInfo.getCurrentPath();
-    return path ? `${rootName}/${path}` : rootName;
+  public formatPath() {
+    return this.navInfo.getCurrentPath() ?? 'Notes';
   }
 
   public navigateUp() {

@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { WorkspacesRoutingModule } from './workspaces-routing.module';
-import { WorkspaceListComponent } from './components/workspace-list/workspace-list.component';
-import { EditWorkspaceDialogComponent } from './components/dialogs/edit-workspace-dialog/edit-workspace-dialog.component';
 import { WorkspaceBrowserComponent } from './components/workspace-browser/workspace-browser.component';
 import { EditFolderDialogComponent } from './components/dialogs/edit-folder-dialog/edit-folder-dialog.component';
 
@@ -13,7 +11,6 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { BrowserTileComponent } from './components/browser-tile/browser-tile.component';
 import { BrowserToolbarComponent } from './components/browser-toolbar/browser-toolbar.component';
 import { WorkspaceBrowserService } from './services/workspace-browser.service';
 import { BrowserDialogService } from './services/browser-dialog.service';
@@ -25,15 +22,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { BrowserListComponent } from './components/browser-list/browser-list.component';
 
 @NgModule({
   declarations: [
-    WorkspaceListComponent,
-    EditWorkspaceDialogComponent,
     WorkspaceBrowserComponent,
     EditFolderDialogComponent,
-    BrowserTileComponent,
     BrowserToolbarComponent,
+    BrowserListComponent,
   ],
   imports: [
     CommonModule,

@@ -4,4 +4,5 @@ export interface EditNoteData {
   name: string;
   sharingInfo: SharingInfo;
   labels: string[];
+  id?: string;
 }

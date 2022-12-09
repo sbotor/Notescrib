@@ -1,27 +1,8 @@
-<div *ngIf="workspace$ | async as workspace; else loading" class="flex-fil flex-col">
-  <app-browser-toolbar [workspace]="workspace"></app-browser-toolbar>
-
-  <mat-list >
-    <span matSubheader>Folders</span>
-    <div *ngIf="folders$ | async as folders; else loading">
-      <mat-list-item *ngFor="let folder of folders">
-        <mat-icon matListItemIcon>folder</mat-icon>
-        <div matListItemTitle>{{folder.name}}</div>
-        <div matListItemLine>{{(folder.updated ?? folder.created) | date:'d MMM y, h:mm a'}}</div>
-      </mat-list-item>
-    </div>
-
-    <span matSubheader>Notes</span>
-    <div *ngIf="notes$ | async as notes; else loading">
-      <mat-list-item *ngFor="let note of notes">
-        <mat-icon matListItemIcon>note</mat-icon>
-        <div matListItemTitle>{{note.name}}</div>
-        <div matListItemLine>{{(note.updated ?? note.created) | date:'d MMM y, h:mm a'}}</div>
-      </mat-list-item>
-    </div>
-  </mat-list>
+<div *ngIf="folder$ | async as folder; else loading" class="flex-fil flex-col">
+  <app-browser-toolbar [folder]="folder"></app-browser-toolbar>
+  <app-browser-list></app-browser-list>
 </div>
 
 <ng-template #loading>
-  <mat-progress-bar mode="indeterminate" style="margin: 5rem;"></mat-progress-bar>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </ng-template>

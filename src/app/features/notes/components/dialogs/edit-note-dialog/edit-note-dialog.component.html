@@ -10,7 +10,7 @@
     </p>
     <p>
       <mat-form-field>
-        <mat-label>Name</mat-label>
+        <mat-label>Visibility</mat-label>
         <mat-select formControlName="visibility">
           <mat-option *ngFor="let option of getVisibilityOptions(); trackBy: trackOption" [value]="option.value">
             {{option.label}}

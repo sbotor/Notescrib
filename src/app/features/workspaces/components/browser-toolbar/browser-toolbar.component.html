@@ -2,7 +2,7 @@
   <button *ngIf="navInfo.canNavigateUp()" mat-icon-button (click)="navigateUp()">
     <mat-icon>arrow_back</mat-icon>
   </button>
-  <span>{{formatPath(workspace?.name ?? '')}}</span>
+  <span>{{formatPath()}}</span>
 
   <span class="toolbar-spacer"></span>
 

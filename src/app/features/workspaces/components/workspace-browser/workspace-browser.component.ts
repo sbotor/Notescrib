@@ -11,9 +11,7 @@ import { BrowserDialogService } from '../../services/browser-dialog.service';
 export class WorkspaceBrowserComponent implements OnInit, OnDestroy {
   private readonly subs = new Subscription();
 
-  public readonly workspace$ = this.browserService.workspace$;
-  public readonly folders$ = this.browserService.folders$;
-  public readonly notes$ = this.browserService.notes$;
+  public readonly folder$ = this.browserService.folder$;
 
   constructor(
     private readonly browserService: WorkspaceBrowserService,
@@ -21,6 +19,7 @@ export class WorkspaceBrowserComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.browserService.fetchFolderDetails();
     this.browserService.selectItem(undefined);
   }
 

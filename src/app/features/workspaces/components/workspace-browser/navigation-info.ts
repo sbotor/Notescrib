@@ -1,8 +1,7 @@
-import { FolderOverview } from "../../workspaces.models";
+import { FolderNavInfo } from "./workspace-browser.models";
 
 export default interface NavigationInfo {
-  getCurrentFolder(): FolderOverview | undefined;
+  getCurrentFolder(): FolderNavInfo | undefined;
   getCurrentPath(): string | undefined;
   canNavigateUp(): boolean;
-  getRoots(): FolderOverview[];
 }
