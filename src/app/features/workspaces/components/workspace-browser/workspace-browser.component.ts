@@ -20,19 +20,9 @@ export class WorkspaceBrowserComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.browserService.fetchFolderDetails();
-    this.browserService.selectItem(undefined);
   }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
-  }
-
-  public handleContainerClick(event: MouseEvent) {
-    if (event.target instanceof Element) {
-      const element = <Element>event.target;
-      if (element.id === 'items-container') {
-        this.browserService.selectItem(undefined);
-      }
-    }
   }
 }

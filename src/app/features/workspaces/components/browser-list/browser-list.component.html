@@ -1,23 +1,64 @@
 <div>
-  <mat-action-list *ngIf="folder$ | async as folder; else loading">
-    <span matSubheader>Folders</span>
-    <div >
-      <mat-list-item *ngFor="let child of folder.children" (click)="onFolderClick(child)" [activated]="isSelected(child.id)">
-        <mat-icon matListItemIcon>folder</mat-icon>
-        <div matListItemTitle>{{child.name}}</div>
-        <div matListItemLine>{{(child.updated ?? folder.created) | date:'d MMM y, h:mm a'}}</div>
-      </mat-list-item>
-    </div>
+  <mat-list *ngIf="folder$ | async as folder; else loading">
+    <div mat-subheader>Folders</div>
+    <mat-list-item *ngFor="let child of folder.children">
+      <mat-icon matListItemIcon>folder</mat-icon>
+      <div matListItemTitle>{{child.name}}</div>
+      <div matListItemLine>{{(child.updated ?? folder.created) | date:'d MMM y, h:mm a'}}</div>
+      <div matListItemLine>
+        <button mat-button (click)="navigateDown(child.id)">Open</button>
+        <button mat-button [matMenuTriggerFor]="folderMenu" [matMenuTriggerData]="{ folder: child }">
+          <mat-icon>more_horiz</mat-icon><span>Options</span>
+        </button>
+      </div>
+    </mat-list-item>
 
-    <span matSubheader>Notes</span>
-    <mat-list-item *ngFor="let note of folder.notes" (click)="onNoteClick(note)" [activated]="isSelected(note.id)">
+    <mat-divider></mat-divider>
+
+    <div mat-subheader>Notes</div>
+    <mat-list-item *ngFor="let note of folder.notes">
       <mat-icon matListItemIcon>note</mat-icon>
       <div matListItemTitle>{{note.name}}</div>
       <div matListItemLine>{{(note.updated ?? note.created) | date:'d MMM y, h:mm a'}}</div>
+      <div matListItemLine>
+        <button mat-button disabled>View</button>
+        <button mat-button [matMenuTriggerFor]="noteMenu" [matMenuTriggerData]="{ note }">
+          <mat-icon>more_horiz</mat-icon><span>Options</span>
+        </button>
+      </div>
+      <div matListItemLine>
+        <span>Tags: {{note.tags.length > 0 ? note.tags : 'None'}}</span>
+      </div>
     </mat-list-item>
-  </mat-action-list>
+  </mat-list>
 </div>
 
+<mat-menu #folderMenu>
+  <ng-template matMenuContent let-folder="folder">
+    <button mat-menu-item (click)="dialog.editFolder(folder)">
+      <mat-icon>edit</mat-icon>
+      <span>Edit</span>
+    </button>
+    <button mat-menu-item (click)="dialog.removeFolder(folder)">
+      <mat-icon>delete</mat-icon>
+      <span>Remove</span>
+    </button>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #noteMenu>
+  <ng-template matMenuContent let-note="note">
+    <button mat-menu-item (click)="dialog.editNote(note)">
+      <mat-icon>edit</mat-icon>
+      <span>Edit</span>
+    </button>
+    <button mat-menu-item (click)="dialog.removeNote(note)">
+      <mat-icon>delete</mat-icon>
+      <span>Remove</span>
+    </button>
+  </ng-template>
+</mat-menu>
+
 <ng-template #loading>
-  <mat-progress-bar mode="indeterminate" style="margin: 5rem;"></mat-progress-bar>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </ng-template>

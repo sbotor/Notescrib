@@ -9,4 +9,5 @@ export interface NoteOverview {
   sharingInfo: SharingInfo;
   created: Date;
   updated?: Date;
+  tags: string[];
 }

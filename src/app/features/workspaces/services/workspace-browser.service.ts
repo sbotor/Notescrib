@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
-import { concatMap, ReplaySubject, take } from 'rxjs';
+import { concatMap, ReplaySubject, take, tap } from 'rxjs';
 import { NotesApiService } from 'src/app/features/notes/notes-api.service';
 import { WorkspacesApiService } from '../workspaces-api.service';
 import { FolderDetails } from '../workspaces.models';
-import { BrowserItem } from '../components/workspace-browser/workspace-browser.models';
 import WorkspaceNavigator from '../components/workspace-browser/workspace-navigator';
 import NavigationInfo from '../components/workspace-browser/navigation-info';
 import { EditNoteData } from '../../notes/components/dialogs/edit-note-dialog/edit-note-data';
-import { CreateNoteRequest } from '../../notes/notes.requests';
+import {
+  CreateNoteRequest,
+  UpdateNoteRequest,
+} from '../../notes/notes.requests';
 import { EditFolderData } from '../components/dialogs/edit-folder-dialog/edit-folder-data';
 
 @Injectable()
 export class WorkspaceBrowserService {
-  private selectedItem?: BrowserItem;
   private readonly navigator = new WorkspaceNavigator([]);
 
   private readonly folderSubject = new ReplaySubject<FolderDetails>(1);
@@ -30,11 +31,10 @@ export class WorkspaceBrowserService {
   public navigateUp() {
     const up = this.navigator.up();
     this.fetchFolderDetails(up?.id);
-    this.selectedItem = undefined;
   }
 
   public navigateDown(folderId: string) {
-    this.folder$.subscribe((x) => {
+    this.folder$.pipe(take(1)).subscribe((x) => {
       const found = x.children.find((x) => x.id === folderId);
       if (!found) {
         throw new Error('Child folder not found.');
@@ -42,7 +42,6 @@ export class WorkspaceBrowserService {
 
       this.navigator.down({ id: found.id, name: found.name });
       this.fetchFolderDetails(found.id);
-      this.selectedItem = undefined;
     });
   }
 
@@ -77,7 +76,7 @@ export class WorkspaceBrowserService {
       name: data.name,
       folderId: currentFolder?.id,
       sharingInfo: data.sharingInfo,
-      labels: data.labels,
+      tags: data.tags,
     } as CreateNoteRequest;
 
     this.notesApi
@@ -85,12 +84,24 @@ export class WorkspaceBrowserService {
       .subscribe((_) => this.refreshFolderDetails());
   }
 
-  public getSelectedItem() {
-    return this.selectedItem;
+  public editNote(data: EditNoteData) {
+    const currentFolder = this.navigator.getCurrentFolder();
+    const request = {
+      name: data.name,
+      folderId: currentFolder?.id,
+      sharingInfo: data.sharingInfo,
+      tags: data.tags,
+    } as UpdateNoteRequest;
+
+    this.notesApi
+      .updateNote(data.id!, request)
+      .subscribe((_) => this.refreshFolderDetails());
   }
 
-  public selectItem(item?: BrowserItem) {
-    this.selectedItem = item;
+  public removeNote(id: string) {
+    this.notesApi.deleteNote(id).subscribe(() => {
+      this.refreshFolderDetails();
+    });
   }
 
   public fetchFolderDetails(folderId?: string) {

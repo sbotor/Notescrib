@@ -1,9 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { of } from 'rxjs';
 import { PagedList } from 'src/app/core/paging.models';
 import { environment } from 'src/environments/environment';
 import { NoteOverview } from './notes.models';
-import { CreateNoteRequest, GetNotesRequest } from './notes.requests';
+import { CreateNoteRequest, UpdateNoteRequest, GetNotesRequest } from './notes.requests';
 
 @Injectable({
   providedIn: 'root',
@@ -21,5 +22,13 @@ export class NotesApiService {
 
   public createNote(request: CreateNoteRequest) {
     return this.client.post<NoteOverview>(NotesApiService.URL, request);
+  }
+
+  public updateNote(id: string, request: UpdateNoteRequest) {
+    return this.client.put(`${NotesApiService.URL}/${id}`, request);
+  }
+
+  public deleteNote(id: string) {
+    return this.client.delete(`${NotesApiService.URL}/${id}`);
   }
 }

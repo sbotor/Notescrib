@@ -22,10 +22,6 @@ export class BrowserToolbarComponent {
     this.navInfo = browserService.getNavInfo();
   }
 
-  public isItemSelected() {
-    return !!this.browserService.getSelectedItem();
-  }
-
   public formatPath() {
     return this.navInfo.getCurrentPath() ?? 'Notes';
   }

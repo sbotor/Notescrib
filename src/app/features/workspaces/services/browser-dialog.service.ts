@@ -4,8 +4,10 @@ import { ConfirmationDialogComponent } from 'src/app/core/components/confirmatio
 import { ConfirmationDialogData, DialogData } from 'src/app/core/dialog.models';
 import { EditNoteData } from '../../notes/components/dialogs/edit-note-dialog/edit-note-data';
 import { EditNoteDialogComponent } from '../../notes/components/dialogs/edit-note-dialog/edit-note-dialog.component';
+import { NoteOverview } from '../../notes/notes.models';
 import { EditFolderData } from '../components/dialogs/edit-folder-dialog/edit-folder-data';
 import { EditFolderDialogComponent } from '../components/dialogs/edit-folder-dialog/edit-folder-dialog.component';
+import { FolderInfoBase } from '../workspaces.models';
 import { WorkspaceBrowserService } from './workspace-browser.service';
 
 @Injectable()
@@ -15,13 +17,10 @@ export class BrowserDialogService {
     private browserService: WorkspaceBrowserService
   ) {}
 
-  public editFolder() {
-    const item = this.browserService.getSelectedItem()!;
-    console.log(item);
-
+  public editFolder(folder: FolderInfoBase) {
     const data = {
       title: 'Edit folder',
-      value: { name: item.name, id: item.id },
+      value: { name: folder.name, id: folder.id },
     } as DialogData<EditFolderData>;
 
     EditFolderDialogComponent.open(this.dialog, data).subscribe((x) =>
@@ -29,14 +28,13 @@ export class BrowserDialogService {
     );
   }
 
-  public removeFolder() {
-    const item = this.browserService.getSelectedItem()!;
+  public removeFolder(folder: FolderInfoBase) {
     const data = {
-      value: `Do you want to remove ${item.name}?`,
+      value: `Do you want to remove ${folder.name}?`,
     } as ConfirmationDialogData;
 
     ConfirmationDialogComponent.open(this.dialog, data).subscribe(() =>
-      this.browserService.removeFolder(item.id)
+      this.browserService.removeFolder(folder.id)
     );
   }
 
@@ -53,6 +51,32 @@ export class BrowserDialogService {
 
     EditNoteDialogComponent.open(this.dialog, data).subscribe((x) =>
       this.browserService.addNote(x)
+    );
+  }
+
+  public editNote(note: NoteOverview) {
+    const data = {
+      title: 'Edit note',
+      value: {
+        id: note.id,
+        name: note.name,
+        sharingInfo: note.sharingInfo,
+        tags: note.tags,
+      },
+    } as DialogData<EditNoteData>;
+
+    EditNoteDialogComponent.open(this.dialog, data).subscribe((x) =>
+      this.browserService
+    );
+  }
+
+  public removeNote(note: NoteOverview) {
+    const data = {
+      value: `Do you want to remove ${note.name}?`,
+    } as ConfirmationDialogData;
+
+    ConfirmationDialogComponent.open(this.dialog, data).subscribe(() =>
+      this.browserService.removeNote(note.id)
     );
   }
 }

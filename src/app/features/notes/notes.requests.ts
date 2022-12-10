@@ -7,7 +7,15 @@ export interface CreateNoteRequest {
   workspaceId: string;
   folderId?: string;
   sharingInfo?: SharingInfo;
-  labels: string[];
+  tags: string[];
+}
+
+export interface UpdateNoteRequest {
+  name: string;
+  workspaceId: string;
+  folderId?: string;
+  sharingInfo: SharingInfo;
+  tags: string[];
 }
 
 export interface GetNotesRequest extends PagingRequest, SortingRequest {

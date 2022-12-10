@@ -56,7 +56,7 @@ export class EditNoteDialogComponent implements OnInit {
           visibility: controls.visibility.value,
           allowedUserIds: [],
         },
-        labels: [],
+        tags: [],
         id: this.data.value?.id
       };
     } else {
