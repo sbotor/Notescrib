@@ -105,7 +105,7 @@ export class WorkspaceBrowserService {
   }
 
   public fetchFolderDetails(folderId?: string) {
-    this.workspacesApi.getFolderDetails(folderId ?? '_').subscribe((x) => {
+    this.workspacesApi.getFolderDetails(folderId ?? '_root').subscribe((x) => {
       this.folderSubject.next(x);
     });
   }

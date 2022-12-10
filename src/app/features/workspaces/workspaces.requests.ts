@@ -16,5 +16,6 @@ export interface CreateFolderRequest {
   parentId?: string;
 }
 
-export interface UpdateFolderRequest extends CreateFolderRequest {
+export interface UpdateFolderRequest{
+  name: string;
 }

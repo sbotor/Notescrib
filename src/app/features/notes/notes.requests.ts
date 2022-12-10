@@ -4,7 +4,6 @@ import { SharingInfo } from "src/app/core/sharing.models";
 
 export interface CreateNoteRequest {
   name: string;
-  workspaceId: string;
   folderId?: string;
   sharingInfo?: SharingInfo;
   tags: string[];
@@ -12,7 +11,6 @@ export interface CreateNoteRequest {
 
 export interface UpdateNoteRequest {
   name: string;
-  workspaceId: string;
   folderId?: string;
   sharingInfo: SharingInfo;
   tags: string[];
@@ -21,4 +19,14 @@ export interface UpdateNoteRequest {
 export interface GetNotesRequest extends PagingRequest, SortingRequest {
   workspaceId?: string;
   folderId?: string;
+}
+
+export interface CreateNoteSectionRequest {
+  parentId?: string;
+  name: string;
+}
+
+export interface UpdateNoteSectionRequest {
+  name: string;
+  content: string;
 }

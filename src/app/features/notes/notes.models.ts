@@ -10,4 +10,5 @@ export interface NoteOverview {
   created: Date;
   updated?: Date;
   tags: string[];
+  sectionCount: number;
 }
