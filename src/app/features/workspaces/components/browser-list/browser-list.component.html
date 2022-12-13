@@ -35,11 +35,11 @@
 
 <mat-menu #folderMenu>
   <ng-template matMenuContent let-folder="folder">
-    <button mat-menu-item (click)="dialog.editFolder(folder)">
+    <button mat-menu-item (click)="editFolder(folder)">
       <mat-icon>edit</mat-icon>
       <span>Edit</span>
     </button>
-    <button mat-menu-item (click)="dialog.removeFolder(folder)">
+    <button mat-menu-item (click)="removeFolder(folder)">
       <mat-icon>delete</mat-icon>
       <span>Remove</span>
     </button>
@@ -48,11 +48,11 @@
 
 <mat-menu #noteMenu>
   <ng-template matMenuContent let-note="note">
-    <button mat-menu-item (click)="dialog.editNote(note)">
+    <button mat-menu-item (click)="editNote(note)">
       <mat-icon>edit</mat-icon>
       <span>Edit</span>
     </button>
-    <button mat-menu-item (click)="dialog.removeNote(note)">
+    <button mat-menu-item (click)="removeNote(note)">
       <mat-icon>delete</mat-icon>
       <span>Remove</span>
     </button>

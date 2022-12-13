@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { concatMap, switchMap } from 'rxjs';
 import { ConfirmationDialogComponent } from 'src/app/core/components/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogData, DialogData } from 'src/app/core/dialog.models';
 import { EditNoteData } from '../../notes/components/dialogs/edit-note-dialog/edit-note-data';
@@ -23,8 +24,8 @@ export class BrowserDialogService {
       value: { name: folder.name, id: folder.id },
     } as DialogData<EditFolderData>;
 
-    EditFolderDialogComponent.open(this.dialog, data).subscribe((x) =>
-      this.browserService.updateFolder(x)
+    return EditFolderDialogComponent.open(this.dialog, data).pipe(
+      concatMap((x) => this.browserService.updateFolder(x))
     );
   }
 
@@ -33,24 +34,24 @@ export class BrowserDialogService {
       value: `Do you want to remove ${folder.name}?`,
     } as ConfirmationDialogData;
 
-    ConfirmationDialogComponent.open(this.dialog, data).subscribe(() =>
-      this.browserService.removeFolder(folder.id)
+    return ConfirmationDialogComponent.open(this.dialog, data).pipe(
+      concatMap(() => this.browserService.removeFolder(folder.id))
     );
   }
 
   public createFolder() {
     const data = { title: 'Add folder' } as DialogData<EditFolderData>;
 
-    EditFolderDialogComponent.open(this.dialog, data).subscribe((x) =>
-      this.browserService.addFolder(x.name)
+    return EditFolderDialogComponent.open(this.dialog, data).pipe(
+      concatMap((x) => this.browserService.addFolder(x.name))
     );
   }
 
   public createNote() {
     const data = { title: 'Add note' } as DialogData<EditNoteData>;
 
-    EditNoteDialogComponent.open(this.dialog, data).subscribe((x) =>
-      this.browserService.addNote(x)
+    return EditNoteDialogComponent.open(this.dialog, data).pipe(
+      concatMap((x) => this.browserService.addNote(x))
     );
   }
 
@@ -65,8 +66,8 @@ export class BrowserDialogService {
       },
     } as DialogData<EditNoteData>;
 
-    EditNoteDialogComponent.open(this.dialog, data).subscribe((x) =>
-      this.browserService
+    return EditNoteDialogComponent.open(this.dialog, data).pipe(
+      concatMap((x) => this.browserService.editNote(x))
     );
   }
 
@@ -75,8 +76,8 @@ export class BrowserDialogService {
       value: `Do you want to remove ${note.name}?`,
     } as ConfirmationDialogData;
 
-    ConfirmationDialogComponent.open(this.dialog, data).subscribe(() =>
-      this.browserService.removeNote(note.id)
+    return ConfirmationDialogComponent.open(this.dialog, data).pipe(
+      concatMap(() => this.browserService.removeNote(note.id))
     );
   }
 }

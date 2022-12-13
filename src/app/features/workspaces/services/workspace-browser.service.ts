@@ -1,7 +1,15 @@
 import { Injectable } from '@angular/core';
-import { concatMap, ReplaySubject, take, tap } from 'rxjs';
+import {
+  concatMap,
+  distinctUntilChanged,
+  of,
+  ReplaySubject,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs';
 import { NotesApiService } from 'src/app/features/notes/notes-api.service';
-import { WorkspacesApiService } from '../workspaces-api.service';
+import { FoldersApiService } from '../folders-api.service';
 import { FolderDetails } from '../workspaces.models';
 import WorkspaceNavigator from '../components/workspace-browser/workspace-navigator';
 import NavigationInfo from '../components/workspace-browser/navigation-info';
@@ -17,10 +25,12 @@ export class WorkspaceBrowserService {
   private readonly navigator = new WorkspaceNavigator([]);
 
   private readonly folderSubject = new ReplaySubject<FolderDetails>(1);
-  public readonly folder$ = this.folderSubject.asObservable();
+  public readonly folder$ = this.folderSubject
+    .asObservable()
+    .pipe(distinctUntilChanged());
 
   constructor(
-    private readonly workspacesApi: WorkspacesApiService,
+    private readonly workspacesApi: FoldersApiService,
     private readonly notesApi: NotesApiService
   ) {}
 
@@ -29,45 +39,38 @@ export class WorkspaceBrowserService {
   }
 
   public navigateUp() {
-    const up = this.navigator.up();
-    this.fetchFolderDetails(up?.id);
+    return of(this.navigator.up());
   }
 
   public navigateDown(folderId: string) {
-    this.folder$.pipe(take(1)).subscribe((x) => {
-      const found = x.children.find((x) => x.id === folderId);
-      if (!found) {
-        throw new Error('Child folder not found.');
-      }
-
-      this.navigator.down({ id: found.id, name: found.name });
-      this.fetchFolderDetails(found.id);
-    });
+    return this.folder$.pipe(
+      take(1),
+      switchMap((x) => {
+        const found = x.children.find((x) => x.id === folderId);
+        if (!found) {
+          throw new Error('Child folder not found.');
+        }
+        return of(found);
+      }),
+      tap((x) => this.navigator.down({ id: x.id, name: x.name }))
+    );
   }
 
   public addFolder(name: string) {
-    this.folder$
-      .pipe(
-        take(1),
-        concatMap((x) =>
-          this.workspacesApi.createFolder({ name: name, parentId: x.id })
-        )
+    return this.folder$.pipe(
+      take(1),
+      concatMap((x) =>
+        this.workspacesApi.createFolder({ name: name, parentId: x.id })
       )
-      .subscribe((_) => {
-        this.refreshFolderDetails();
-      });
+    );
   }
 
   public updateFolder(data: EditFolderData) {
-    this.workspacesApi
-      .updateFolder(data.id!, { name: data.name })
-      .subscribe(() => this.refreshFolderDetails());
+    return this.workspacesApi.updateFolder(data.id!, { name: data.name });
   }
 
   public removeFolder(id: string) {
-    this.workspacesApi.deleteFolder(id).subscribe(() => {
-      this.refreshFolderDetails();
-    });
+    return this.workspacesApi.deleteFolder(id);
   }
 
   public addNote(data: EditNoteData) {
@@ -79,9 +82,7 @@ export class WorkspaceBrowserService {
       tags: data.tags,
     } as CreateNoteRequest;
 
-    this.notesApi
-      .createNote(request)
-      .subscribe((_) => this.refreshFolderDetails());
+    return this.notesApi.createNote(request);
   }
 
   public editNote(data: EditNoteData) {
@@ -93,24 +94,22 @@ export class WorkspaceBrowserService {
       tags: data.tags,
     } as UpdateNoteRequest;
 
-    this.notesApi
-      .updateNote(data.id!, request)
-      .subscribe((_) => this.refreshFolderDetails());
+    return this.notesApi.updateNote(data.id!, request);
   }
 
   public removeNote(id: string) {
-    this.notesApi.deleteNote(id).subscribe(() => {
-      this.refreshFolderDetails();
-    });
+    return this.notesApi.deleteNote(id);
   }
 
   public fetchFolderDetails(folderId?: string) {
-    this.workspacesApi.getFolderDetails(folderId ?? '_root').subscribe((x) => {
-      this.folderSubject.next(x);
-    });
+    return this.workspacesApi.getFolderDetails(folderId).pipe(
+      tap((x) => {
+        this.folderSubject.next(x);
+      })
+    );
   }
 
   public refreshFolderDetails() {
-    this.fetchFolderDetails(this.navigator.getCurrentFolder()?.id);
+    return this.fetchFolderDetails(this.navigator.getCurrentFolder()?.id);
   }
 }

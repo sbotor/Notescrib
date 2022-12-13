@@ -35,16 +35,4 @@ export class NotesApiService {
   public deleteNote(id: string) {
     return this.client.delete(`${NotesApiService.URL}/${id}`);
   }
-
-  public createSection(noteId: string, request: CreateNoteSectionRequest) {
-    return this.client.post(`${NotesApiService.URL}/${noteId}`, request);
-  }
-
-  public updateSection(noteId: string, sectionId: string, request: CreateNoteSectionRequest) {
-    return this.client.put(`${NotesApiService.URL}/${noteId}/section/${sectionId}`, request);
-  }
-
-  public deleteSection(noteId: string, sectionId: string,) {
-    return this.client.delete(`${NotesApiService.URL}/${noteId}/section/${sectionId}`);
-  }
 }
