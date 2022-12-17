@@ -1,1 +1,38 @@
-<ngx-codemirror [(ngModel)]="content" [options]="options" class="editor-container"></ngx-codemirror>
+<div *ngIf="getNote() | async as note; else loading" class="flex-fill flex-col">
+  <mat-toolbar class="toolbar">
+    <span>{{note.name}}{{isDirty() ? '*' : ''}}</span>
+
+    <span class="toolbar-spacer"></span>
+
+    <mat-button-toggle-group name="viewType" (valueChange)="setMode($event)">
+      <mat-button-toggle value="edit" [checked]="getMode() == 'edit'"><mat-icon>edit</mat-icon></mat-button-toggle>
+      <mat-button-toggle value="preview" [checked]="getMode() == 'preview'"><mat-icon>vertical_split</mat-icon></mat-button-toggle>
+      <mat-button-toggle value="readonly" [checked]="getMode() == 'readonly'"><mat-icon>visibility</mat-icon></mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <span class="toolbar-spacer"></span>
+
+    <button mat-icon-button [disabled]="!isDirty()" (click)="save()">
+      <mat-icon>save</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <ng-container [ngSwitch]="getMode()">
+    <div *ngSwitchCase="'edit'" class="editor-wrapper">
+      <app-editor-field class="editor-container"></app-editor-field>
+    </div>
+
+    <div *ngSwitchCase="'preview'" class="editor-wrapper">
+      <app-editor-field class="editor-container"></app-editor-field>
+      <app-editor-preview class="preview-container"></app-editor-preview>
+    </div>
+
+    <div *ngSwitchCase="'readonly'" class="editor-wrapper">
+      <app-editor-preview class="preview-container"></app-editor-preview>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #loading>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-template>

@@ -52,4 +52,14 @@ export class BrowserToolbarComponent implements OnDestroy {
       )
       .subscribe();
   }
+
+  public createNote() {
+    this.dialog
+      .createNote()
+      .pipe(
+        switchMap(() => this.browserService.refreshFolderDetails()),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+  }
 }

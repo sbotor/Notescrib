@@ -1,17 +1,13 @@
 import { NoteOverview } from "../notes/notes.models";
 
-export interface FolderInfoBase {
+export interface FolderOverview {
   id: string;
   name: string;
   created: Date;
   updated?: Date;
 }
 
-export interface FolderOverview extends FolderInfoBase {
+export interface FolderDetails extends FolderOverview {
   children: FolderOverview[];
-}
-
-export interface FolderDetails extends FolderInfoBase {
-  children: FolderInfoBase[];
   notes: NoteOverview[];
 }

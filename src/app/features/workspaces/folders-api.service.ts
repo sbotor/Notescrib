@@ -1,11 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import {
-  FolderDetails,
-  FolderInfoBase,
-  FolderOverview,
-} from './workspaces.models';
+import { FolderDetails } from './workspaces.models';
 import {
   CreateFolderRequest,
   UpdateFolderRequest,
@@ -34,9 +30,5 @@ export class FoldersApiService {
   public getFolderDetails(id?: string) {
     const idSegment = id ? `/${id}` : '';
     return this.client.get<FolderDetails>(FoldersApiService.URL + idSegment);
-  }
-
-  public getFolderTree() {
-    return this.client.get<FolderOverview>(`${FoldersApiService.URL}`);
   }
 }

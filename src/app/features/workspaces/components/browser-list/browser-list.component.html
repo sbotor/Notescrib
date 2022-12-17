@@ -21,7 +21,7 @@
       <div matListItemTitle>{{note.name}}</div>
       <div matListItemLine>{{(note.updated ?? note.created) | date:'d MMM y, h:mm a'}}</div>
       <div matListItemLine>
-        <button mat-button disabled>View</button>
+        <button mat-button routerLink="/note/{{note.id}}">View</button>
         <button mat-button [matMenuTriggerFor]="noteMenu" [matMenuTriggerData]="{ note }">
           <mat-icon>more_horiz</mat-icon><span>Options</span>
         </button>

@@ -1,16 +1,16 @@
 <app-header (sidenavToggle)="layout.toggleNavbar()"></app-header>
 
-<mat-sidenav-container class="flex-fill" autosize>
-  <mat-sidenav #sidenav mode="side" [opened]="layout.isNavbarOpened()">
+<mat-sidenav-container class="flex-fill flex-col" autosize>
+  <mat-sidenav #sidenav mode="side" [opened]="layout.isNavbarOpened()" class="sidenav">
     <mat-nav-list *ngIf="isUserLoggedIn(); else loginNavList">
       <mat-list-item routerLink="workspace/browse">Browse notes</mat-list-item>
       <mat-list-item routerLink="workspace/browse" disabled>Search notes</mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
 
-  <div class="content-wrapper">
+  <mat-sidenav-content class="content-wrapper">
     <router-outlet></router-outlet>
-  </div>
+  </mat-sidenav-content>
 </mat-sidenav-container>
 
 <ng-template #loading>

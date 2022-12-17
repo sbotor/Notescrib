@@ -8,8 +8,8 @@ import {
 import { SelectOption } from 'src/app/core/core.models';
 import { DialogData } from 'src/app/core/dialog.models';
 import ignoreFalsy from 'src/app/core/operators/ignoreFalsy';
-import { Visibility } from 'src/app/core/sharing.models';
 import { EditNoteData } from './edit-note-data';
+import { VisibilityLevel } from 'src/app/core/sharing.models';
 
 @Component({
   selector: 'app-edit-note-dialog',
@@ -19,7 +19,9 @@ import { EditNoteData } from './edit-note-data';
 export class EditNoteDialogComponent implements OnInit {
   public readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required]],
-    visibility: [Visibility.Private, [Validators.required]],
+    visibility: this.fb.nonNullable.control<VisibilityLevel>('Private', [
+      Validators.required,
+    ]),
   });
 
   constructor(
@@ -38,7 +40,7 @@ export class EditNoteDialogComponent implements OnInit {
     }
   }
 
-  public trackOption(_: number, item: SelectOption) {
+  public trackOption(_: number, item: SelectOption<VisibilityLevel>) {
     return item.value;
   }
 
@@ -54,10 +56,9 @@ export class EditNoteDialogComponent implements OnInit {
         name: controls.name.value,
         sharingInfo: {
           visibility: controls.visibility.value,
-          allowedUserIds: [],
         },
         tags: [],
-        id: this.data.value?.id
+        id: this.data.value?.id,
       };
     } else {
       data = undefined;
@@ -68,10 +69,10 @@ export class EditNoteDialogComponent implements OnInit {
 
   public getVisibilityOptions() {
     return [
-      { label: 'Private', value: Visibility.Private },
-      { label: 'Hidden', value: Visibility.Hidden },
-      { label: 'Public', value: Visibility.Public },
-    ] as SelectOption[];
+      { label: 'Private', value: 'Private' },
+      { label: 'Hidden', value: 'Hidden' },
+      { label: 'Public', value: 'Public' },
+    ] as SelectOption<VisibilityLevel>[];
   }
 
   public static open(service: MatDialog, data: DialogData<EditNoteData>) {

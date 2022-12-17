@@ -8,8 +8,8 @@ export enum SortingDirection {
   Descending = "Descending",
 }
 
-export interface SelectOption {
+export interface SelectOption<T> {
   label: string;
-  value: string;
+  value: T;
 }
 

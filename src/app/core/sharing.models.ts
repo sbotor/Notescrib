@@ -1,10 +1,5 @@
 export interface SharingInfo {
-  visibility: Visibility,
-  allowedUserIds: string[]
+  visibility: VisibilityLevel
 }
 
-export enum Visibility {
-  Private = 'Private',
-  Hidden = 'Hidden',
-  Public = 'Public'
-}
+export type VisibilityLevel = 'Private' | 'Hidden' | 'Public';

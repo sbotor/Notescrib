@@ -8,7 +8,7 @@ import { EditNoteDialogComponent } from '../../notes/components/dialogs/edit-not
 import { NoteOverview } from '../../notes/notes.models';
 import { EditFolderData } from '../components/dialogs/edit-folder-dialog/edit-folder-data';
 import { EditFolderDialogComponent } from '../components/dialogs/edit-folder-dialog/edit-folder-dialog.component';
-import { FolderInfoBase } from '../workspaces.models';
+import { FolderOverview } from '../workspaces.models';
 import { WorkspaceBrowserService } from './workspace-browser.service';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class BrowserDialogService {
     private browserService: WorkspaceBrowserService
   ) {}
 
-  public editFolder(folder: FolderInfoBase) {
+  public editFolder(folder: FolderOverview) {
     const data = {
       title: 'Edit folder',
       value: { name: folder.name, id: folder.id },
@@ -29,7 +29,7 @@ export class BrowserDialogService {
     );
   }
 
-  public removeFolder(folder: FolderInfoBase) {
+  public removeFolder(folder: FolderOverview) {
     const data = {
       value: `Do you want to remove ${folder.name}?`,
     } as ConfirmationDialogData;
