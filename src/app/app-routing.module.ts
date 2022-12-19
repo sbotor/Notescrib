@@ -1,26 +1,27 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MustBeLoggedOutGuard } from './auth/guards/must-be-logged-out.guard';
-import { MustBeLoggedInGuard } from './auth/guards/must-be-logged-in.guard';
-import { HomeComponent } from './home/components/home-component/home.component';
+import { MustBeLoggedOutGuard } from './features/auth/guards/must-be-logged-out.guard';
+import { MustBeLoggedInGuard } from './features/auth/guards/must-be-logged-in.guard';
+import { HomeComponent } from './features/home/pages/home-component/home.component';
+import { routeConfig } from './route-config';
 
 const routes: Routes = [
   {
-    path: '',
+    path: routeConfig.root.home,
     component: HomeComponent,
   },
   {
-    path: 'login',
-    loadChildren: () => import('./features/login/login.module').then(x => x.LoginModule),
+    path: routeConfig.root.login,
+    loadChildren: () => import('./features/auth/auth.module').then(x => x.AuthModule),
     canActivate: [MustBeLoggedOutGuard]
   },
   {
-    path: 'workspace',
+    path: routeConfig.workspaces.prefix,
     loadChildren: () => import('./features/workspaces/workspaces.module').then(x => x.WorkspacesModule),
     canActivate: [MustBeLoggedInGuard],
   },
   {
-    path: 'note',
+    path: routeConfig.notes.prefix,
     loadChildren: () => import('./features/notes/notes.module').then(x => x.NotesModule),
     canActivate: [MustBeLoggedInGuard],
   }

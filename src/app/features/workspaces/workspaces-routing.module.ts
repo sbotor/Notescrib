@@ -1,16 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MustBeLoggedInGuard } from 'src/app/auth/guards/must-be-logged-in.guard';
-import { WorkspaceBrowserComponent } from './components/workspace-browser/workspace-browser.component';
+import { WorkspaceBrowserComponent } from './pages/workspace-browser/workspace-browser.component';
+import { MustBeLoggedInGuard } from '../auth/guards/must-be-logged-in.guard';
+import { routeConfig } from 'src/app/route-config';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'browse',
+    redirectTo: routeConfig.workspaces.browse,
     pathMatch: 'full',
   },
   {
-    path: 'browse',
+    path: routeConfig.workspaces.browse,
     component: WorkspaceBrowserComponent,
     canActivate: [MustBeLoggedInGuard],
   },

@@ -8,7 +8,7 @@ import {
 import { SelectOption } from 'src/app/core/core.models';
 import { DialogData } from 'src/app/core/dialog.models';
 import ignoreFalsy from 'src/app/core/operators/ignoreFalsy';
-import { EditNoteData } from './edit-note-data';
+import { EditNoteDialogData } from './edit-note-dialog.model';
 import { VisibilityLevel } from 'src/app/core/sharing.models';
 
 @Component({
@@ -27,7 +27,7 @@ export class EditNoteDialogComponent implements OnInit {
   constructor(
     private readonly fb: FormBuilder,
     private readonly dialogRef: MatDialogRef<EditNoteDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public readonly data: DialogData<EditNoteData>
+    @Inject(MAT_DIALOG_DATA) public readonly data: DialogData<EditNoteDialogData>
   ) {}
 
   ngOnInit(): void {
@@ -45,7 +45,7 @@ export class EditNoteDialogComponent implements OnInit {
   }
 
   public close(success: boolean) {
-    let data: EditNoteData | undefined;
+    let data: EditNoteDialogData | undefined;
 
     if (success) {
       if (!this.form.valid) {
@@ -75,9 +75,9 @@ export class EditNoteDialogComponent implements OnInit {
     ] as SelectOption<VisibilityLevel>[];
   }
 
-  public static open(service: MatDialog, data: DialogData<EditNoteData>) {
+  public static open(service: MatDialog, data: DialogData<EditNoteDialogData>) {
     return service
-      .open<EditNoteDialogComponent, DialogData<EditNoteData>, EditNoteData>(
+      .open<EditNoteDialogComponent, DialogData<EditNoteDialogData>, EditNoteDialogData>(
         EditNoteDialogComponent,
         { data }
       )

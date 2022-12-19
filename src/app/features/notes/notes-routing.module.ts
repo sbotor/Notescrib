@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MustBeLoggedInGuard } from 'src/app/auth/guards/must-be-logged-in.guard';
-import { NoteEditorComponent } from './components/note-editor/note-editor.component';
+import { NoteEditorComponent } from './pages/note-editor/note-editor.component';
+import { MustBeLoggedInGuard } from '../auth/guards/must-be-logged-in.guard';
+import { routeConfig } from 'src/app/route-config';
 
 const routes: Routes = [
   {
-    path: ':id',
+    path: routeConfig.notes.editor,
     component: NoteEditorComponent,
     canActivate: [MustBeLoggedInGuard],
   }

@@ -11,14 +11,14 @@ import {
 import { NotesApiService } from 'src/app/features/notes/notes-api.service';
 import { FoldersApiService } from '../folders-api.service';
 import { FolderDetails } from '../workspaces.models';
-import WorkspaceNavigator from '../components/workspace-browser/workspace-navigator';
-import NavigationInfo from '../components/workspace-browser/navigation-info';
-import { EditNoteData } from '../../notes/components/dialogs/edit-note-dialog/edit-note-data';
+import WorkspaceNavigator from '../pages/workspace-browser/workspace-navigator';
+import NavigationInfo from '../pages/workspace-browser/navigation-info';
+import { EditNoteDialogData } from '../../notes/components/dialogs/edit-note-dialog/edit-note-dialog.model';
 import {
   CreateNoteRequest,
   UpdateNoteRequest,
 } from '../../notes/notes.requests';
-import { EditFolderData } from '../components/dialogs/edit-folder-dialog/edit-folder-data';
+import { EditFolderDialogData } from '../components/dialogs/edit-folder-dialog/edit-folder-dialog.model';
 
 @Injectable()
 export class WorkspaceBrowserService {
@@ -65,7 +65,7 @@ export class WorkspaceBrowserService {
     );
   }
 
-  public updateFolder(data: EditFolderData) {
+  public updateFolder(data: EditFolderDialogData) {
     return this.workspacesApi.updateFolder(data.id!, { name: data.name });
   }
 
@@ -73,7 +73,7 @@ export class WorkspaceBrowserService {
     return this.workspacesApi.deleteFolder(id);
   }
 
-  public addNote(data: EditNoteData) {
+  public addNote(data: EditNoteDialogData) {
     const currentFolder = this.navigator.getCurrentFolder();
     const request = {
       name: data.name,
@@ -85,7 +85,7 @@ export class WorkspaceBrowserService {
     return this.notesApi.createNote(request);
   }
 
-  public editNote(data: EditNoteData) {
+  public editNote(data: EditNoteDialogData) {
     const currentFolder = this.navigator.getCurrentFolder();
     const request = {
       name: data.name,

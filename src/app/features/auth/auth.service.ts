@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
-import { map, ReplaySubject, Subject } from 'rxjs';
+import { ReplaySubject, of, tap } from 'rxjs';
 import { UsersApiService } from 'src/app/features/users/users-api.service';
-import { UserDetails } from 'src/app/features/users/users.models';
 import { environment } from 'src/environments/environment';
 import { TokenResponse } from './auth.models';
+import { UserDetails } from '../users/users.models';
 
 @Injectable({
   providedIn: 'root',
@@ -13,14 +13,12 @@ import { TokenResponse } from './auth.models';
 export class AuthService {
   private static readonly JWT_KEY = 'token';
 
-  private userSubject = new ReplaySubject<UserDetails | undefined>(1);
+  private readonly userSubject = new ReplaySubject<UserDetails | undefined>();
+  public readonly user$ = this.userSubject.asObservable();
 
   public get token() {
     return localStorage.getItem(AuthService.JWT_KEY) ?? undefined;
   }
-
-  public user$ = this.userSubject.asObservable();
-  public username$ = this.user$.pipe(map((x) => x?.email));
 
   constructor(
     private readonly client: HttpClient,
@@ -28,22 +26,17 @@ export class AuthService {
   ) {}
 
   public login(email: string, password: string) {
-    var loggedInSubject = new Subject<void>();
-
-    this.client
+    return this.client
       .post<TokenResponse>(environment.baseApiUrl + '/identity/auth', {
         email,
         password,
       })
-      .subscribe((x) => {
-        this.userSubject.next(x.user);
-        localStorage.setItem(AuthService.JWT_KEY, x.token);
-
-        loggedInSubject.next();
-        loggedInSubject.complete();
-      });
-
-    return loggedInSubject.asObservable();
+      .pipe(
+        tap((x) => {
+          localStorage.setItem(AuthService.JWT_KEY, x.token);
+          this.userSubject.next(x.user);
+        })
+      );
   }
 
   public isLoggedIn() {
@@ -67,14 +60,6 @@ export class AuthService {
   }
 
   public fetchUser() {
-    if (!this.isLoggedIn()) {
-      return;
-    }
-
-    this.usersService
-      .getCurrentUser()
-      .subscribe((x) => {
-        this.userSubject.next(x);
-      });
+    return this.usersService.getCurrentUser().pipe(tap((x) => (this.userSubject.next(x))));
   }
 }

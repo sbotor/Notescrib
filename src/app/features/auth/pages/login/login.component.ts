@@ -3,8 +3,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { AuthService } from 'src/app/auth/auth.service';
-import { UsersApiService } from '../../../users/users-api.service';
+import { AuthService } from '../../auth.service';
+import { UsersApiService } from 'src/app/features/users/users-api.service';
 
 @Component({
   selector: 'app-login',

@@ -3,10 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { concatMap, switchMap } from 'rxjs';
 import { ConfirmationDialogComponent } from 'src/app/core/components/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogData, DialogData } from 'src/app/core/dialog.models';
-import { EditNoteData } from '../../notes/components/dialogs/edit-note-dialog/edit-note-data';
+import { EditNoteDialogData } from '../../notes/components/dialogs/edit-note-dialog/edit-note-dialog.model';
 import { EditNoteDialogComponent } from '../../notes/components/dialogs/edit-note-dialog/edit-note-dialog.component';
 import { NoteOverview } from '../../notes/notes.models';
-import { EditFolderData } from '../components/dialogs/edit-folder-dialog/edit-folder-data';
+import { EditFolderDialogData } from '../components/dialogs/edit-folder-dialog/edit-folder-dialog.model';
 import { EditFolderDialogComponent } from '../components/dialogs/edit-folder-dialog/edit-folder-dialog.component';
 import { FolderOverview } from '../workspaces.models';
 import { WorkspaceBrowserService } from './workspace-browser.service';
@@ -22,7 +22,7 @@ export class BrowserDialogService {
     const data = {
       title: 'Edit folder',
       value: { name: folder.name, id: folder.id },
-    } as DialogData<EditFolderData>;
+    } as DialogData<EditFolderDialogData>;
 
     return EditFolderDialogComponent.open(this.dialog, data).pipe(
       concatMap((x) => this.browserService.updateFolder(x))
@@ -40,7 +40,7 @@ export class BrowserDialogService {
   }
 
   public createFolder() {
-    const data = { title: 'Add folder' } as DialogData<EditFolderData>;
+    const data = { title: 'Add folder' } as DialogData<EditFolderDialogData>;
 
     return EditFolderDialogComponent.open(this.dialog, data).pipe(
       concatMap((x) => this.browserService.addFolder(x.name))
@@ -48,7 +48,7 @@ export class BrowserDialogService {
   }
 
   public createNote() {
-    const data = { title: 'Add note' } as DialogData<EditNoteData>;
+    const data = { title: 'Add note' } as DialogData<EditNoteDialogData>;
 
     return EditNoteDialogComponent.open(this.dialog, data).pipe(
       concatMap((x) => this.browserService.addNote(x))
@@ -64,7 +64,7 @@ export class BrowserDialogService {
         sharingInfo: note.sharingInfo,
         tags: note.tags,
       },
-    } as DialogData<EditNoteData>;
+    } as DialogData<EditNoteDialogData>;
 
     return EditNoteDialogComponent.open(this.dialog, data).pipe(
       concatMap((x) => this.browserService.editNote(x))

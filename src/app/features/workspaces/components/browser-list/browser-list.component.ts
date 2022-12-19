@@ -4,6 +4,7 @@ import { NoteOverview } from 'src/app/features/notes/notes.models';
 import { BrowserDialogService } from '../../services/browser-dialog.service';
 import { WorkspaceBrowserService } from '../../services/workspace-browser.service';
 import { FolderOverview } from '../../workspaces.models';
+import { routeConfig } from 'src/app/route-config';
 
 @Component({
   selector: 'app-browser-list',
@@ -72,5 +73,9 @@ export class BrowserListComponent implements OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
+  }
+
+  public getNoteRoute(noteId: string) {
+    return `/${routeConfig.notes.prefix}/${noteId}`;
   }
 }

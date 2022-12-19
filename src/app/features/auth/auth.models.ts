@@ -1,4 +1,4 @@
-import { UserDetails } from "../features/users/users.models"
+import { UserDetails } from "../users/users.models"
 
 export interface AuthModel {
   email: string,

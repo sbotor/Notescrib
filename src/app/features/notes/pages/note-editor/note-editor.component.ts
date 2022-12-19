@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
-  Observable,
+  ReplaySubject,
   Subject,
   debounceTime,
-  pipe,
   switchMap,
   take,
   takeUntil,
@@ -14,6 +13,10 @@ import { NoteDetails } from '../../notes.models';
 import { NotesApiService } from '../../notes-api.service';
 import { EditorService } from 'src/app/features/editor/editor.service';
 import { EditorMode } from 'src/app/features/editor/editor.models';
+import { MatDialog } from '@angular/material/dialog';
+import { EditNoteDialogComponent } from '../../components/dialogs/edit-note-dialog/edit-note-dialog.component';
+import { EditNoteDialogData } from '../../components/dialogs/edit-note-dialog/edit-note-dialog.model';
+import { DialogData } from 'src/app/core/dialog.models';
 
 @Component({
   selector: 'app-note-editor',
@@ -25,12 +28,14 @@ export class NoteEditorComponent implements OnInit, OnDestroy {
 
   private noteId = '';
 
-  private note$!: Observable<NoteDetails>;
+  private readonly noteSubject = new ReplaySubject<NoteDetails>(1);
+  private readonly note$ = this.noteSubject.asObservable();
 
   constructor(
     route: ActivatedRoute,
     private readonly api: NotesApiService,
-    private readonly editorService: EditorService
+    private readonly editorService: EditorService,
+    private readonly dialog: MatDialog
   ) {
     route.paramMap.pipe(takeUntil(this.destroy$)).subscribe((x) => {
       this.noteId = x.get('id') ?? '';
@@ -38,11 +43,15 @@ export class NoteEditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.note$ = this.api
+    this.api
       .getNote(this.noteId)
-      .pipe(tap((x) => this.editorService.resetContent(x.content, false)));
+      .pipe(
+        tap((x) => this.editorService.resetContent(x.content)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((x) => this.noteSubject.next(x));
 
-    this.editorService.save$
+    this.editorService.saveRequested$
       .pipe(
         debounceTime(250),
         switchMap(() => this.editorService.content$.pipe(take(1))),
@@ -76,6 +85,30 @@ export class NoteEditorComponent implements OnInit, OnDestroy {
   }
 
   public save() {
-    this.editorService.save();
+    this.editorService.requestSave();
+  }
+
+  public openEditDialog() {
+    this.note$
+      .pipe(
+        take(1),
+        switchMap((x) => {
+          const data = {
+            title: 'Edit note',
+            value: {
+              name: x.name,
+              sharingInfo: x.sharingInfo,
+              tags: x.tags,
+              id: x.id,
+            },
+          } as DialogData<EditNoteDialogData>;
+
+          return EditNoteDialogComponent.open(this.dialog, data);
+        }),
+        switchMap((x) => this.api.updateNote(x.id!, x)),
+        switchMap(() => this.api.getNote(this.noteId)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((x) => this.noteSubject.next(x));
   }
 }

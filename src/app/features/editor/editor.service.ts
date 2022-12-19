@@ -32,7 +32,7 @@ export class EditorService {
   private mode: EditorMode = 'readonly';
 
   private readonly saveSubject = new Subject<void>();
-  public readonly save$ = this.saveSubject.asObservable();
+  public readonly saveRequested$ = this.saveSubject.asObservable();
 
   private readonly contentSubject = new BehaviorSubject<string>('');
   public readonly content$ = this.contentSubject.asObservable();
@@ -49,8 +49,8 @@ export class EditorService {
     return this.codeMirrorState;
   }
 
-  public resetContent(content: string, dirty = true) {
-    this.dirty = dirty;
+  public resetContent(content: string) {
+    this.dirty = false;
     this.codeMirrorState = this.resetCodeMirrorState(content);
     this.emitContent();
   }
@@ -63,7 +63,7 @@ export class EditorService {
     this.dirty = false;
   }
 
-  public save() {
+  public requestSave() {
     this.saveSubject.next();
   }
 

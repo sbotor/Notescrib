@@ -3,7 +3,7 @@ import { Subject, switchMap, takeUntil } from 'rxjs';
 import { BrowserDialogService } from '../../services/browser-dialog.service';
 import { WorkspaceBrowserService } from '../../services/workspace-browser.service';
 import { FolderDetails } from '../../workspaces.models';
-import NavigationInfo from '../workspace-browser/navigation-info';
+import NavigationInfo from '../../pages/workspace-browser/navigation-info';
 
 @Component({
   selector: 'app-browser-toolbar',

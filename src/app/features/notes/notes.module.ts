@@ -10,9 +10,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { EditorModule } from '../editor/editor.module';
-import { NoteEditorComponent } from './components/note-editor/note-editor.component';
+import { NoteEditorComponent } from './pages/note-editor/note-editor.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [NoteEditorComponent],
@@ -30,6 +31,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatIconModule,
     MatButtonModule,
     MatButtonToggleModule,
+    MatDividerModule,
   ],
 })
 export class NotesModule {}

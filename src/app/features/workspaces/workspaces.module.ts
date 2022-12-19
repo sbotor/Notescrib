@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { WorkspacesRoutingModule } from './workspaces-routing.module';
-import { WorkspaceBrowserComponent } from './components/workspace-browser/workspace-browser.component';
+import { WorkspaceBrowserComponent } from './pages/workspace-browser/workspace-browser.component';
 import { EditFolderDialogComponent } from './components/dialogs/edit-folder-dialog/edit-folder-dialog.component';
 
 import { ReactiveFormsModule } from '@angular/forms';

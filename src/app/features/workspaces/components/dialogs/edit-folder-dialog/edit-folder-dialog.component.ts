@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogData } from 'src/app/core/dialog.models';
 import ignoreFalsy from 'src/app/core/operators/ignoreFalsy';
-import { EditFolderData } from './edit-folder-data';
+import { EditFolderDialogData } from './edit-folder-dialog.model';
 
 @Component({
   selector: 'app-edit-folder-dialog',
@@ -18,7 +18,7 @@ export class EditFolderDialogComponent implements OnInit {
   constructor(
     private readonly fb: FormBuilder,
     private readonly dialogRef: MatDialogRef<EditFolderDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public readonly data: DialogData<EditFolderData>
+    @Inject(MAT_DIALOG_DATA) public readonly data: DialogData<EditFolderDialogData>
   ) {}
 
   ngOnInit(): void {
@@ -28,7 +28,7 @@ export class EditFolderDialogComponent implements OnInit {
   }
 
   public close(success: boolean) {
-    let data: EditFolderData | undefined;
+    let data: EditFolderDialogData | undefined;
 
     if (success) {
       if (!this.form.valid) {
@@ -45,12 +45,12 @@ export class EditFolderDialogComponent implements OnInit {
     this.dialogRef.close(data);
   }
 
-  public static open(service: MatDialog, data: DialogData<EditFolderData>) {
+  public static open(service: MatDialog, data: DialogData<EditFolderDialogData>) {
     return service
       .open<
         EditFolderDialogComponent,
-        DialogData<EditFolderData>,
-        EditFolderData
+        DialogData<EditFolderDialogData>,
+        EditFolderDialogData
       >(EditFolderDialogComponent, { data })
       .afterClosed()
       .pipe(ignoreFalsy());

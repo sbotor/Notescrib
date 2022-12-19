@@ -5,10 +5,8 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { EditorState } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 import { EditorService } from '../../editor.service';
-import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-editor-field',
@@ -16,7 +14,6 @@ import { Subject } from 'rxjs';
   styleUrls: ['./editor-field.component.scss'],
 })
 export class EditorFieldComponent implements AfterViewInit, OnDestroy {
-  private readonly destroy$ = new Subject<void>();
 
   @ViewChild('codeMirror', { static: false })
   public codeMirrorRef!: ElementRef<HTMLDivElement>;
@@ -33,6 +30,6 @@ export class EditorFieldComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.codeMirrorView?.destroy();
   }
 }

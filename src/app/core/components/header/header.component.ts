@@ -1,27 +1,27 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/auth/auth.service';
+import { map } from 'rxjs';
+import { AuthService } from 'src/app/features/auth/auth.service';
+import { routeConfig } from 'src/app/route-config';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
+
+  public readonly routes = {
+    home: routeConfig.root.home,
+    login: routeConfig.root.login
+  };
+
   @Output()
   public sidenavToggle = new EventEmitter();
 
-  public readonly username$ = this.authService.username$;
+  public readonly user$ = this.authService.user$;
 
   constructor(private authService: AuthService, private router: Router) {}
-
-  ngOnInit() {
-    this.authService.fetchUser();
-  }
-
-  public onToggleSidenav() {
-    this.sidenavToggle.emit();
-  }
 
   public isUserLoggedIn() {
     return this.authService.isLoggedIn();

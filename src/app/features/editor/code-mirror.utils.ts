@@ -5,33 +5,27 @@ import { EditorView } from "codemirror";
 export const markdownHighlighting = HighlightStyle.define([
   {
     tag: tags.heading1,
-    fontSize: '2rem',
-    fontWeight: 'bold',
+    class: 'mat-h1'
   },
   {
     tag: tags.heading2,
-    fontSize: '1.8rem',
-    fontWeight: 'bold',
+    class: 'mat-h2'
   },
   {
     tag: tags.heading3,
-    fontSize: '1.6rem',
-    fontWeight: 'bold',
+    class: 'mat-h3'
   },
   {
     tag: tags.heading4,
-    fontSize: '1.4rem',
-    fontWeight: 'bold',
+    class: 'mat-h4'
   },
   {
     tag: tags.heading5,
-    fontSize: '1.2rem',
-    fontWeight: 'bold',
+    class: 'mat-h5'
   },
   {
     tag: tags.heading6,
-    fontSize: '1.2rem',
-    fontWeight: 'bold',
+    class: 'mat-h6'
   },
   {
     tag: tags.emphasis,

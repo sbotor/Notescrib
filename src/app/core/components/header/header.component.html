@@ -2,7 +2,7 @@
   <button mat-icon-button (click)="onSidenavToggle()">
     <mat-icon>menu</mat-icon>
   </button>
-  <a mat-icon-button routerLink="/">
+  <a mat-icon-button [routerLink]="routes.home">
     <mat-icon>home</mat-icon>
   </a>
 
@@ -15,14 +15,18 @@
     </button>
   </div>
   <ng-template #elseBlock>
-    <a mat-button routerLink="login">Login</a>
+    <a mat-button [routerLink]="routes.login">Login</a>
   </ng-template>
 
 </mat-toolbar>
 
 <mat-menu #userMenu>
-  <ng-template matMenuContent>
-    <button mat-menu-item disabled>{{username$ | async}}</button>
+  <ng-template *ngIf="user$| async as user" matMenuContent>
+    <button mat-menu-item disabled>{{user.email}}</button>
     <button mat-menu-item (click)="logout()">Logout</button>
   </ng-template>
 </mat-menu>
+
+<ng-template>
+  <mat-progress-bar #loading mode="indeterminate"></mat-progress-bar>
+</ng-template>

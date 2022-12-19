@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from 'src/app/auth/auth.service';
+import { map } from 'rxjs';
+import { AuthService } from 'src/app/features/auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -7,11 +8,9 @@ import { AuthService } from 'src/app/auth/auth.service';
 export class LayoutService {
   private static readonly NAVBAR_KEY = 'navbar_open';
 
-  public readonly username$ = this.authService.username$;
+  public readonly username$ = this.authService.user$.pipe(map(x => x!.email));
 
-  constructor(
-    private readonly authService: AuthService
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   public isNavbarOpened() {
     return localStorage.getItem(LayoutService.NAVBAR_KEY) === 'true';
