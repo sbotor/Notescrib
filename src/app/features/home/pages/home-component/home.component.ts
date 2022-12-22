@@ -11,7 +11,7 @@ import { routeConfig } from 'src/app/route-config';
 export class HomeComponent {
 
   public readonly routes = {
-    login: routeConfig.root.login
+    login: routeConfig.joinFromRoot(routeConfig.auth.prefix, routeConfig.auth.login)
   };
 
   public readonly username$ = this.authService.user$.pipe(map(x => x!.email));

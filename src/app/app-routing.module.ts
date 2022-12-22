@@ -11,7 +11,7 @@ const routes: Routes = [
     component: HomeComponent,
   },
   {
-    path: routeConfig.root.login,
+    path: routeConfig.auth.prefix,
     loadChildren: () => import('./features/auth/auth.module').then(x => x.AuthModule),
     canActivate: [MustBeLoggedOutGuard]
   },

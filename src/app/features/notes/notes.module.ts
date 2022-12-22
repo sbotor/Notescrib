@@ -14,6 +14,7 @@ import { NoteEditorComponent } from './pages/note-editor/note-editor.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [NoteEditorComponent],
@@ -32,6 +33,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatButtonModule,
     MatButtonToggleModule,
     MatDividerModule,
+    MatMenuModule
   ],
 })
 export class NotesModule {}

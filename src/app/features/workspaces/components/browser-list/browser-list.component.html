@@ -1,14 +1,15 @@
 <div>
-  <mat-list *ngIf="folder$ | async as folder; else loading">
+  <mat-nav-list *ngIf="folder$ | async as folder; else loading">
     <div mat-subheader>Folders</div>
     <mat-list-item *ngFor="let child of folder.children">
-      <mat-icon matListItemIcon>folder</mat-icon>
-      <div matListItemTitle>{{child.name}}</div>
-      <div matListItemLine>{{(child.updated ?? folder.created) | date:'d MMM y, h:mm a'}}</div>
-      <div matListItemLine>
-        <button mat-button (click)="navigateDown(child.id)">Open</button>
-        <button mat-button [matMenuTriggerFor]="folderMenu" [matMenuTriggerData]="{ folder: child }">
-          <mat-icon>more_horiz</mat-icon><span>Options</span>
+      <mat-icon matListItemIcon (click)="navigateDown(child.id)">folder</mat-icon>
+      <div matListItemTitle (click)="navigateDown(child.id)">{{child.name}}</div>
+      <div matListItemLine (click)="navigateDown(child.id)">
+        {{(child.updated ?? folder.created) | date:'d MMM y, h:mm a'}}
+      </div>
+      <div matListItemMeta>
+        <button mat-icon-button [matMenuTriggerFor]="folderMenu" [matMenuTriggerData]="{ folder: child }">
+          <mat-icon>more_vert</mat-icon>
         </button>
       </div>
     </mat-list-item>
@@ -17,20 +18,21 @@
 
     <div mat-subheader>Notes</div>
     <mat-list-item *ngFor="let note of folder.notes">
-      <mat-icon matListItemIcon>note</mat-icon>
-      <div matListItemTitle>{{note.name}}</div>
-      <div matListItemLine>{{(note.updated ?? note.created) | date:'d MMM y, h:mm a'}}</div>
-      <div matListItemLine>
-        <button mat-button [routerLink]="getNoteRoute(note.id)">View</button>
-        <button mat-button [matMenuTriggerFor]="noteMenu" [matMenuTriggerData]="{ note }">
-          <mat-icon>more_horiz</mat-icon><span>Options</span>
-        </button>
+      <mat-icon matListItemIcon [routerLink]="getNoteRoute(note.id)">note</mat-icon>
+      <div matListItemTitle [routerLink]="getNoteRoute(note.id)">{{note.name}}</div>
+      <div matListItemLine [routerLink]="getNoteRoute(note.id)">
+        {{(note.updated ?? note.created) | date:'d MMM y, h:mm a'}}
       </div>
       <div matListItemLine>
         <span>Tags: {{note.tags.length > 0 ? note.tags : 'None'}}</span>
       </div>
+      <div matListItemMeta>
+        <button mat-icon-button [matMenuTriggerFor]="noteMenu" [matMenuTriggerData]="{ note }">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </div>
     </mat-list-item>
-  </mat-list>
+  </mat-nav-list>
 </div>
 
 <mat-menu #folderMenu>

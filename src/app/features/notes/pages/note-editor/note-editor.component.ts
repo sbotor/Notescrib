@@ -29,7 +29,11 @@ export class NoteEditorComponent implements OnInit, OnDestroy {
   private noteId = '';
 
   private readonly noteSubject = new ReplaySubject<NoteDetails>(1);
-  private readonly note$ = this.noteSubject.asObservable();
+  private readonly note$ = this.noteSubject.pipe(
+    tap((x) => {
+      if (x.isReadonly) this.setMode('readonly');
+    })
+  );
 
   constructor(
     route: ActivatedRoute,
@@ -110,5 +114,16 @@ export class NoteEditorComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe((x) => this.noteSubject.next(x));
+  }
+
+  public getCurrentModeText() {
+    switch (this.getMode()) {
+      case 'edit':
+        return 'Editing';
+        case "preview":
+          return 'Editing with preview'
+        case "readonly":
+          return 'Reading'
+    }
   }
 }

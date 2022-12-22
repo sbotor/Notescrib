@@ -1,0 +1,14 @@
+<div *ngIf="result$ | async as result; else loading" class="result-wrapper">
+  <div *ngIf="result.success" class="msg-wrapper">
+    <h1>{{result.message}}</h1>
+    <a mat-raised-button routerLink="{{routes.login}}" color="primary">Login</a>
+  </div>
+
+  <div *ngIf="!result.success">
+    <h1>{{result.message}}</h1>
+  </div>
+</div>
+
+<ng-template #loading>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-template>

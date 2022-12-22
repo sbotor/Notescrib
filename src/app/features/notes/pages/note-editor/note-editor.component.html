@@ -1,5 +1,5 @@
 <div *ngIf="getNote() | async as note; else loading" class="flex-fill flex-col">
-  <mat-toolbar *ngIf="!note.isReadonly" class="toolbar">
+  <mat-toolbar *ngIf="!note.isReadonly">
     <button mat-icon-button (click)="openEditDialog()">
       <mat-icon>edit</mat-icon>
     </button>
@@ -10,13 +10,8 @@
 
     <span class="toolbar-spacer"></span>
 
-    <mat-button-toggle-group name="viewType" (valueChange)="setMode($event)">
-      <mat-button-toggle value="edit" [checked]="getMode() == 'edit'"><mat-icon>edit</mat-icon></mat-button-toggle>
-      <mat-button-toggle value="preview"
-        [checked]="getMode() == 'preview'"><mat-icon>vertical_split</mat-icon></mat-button-toggle>
-      <mat-button-toggle value="readonly"
-        [checked]="getMode() == 'readonly'"><mat-icon>visibility</mat-icon></mat-button-toggle>
-    </mat-button-toggle-group>
+    <span>{{getCurrentModeText()}}</span>
+    <button mat-icon-button *ngIf="!note.isReadonly" [matMenuTriggerFor]="viewModeMenu"><mat-icon>settings</mat-icon></button>
   </mat-toolbar>
 
   <mat-toolbar *ngIf="note.isReadonly" class="toolbar">
@@ -39,6 +34,14 @@
     </div>
   </ng-container>
 </div>
+
+<mat-menu #viewModeMenu>
+  <ng-template matMenuContent>
+    <button mat-menu-item (click)="setMode('edit')"><mat-icon>edit</mat-icon>Edit</button>
+    <button mat-menu-item (click)="setMode('preview')"><mat-icon>vertical_split</mat-icon>Edit with preview</button>
+    <button mat-menu-item (click)="setMode('readonly')"><mat-icon>visibility</mat-icon>Read only</button>
+  </ng-template>
+</mat-menu>
 
 <ng-template #loading>
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>

@@ -26,7 +26,9 @@ import {
 import { EditorState } from '@codemirror/state';
 import { markdownHighlighting, theme } from './code-mirror.utils';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class EditorService {
   private dirty = false;
   private mode: EditorMode = 'readonly';

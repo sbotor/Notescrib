@@ -45,7 +45,7 @@ import { HomeComponent } from './features/home/pages/home-component/home.compone
     MatSidenavModule,
     MatListModule,
     MatMenuModule,
-    MatProgressBarModule
+    MatProgressBarModule,
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],

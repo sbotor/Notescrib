@@ -9,11 +9,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { LoginComponent } from './pages/login/login.component';
 import { MatButtonModule } from '@angular/material/button';
+import { ConfirmEmailComponent } from './pages/confirm-email/confirm-email.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 @NgModule({
   declarations: [
-    LoginComponent
+    LoginComponent,
+    ConfirmEmailComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +26,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatTabsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatProgressBarModule
   ]
 })
 export class AuthModule { }

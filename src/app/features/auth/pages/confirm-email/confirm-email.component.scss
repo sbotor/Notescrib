@@ -1,0 +1,19 @@
+:host {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.result-wrapper {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 2rem;
+}
+
+.msg-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

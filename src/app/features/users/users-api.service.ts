@@ -19,4 +19,12 @@ export class UsersApiService {
   public getCurrentUser() {
     return this.client.get<UserDetails>(UsersApiService.URL);
   }
+
+  public confirmEmail(id: string, token: string) {
+    return this.client.post(`${UsersApiService.URL}/${id}/confirm`, { token });
+  }
+
+  public deleteUser() {
+    return this.client.delete(UsersApiService.URL);
+  }
 }

@@ -9,3 +9,8 @@ export interface TokenResponse {
   token: string,
   user: UserDetails
 }
+
+export interface ConfirmEmailData {
+  userId: string;
+  token: string;
+}

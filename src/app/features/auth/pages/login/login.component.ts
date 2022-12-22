@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { AuthService } from '../../auth.service';
 import { UsersApiService } from 'src/app/features/users/users-api.service';
 
@@ -12,7 +12,7 @@ import { UsersApiService } from 'src/app/features/users/users-api.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnDestroy {
-  private subs = new Subscription();
+  private readonly destroy$ = new Subject<void>();
 
   public readonly loginForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -34,7 +34,7 @@ export class LoginComponent implements OnDestroy {
   ) {}
 
   ngOnDestroy(): void {
-    this.subs.unsubscribe();
+    this.destroy$.next();
   }
 
   public login() {
@@ -42,14 +42,13 @@ export class LoginComponent implements OnDestroy {
       return;
     }
 
-    this.subs.add(
-      this.authService
+    this.authService
         .login(
           this.loginForm.controls.email.value,
           this.loginForm.controls.password.value
         )
+        .pipe(takeUntil(this.destroy$))
         .subscribe(() => this.router.navigate(['workspace/browse']))
-    );
   }
 
   public register() {
@@ -65,14 +64,13 @@ export class LoginComponent implements OnDestroy {
       return;
     }
 
-    this.subs.add(
-      this.usersService
+    this.usersService
         .createUser({
           email: controls.email.value,
           password: controls.password.value,
           passwordConfirmation: controls.passwordConfirmation.value,
         })
+        .pipe(tap(x => this.snackBar.open('Check your email!', 'OK')))
         .subscribe(() => this.router.navigate(['']))
-    );
   }
 }

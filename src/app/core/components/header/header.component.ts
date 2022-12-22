@@ -13,7 +13,7 @@ export class HeaderComponent {
 
   public readonly routes = {
     home: routeConfig.root.home,
-    login: routeConfig.root.login
+    login: routeConfig.joinFromRoot(routeConfig.auth.prefix, routeConfig.auth.login)
   };
 
   @Output()

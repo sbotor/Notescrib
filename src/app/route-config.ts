@@ -1,7 +1,11 @@
 export const routeConfig = {
   root: {
     home: '',
+  },
+  auth: {
+    prefix: 'auth',
     login: 'login',
+    confirmEmail: 'confirm'
   },
   workspaces: {
     prefix: 'workspace',

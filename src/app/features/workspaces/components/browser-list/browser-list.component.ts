@@ -78,4 +78,8 @@ export class BrowserListComponent implements OnDestroy {
   public getNoteRoute(noteId: string) {
     return `/${routeConfig.notes.prefix}/${noteId}`;
   }
+
+  public log(text: string) {
+    console.log(text);
+  }
 }
