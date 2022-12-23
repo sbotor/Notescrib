@@ -4,12 +4,14 @@
   <mat-sidenav #sidenav mode="side" [opened]="layout.isNavbarOpened()" class="sidenav">
     <mat-nav-list *ngIf="isUserLoggedIn(); else loginNavList">
       <mat-list-item routerLink="{{routes.workspaceBrowser}}">Browse notes</mat-list-item>
-      <mat-list-item routerLink="{{routes.workspaceBrowser}}" disabled>Search notes</mat-list-item>
+      <mat-list-item routerLink="{{routes.workspaceSearch}}">Search notes</mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
 
   <mat-sidenav-content class="content-wrapper">
-    <router-outlet></router-outlet>
+    <div class="content-sizer">
+      <router-outlet></router-outlet>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
 
@@ -20,5 +22,6 @@
 <ng-template #loginNavList>
   <mat-nav-list>
     <mat-list-item routerLink="{{routes.login}}">Log in</mat-list-item>
+    <mat-list-item routerLink="{{routes.workspaceSearch}}">Search public notes</mat-list-item>
   </mat-nav-list>
 </ng-template>

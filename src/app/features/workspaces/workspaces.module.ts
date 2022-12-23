@@ -23,6 +23,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { BrowserListComponent } from './components/browser-list/browser-list.component';
+import { WorkspaceSearchComponent } from './pages/workspace-search/workspace-search.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { NoteListComponent } from './components/note-list/note-list.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +34,8 @@ import { BrowserListComponent } from './components/browser-list/browser-list.com
     EditFolderDialogComponent,
     BrowserToolbarComponent,
     BrowserListComponent,
+    WorkspaceSearchComponent,
+    NoteListComponent,
   ],
   imports: [
     CommonModule,
@@ -48,6 +54,8 @@ import { BrowserListComponent } from './components/browser-list/browser-list.com
     MatSelectModule,
     MatListModule,
     MatProgressBarModule,
+    MatCheckboxModule,
+    MatPaginatorModule
   ],
   providers: [WorkspaceBrowserService, BrowserDialogService],
 })

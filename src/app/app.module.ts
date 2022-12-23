@@ -21,6 +21,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { HomeComponent } from './features/home/pages/home-component/home.component';
+import { NotFoundComponent } from './core/pages/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { HomeComponent } from './features/home/pages/home-component/home.compone
     HomeComponent,
     ConfirmationDialogComponent,
     LayoutComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

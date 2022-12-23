@@ -10,6 +10,7 @@ export const routeConfig = {
   workspaces: {
     prefix: 'workspace',
     browse: 'browse',
+    search: 'search'
   },
   notes: {
     prefix: 'note',

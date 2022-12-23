@@ -1,5 +1,5 @@
-<div>
-  <mat-nav-list *ngIf="folder$ | async as folder; else loading">
+<div *ngIf="folder$ | async as folder; else loading">
+  <mat-nav-list>
     <div mat-subheader>Folders</div>
     <mat-list-item *ngFor="let child of folder.children">
       <mat-icon matListItemIcon (click)="navigateDown(child.id)">folder</mat-icon>
@@ -15,24 +15,10 @@
     </mat-list-item>
 
     <mat-divider></mat-divider>
+  </mat-nav-list>
 
     <div mat-subheader>Notes</div>
-    <mat-list-item *ngFor="let note of folder.notes">
-      <mat-icon matListItemIcon [routerLink]="getNoteRoute(note.id)">note</mat-icon>
-      <div matListItemTitle [routerLink]="getNoteRoute(note.id)">{{note.name}}</div>
-      <div matListItemLine [routerLink]="getNoteRoute(note.id)">
-        {{(note.updated ?? note.created) | date:'d MMM y, h:mm a'}}
-      </div>
-      <div matListItemLine>
-        <span>Tags: {{note.tags.length > 0 ? note.tags : 'None'}}</span>
-      </div>
-      <div matListItemMeta>
-        <button mat-icon-button [matMenuTriggerFor]="noteMenu" [matMenuTriggerData]="{ note }">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-      </div>
-    </mat-list-item>
-  </mat-nav-list>
+    <app-note-list [notes]="folder.notes"></app-note-list>
 </div>
 
 <mat-menu #folderMenu>
@@ -42,19 +28,6 @@
       <span>Edit</span>
     </button>
     <button mat-menu-item (click)="removeFolder(folder)">
-      <mat-icon>delete</mat-icon>
-      <span>Remove</span>
-    </button>
-  </ng-template>
-</mat-menu>
-
-<mat-menu #noteMenu>
-  <ng-template matMenuContent let-note="note">
-    <button mat-menu-item (click)="editNote(note)">
-      <mat-icon>edit</mat-icon>
-      <span>Edit</span>
-    </button>
-    <button mat-menu-item (click)="removeNote(note)">
       <mat-icon>delete</mat-icon>
       <span>Remove</span>
     </button>

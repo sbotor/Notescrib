@@ -1,0 +1,30 @@
+<mat-nav-list>
+  <mat-list-item *ngFor="let note of notes">
+    <mat-icon matListItemIcon [routerLink]="getNoteRoute(note.id)">note</mat-icon>
+    <div matListItemTitle [routerLink]="getNoteRoute(note.id)">{{note.name}}</div>
+    <div matListItemLine [routerLink]="getNoteRoute(note.id)">
+      {{(note.updated ?? note.created) | date:'d MMM y, h:mm a'}}
+    </div>
+    <div matListItemLine>
+      <span>Tags: {{note.tags.length > 0 ? note.tags : 'None'}}</span>
+    </div>
+    <div matListItemMeta>
+      <button *ngIf="!note.isReadonly" mat-icon-button [matMenuTriggerFor]="noteMenu" [matMenuTriggerData]="{ note }">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+</mat-nav-list>
+
+<mat-menu #noteMenu>
+  <ng-template matMenuContent let-note="note">
+    <button mat-menu-item (click)="editNote(note)">
+      <mat-icon>edit</mat-icon>
+      <span>Edit</span>
+    </button>
+    <button mat-menu-item (click)="removeNote(note)">
+      <mat-icon>delete</mat-icon>
+      <span>Remove</span>
+    </button>
+  </ng-template>
+</mat-menu>

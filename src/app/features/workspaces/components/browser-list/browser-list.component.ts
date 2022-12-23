@@ -1,10 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subject, switchMap, takeUntil, tap } from 'rxjs';
-import { NoteOverview } from 'src/app/features/notes/notes.models';
 import { BrowserDialogService } from '../../services/browser-dialog.service';
 import { WorkspaceBrowserService } from '../../services/workspace-browser.service';
 import { FolderOverview } from '../../workspaces.models';
-import { routeConfig } from 'src/app/route-config';
 
 @Component({
   selector: 'app-browser-list',
@@ -53,33 +51,5 @@ export class BrowserListComponent implements OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
-  }
-
-  public editNote(note: NoteOverview) {
-    this.dialog
-      .editNote(note)
-      .pipe(
-        switchMap(() => this.browserService.refreshFolderDetails()),
-        takeUntil(this.destroy$)
-      )
-      .subscribe();
-  }
-
-  public removeNote(note: NoteOverview) {
-    this.dialog
-      .removeNote(note)
-      .pipe(
-        switchMap(() => this.browserService.refreshFolderDetails()),
-        takeUntil(this.destroy$)
-      )
-      .subscribe();
-  }
-
-  public getNoteRoute(noteId: string) {
-    return `/${routeConfig.notes.prefix}/${noteId}`;
-  }
-
-  public log(text: string) {
-    console.log(text);
   }
 }

@@ -59,6 +59,7 @@ export class EditNoteDialogComponent implements OnInit {
         },
         tags: [],
         id: this.data.value?.id,
+        relatedIds: []
       };
     } else {
       data = undefined;

@@ -92,6 +92,7 @@ export class WorkspaceBrowserService {
       folderId: currentFolder?.id,
       sharingInfo: data.sharingInfo,
       tags: data.tags,
+      relatedIds: data.relatedIds
     } as UpdateNoteRequest;
 
     return this.notesApi.updateNote(data.id!, request);

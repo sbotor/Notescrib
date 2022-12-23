@@ -9,9 +9,11 @@ export interface NoteOverview {
   created: Date;
   updated?: Date;
   tags: string[];
+  isReadonly: boolean;
 }
 
 export interface NoteDetails extends NoteOverview {
   content: string;
   isReadonly: boolean;
+  related: NoteOverview[];
 }

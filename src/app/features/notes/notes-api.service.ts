@@ -4,9 +4,11 @@ import { environment } from 'src/environments/environment';
 import { NoteDetails, NoteOverview } from './notes.models';
 import {
   CreateNoteRequest,
+  SearchNotesParams,
   UpdateNoteContentRequest,
   UpdateNoteRequest,
 } from './notes.requests';
+import { PagedList } from 'src/app/core/paging.models';
 
 @Injectable({
   providedIn: 'root',
@@ -34,5 +36,9 @@ export class NotesApiService {
 
   public updateContent(id: string, request: UpdateNoteContentRequest) {
     return this.client.put(`${NotesApiService.URL}/${id}/content`, request);
+  }
+
+  public searchNotes(params: SearchNotesParams) {
+    return this.client.get<PagedList<NoteDetails>>(NotesApiService.URL, { params: {...params} });
   }
 }

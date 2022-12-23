@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { WorkspaceBrowserComponent } from './pages/workspace-browser/workspace-browser.component';
 import { MustBeLoggedInGuard } from '../auth/guards/must-be-logged-in.guard';
 import { routeConfig } from 'src/app/route-config';
+import { WorkspaceSearchComponent } from './pages/workspace-search/workspace-search.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,10 @@ const routes: Routes = [
     path: routeConfig.workspaces.browse,
     component: WorkspaceBrowserComponent,
     canActivate: [MustBeLoggedInGuard],
+  },
+  {
+    path: routeConfig.workspaces.search,
+    component: WorkspaceSearchComponent,
   },
 ];
 

@@ -14,10 +14,17 @@ export class LayoutComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   public readonly routes = {
-    login: routeConfig.joinFromRoot(routeConfig.auth.prefix, routeConfig.auth.login),
-    workspaceBrowser: routeConfig.join(
+    login: routeConfig.joinFromRoot(
+      routeConfig.auth.prefix,
+      routeConfig.auth.login
+    ),
+    workspaceBrowser: routeConfig.joinFromRoot(
       routeConfig.workspaces.prefix,
       routeConfig.workspaces.browse
+    ),
+    workspaceSearch: routeConfig.joinFromRoot(
+      routeConfig.workspaces.prefix,
+      routeConfig.workspaces.search
     ),
   };
 

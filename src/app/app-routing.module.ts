@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MustBeLoggedOutGuard } from './features/auth/guards/must-be-logged-out.guard';
-import { MustBeLoggedInGuard } from './features/auth/guards/must-be-logged-in.guard';
 import { HomeComponent } from './features/home/pages/home-component/home.component';
 import { routeConfig } from './route-config';
+import { NotFoundComponent } from './core/pages/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -13,17 +12,18 @@ const routes: Routes = [
   {
     path: routeConfig.auth.prefix,
     loadChildren: () => import('./features/auth/auth.module').then(x => x.AuthModule),
-    canActivate: [MustBeLoggedOutGuard]
   },
   {
     path: routeConfig.workspaces.prefix,
-    loadChildren: () => import('./features/workspaces/workspaces.module').then(x => x.WorkspacesModule),
-    canActivate: [MustBeLoggedInGuard],
+    loadChildren: () => import('./features/workspaces/workspaces.module').then(x => x.WorkspacesModule)
   },
   {
     path: routeConfig.notes.prefix,
-    loadChildren: () => import('./features/notes/notes.module').then(x => x.NotesModule),
-    canActivate: [MustBeLoggedInGuard],
+    loadChildren: () => import('./features/notes/notes.module').then(x => x.NotesModule)
+  },
+  {
+    path: '**',
+    component: NotFoundComponent
   }
 ];
 
