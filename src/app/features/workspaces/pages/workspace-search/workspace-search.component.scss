@@ -4,8 +4,6 @@
   flex-direction: column;
 }
 
-.filters {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.wrapper {
+  flex: 1 1 auto;
 }

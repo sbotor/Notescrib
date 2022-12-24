@@ -26,7 +26,11 @@ import { BrowserListComponent } from './components/browser-list/browser-list.com
 import { WorkspaceSearchComponent } from './pages/workspace-search/workspace-search.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { NoteListComponent } from './components/note-list/note-list.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { CoreModule } from 'src/app/core/core.module';
+import { ConfirmationDialogModule } from 'src/app/core/components/confirmation-dialog/confirmation-dialog.module';
+import { NoteListModule } from '../notes/components/note-list/note-list.module';
+import { NoteSearchModule } from '../notes/components/note-search/note-search.module';
 
 @NgModule({
   declarations: [
@@ -35,12 +39,16 @@ import { NoteListComponent } from './components/note-list/note-list.component';
     BrowserToolbarComponent,
     BrowserListComponent,
     WorkspaceSearchComponent,
-    NoteListComponent,
   ],
   imports: [
     CommonModule,
     WorkspacesRoutingModule,
     ReactiveFormsModule,
+
+    CoreModule,
+    ConfirmationDialogModule,
+    NoteListModule,
+    NoteSearchModule,
 
     MatInputModule,
     MatFormFieldModule,
@@ -55,8 +63,8 @@ import { NoteListComponent } from './components/note-list/note-list.component';
     MatListModule,
     MatProgressBarModule,
     MatCheckboxModule,
-    MatPaginatorModule
-  ],
-  providers: [WorkspaceBrowserService, BrowserDialogService],
+    MatPaginatorModule,
+    MatChipsModule
+  ]
 })
 export class WorkspacesModule {}

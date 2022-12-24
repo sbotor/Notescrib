@@ -5,5 +5,4 @@ export interface EditNoteDialogData {
   sharingInfo: SharingInfo;
   tags: string[];
   id?: string;
-  relatedIds: [];
 }

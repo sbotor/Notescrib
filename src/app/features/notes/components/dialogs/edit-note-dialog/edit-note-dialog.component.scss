@@ -1,0 +1,30 @@
+.dialog-wrapper {
+  min-width: 1000px;
+}
+
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tags-field {
+  width: 100%;
+}
+
+.name-field {
+  width: 70%;
+}
+
+.visibility-field {
+  width: 25%;
+}

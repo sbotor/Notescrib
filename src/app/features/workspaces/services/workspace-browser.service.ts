@@ -20,7 +20,9 @@ import {
 } from '../../notes/notes.requests';
 import { EditFolderDialogData } from '../components/dialogs/edit-folder-dialog/edit-folder-dialog.model';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class WorkspaceBrowserService {
   private readonly navigator = new WorkspaceNavigator([]);
 
@@ -92,7 +94,6 @@ export class WorkspaceBrowserService {
       folderId: currentFolder?.id,
       sharingInfo: data.sharingInfo,
       tags: data.tags,
-      relatedIds: data.relatedIds
     } as UpdateNoteRequest;
 
     return this.notesApi.updateNote(data.id!, request);

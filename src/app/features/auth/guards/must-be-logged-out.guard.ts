@@ -16,19 +16,15 @@ export class MustBeLoggedOutGuard implements CanActivate {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  canActivate(
+  async canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ):
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree>
-    | boolean
-    | UrlTree {
+  ): Promise<boolean> {
     if (!this.authService.isLoggedIn()) {
       return true;
     }
 
-    this.router.navigate([''])
+    await this.router.navigate([''])
     return false;
   }
 }

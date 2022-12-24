@@ -1,0 +1,10 @@
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

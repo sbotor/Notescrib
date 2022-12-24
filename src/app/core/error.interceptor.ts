@@ -22,7 +22,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         this.snackBar.open(
           `An error has occured (${err.status}): '${err.message}'`,
           'Close',
-          { duration: 3000 }
+          { duration: 10000 }
         );
         return throwError(() => err);
       })

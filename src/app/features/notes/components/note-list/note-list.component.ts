@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { NoteOverview } from 'src/app/features/notes/notes.models';
-import { routeConfig } from 'src/app/route-config';
-import { BrowserDialogService } from '../../services/browser-dialog.service';
+import { BrowserDialogService } from '../../../workspaces/services/browser-dialog.service';
 import { Subject, switchMap, takeUntil } from 'rxjs';
-import { WorkspaceBrowserService } from '../../services/workspace-browser.service';
+import { WorkspaceBrowserService } from '../../../workspaces/services/workspace-browser.service';
 
 @Component({
   selector: 'app-note-list',
@@ -17,6 +16,9 @@ export class NoteListComponent implements OnDestroy {
   @Input()
   public notes: NoteOverview[] = [];
 
+  @Output()
+  public readonly select = new EventEmitter<NoteOverview>();
+
   constructor(private readonly browserService: WorkspaceBrowserService,
     private readonly dialog: BrowserDialogService) {}
 
@@ -24,8 +26,8 @@ export class NoteListComponent implements OnDestroy {
     this.destroy$.next();
   }
 
-  public getNoteRoute(noteId: string) {
-    return `/${routeConfig.notes.prefix}/${noteId}`;
+  public onSelect(note: NoteOverview) {
+    this.select.emit(note);
   }
 
   public editNote(note: NoteOverview) {
@@ -46,5 +48,9 @@ export class NoteListComponent implements OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
+  }
+
+  public formatTags(note: NoteOverview) {
+    return note.tags.length > 0 ? note.tags.join(', ') : 'None'
   }
 }

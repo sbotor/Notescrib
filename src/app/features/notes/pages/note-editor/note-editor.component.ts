@@ -3,20 +3,25 @@ import { ActivatedRoute } from '@angular/router';
 import {
   ReplaySubject,
   Subject,
+  concatMap,
   debounceTime,
+  filter,
   switchMap,
   take,
   takeUntil,
   tap,
 } from 'rxjs';
-import { NoteDetails } from '../../notes.models';
+import { NoteDetails, NoteOverview } from '../../notes.models';
 import { NotesApiService } from '../../notes-api.service';
 import { EditorService } from 'src/app/features/editor/editor.service';
 import { EditorMode } from 'src/app/features/editor/editor.models';
 import { MatDialog } from '@angular/material/dialog';
 import { EditNoteDialogComponent } from '../../components/dialogs/edit-note-dialog/edit-note-dialog.component';
 import { EditNoteDialogData } from '../../components/dialogs/edit-note-dialog/edit-note-dialog.model';
-import { DialogData } from 'src/app/core/dialog.models';
+import { ConfirmationDialogData, DialogData } from 'src/app/core/dialog.models';
+import { AddRelatedNoteDialogComponent } from '../../components/dialogs/add-related-note-dialog/add-related-note-dialog.component';
+import { routeConfig } from 'src/app/route-config';
+import { ConfirmationDialogComponent } from 'src/app/core/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-note-editor',
@@ -29,7 +34,7 @@ export class NoteEditorComponent implements OnInit, OnDestroy {
   private noteId = '';
 
   private readonly noteSubject = new ReplaySubject<NoteDetails>(1);
-  private readonly note$ = this.noteSubject.pipe(
+  public readonly note$ = this.noteSubject.pipe(
     tap((x) => {
       if (x.isReadonly) this.setMode('readonly');
     })
@@ -67,10 +72,6 @@ export class NoteEditorComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.destroy$.next();
-  }
-
-  public getNote() {
-    return this.note$;
   }
 
   public isDirty() {
@@ -116,14 +117,53 @@ export class NoteEditorComponent implements OnInit, OnDestroy {
       .subscribe((x) => this.noteSubject.next(x));
   }
 
+  public openAddRelatedDialog() {
+    const data = {
+      title: 'Select note',
+      value: this.noteId,
+    } as DialogData<string>;
+
+    AddRelatedNoteDialogComponent.open(this.dialog, data)
+      .pipe(
+        concatMap((x) => this.api.addRelatedNotes(this.noteId, [x.id])),
+        switchMap(() => this.api.getNote(this.noteId)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((x) => this.noteSubject.next(x));
+  }
+
+  public removeRelatedNote(note: NoteOverview) {
+    ConfirmationDialogComponent.open(this.dialog)
+      .pipe(
+        filter(x => !!x),
+        concatMap((_) => this.api.deleteRelatedNotes(this.noteId, [note.id])),
+        switchMap(() => this.api.getNote(this.noteId)),
+        takeUntil(this.destroy$));
+  }
+
   public getCurrentModeText() {
     switch (this.getMode()) {
       case 'edit':
         return 'Editing';
-        case "preview":
-          return 'Editing with preview'
-        case "readonly":
-          return 'Reading'
+      case 'preview':
+        return 'Editing with preview';
+      case 'readonly':
+        return 'Reading';
     }
+  }
+
+  public getCurrentModeIcon() {
+    switch (this.getMode()) {
+      case 'edit':
+        return 'edit';
+      case 'preview':
+        return 'vertical_split';
+      case 'readonly':
+        return 'visibility';
+    }
+  }
+
+  public getNoteRoute(id: string) {
+    return `/${routeConfig.notes}/${id}`;
   }
 }

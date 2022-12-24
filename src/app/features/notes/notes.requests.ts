@@ -12,7 +12,6 @@ export interface UpdateNoteRequest {
   name: string;
   sharingInfo: SharingInfo;
   tags: string[];
-  relatedIds: string[];
 }
 
 export interface UpdateNoteContentRequest {

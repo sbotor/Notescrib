@@ -43,12 +43,12 @@ export class LoginComponent implements OnDestroy {
     }
 
     this.authService
-        .login(
-          this.loginForm.controls.email.value,
-          this.loginForm.controls.password.value
-        )
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => this.router.navigate(['workspace/browse']))
+      .login(
+        this.loginForm.controls.email.value,
+        this.loginForm.controls.password.value
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(async () => await this.router.navigate(['workspace/browse']));
   }
 
   public register() {
@@ -65,12 +65,12 @@ export class LoginComponent implements OnDestroy {
     }
 
     this.usersService
-        .createUser({
-          email: controls.email.value,
-          password: controls.password.value,
-          passwordConfirmation: controls.passwordConfirmation.value,
-        })
-        .pipe(tap(x => this.snackBar.open('Check your email!', 'OK')))
-        .subscribe(() => this.router.navigate(['']))
+      .createUser({
+        email: controls.email.value,
+        password: controls.password.value,
+        passwordConfirmation: controls.passwordConfirmation.value,
+      })
+      .pipe(tap(() => this.snackBar.open('Check your email!', 'OK')))
+      .subscribe(async () => await this.router.navigate(['']));
   }
 }

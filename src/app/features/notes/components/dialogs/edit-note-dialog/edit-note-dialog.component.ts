@@ -7,9 +7,11 @@ import {
 } from '@angular/material/dialog';
 import { SelectOption } from 'src/app/core/core.models';
 import { DialogData } from 'src/app/core/dialog.models';
-import ignoreFalsy from 'src/app/core/operators/ignoreFalsy';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { EditNoteDialogData } from './edit-note-dialog.model';
 import { VisibilityLevel } from 'src/app/core/sharing.models';
+import ignoreFalsy from 'src/app/core/operators/ignoreFalsy';
+import { MatChipEditedEvent, MatChipInputEvent } from '@angular/material/chips';
 
 @Component({
   selector: 'app-edit-note-dialog',
@@ -21,13 +23,18 @@ export class EditNoteDialogComponent implements OnInit {
     name: ['', [Validators.required]],
     visibility: this.fb.nonNullable.control<VisibilityLevel>('Private', [
       Validators.required,
-    ]),
+    ])
   });
+
+  public readonly separatorKeyCodes = [ENTER, COMMA] as const;
+
+  public readonly tags: string[] = [...(this.data.value?.tags ?? [])];
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly dialogRef: MatDialogRef<EditNoteDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public readonly data: DialogData<EditNoteDialogData>
+    @Inject(MAT_DIALOG_DATA)
+    public readonly data: DialogData<EditNoteDialogData>
   ) {}
 
   ngOnInit(): void {
@@ -57,9 +64,8 @@ export class EditNoteDialogComponent implements OnInit {
         sharingInfo: {
           visibility: controls.visibility.value,
         },
-        tags: [],
-        id: this.data.value?.id,
-        relatedIds: []
+        tags: this.tags,
+        id: this.data.value?.id
       };
     } else {
       data = undefined;
@@ -76,12 +82,52 @@ export class EditNoteDialogComponent implements OnInit {
     ] as SelectOption<VisibilityLevel>[];
   }
 
+  public addTag(event: MatChipInputEvent) {
+    if (this.tags.length >= 10) {
+      return;
+    }
+
+    const value = event.value.trim();
+
+    if (!value || !!this.tags.find((x) => x === value)) {
+      return;
+    }
+
+    this.tags.push(value);
+    event.chipInput.clear();
+  }
+
+  public removeTag(tag: string) {
+    const idx = this.tags.findIndex(x => x === tag);
+    if (idx < 0) {
+      return;
+    }
+
+    this.tags.splice(idx, 1);
+  }
+
+  public editTag(tag: string, event: MatChipEditedEvent) {
+    const value = event.value.trim();
+
+    if (!value) {
+      this.removeTag(tag);
+    }
+
+    const idx = this.tags.findIndex(x => x === tag);
+    if (idx < 0) {
+      return;
+    }
+
+    this.tags[idx] = value;
+  }
+
   public static open(service: MatDialog, data: DialogData<EditNoteDialogData>) {
     return service
-      .open<EditNoteDialogComponent, DialogData<EditNoteDialogData>, EditNoteDialogData>(
+      .open<
         EditNoteDialogComponent,
-        { data }
-      )
+        DialogData<EditNoteDialogData>,
+        EditNoteDialogData
+      >(EditNoteDialogComponent, { data })
       .afterClosed()
       .pipe(ignoreFalsy());
   }

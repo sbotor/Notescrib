@@ -3,6 +3,9 @@ import { Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { BrowserDialogService } from '../../services/browser-dialog.service';
 import { WorkspaceBrowserService } from '../../services/workspace-browser.service';
 import { FolderOverview } from '../../workspaces.models';
+import { Router } from '@angular/router';
+import { NoteOverview } from 'src/app/features/notes/notes.models';
+import { routeConfig } from 'src/app/route-config';
 
 @Component({
   selector: 'app-browser-list',
@@ -16,7 +19,8 @@ export class BrowserListComponent implements OnDestroy {
 
   constructor(
     private readonly browserService: WorkspaceBrowserService,
-    public readonly dialog: BrowserDialogService
+    public readonly dialog: BrowserDialogService,
+    private readonly router: Router
   ) {}
 
   ngOnDestroy(): void {
@@ -51,5 +55,9 @@ export class BrowserListComponent implements OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
+  }
+
+  public async onNoteSelect(note: NoteOverview) {
+    await this.router.navigate(['/', routeConfig.notes.prefix, note.id]);
   }
 }

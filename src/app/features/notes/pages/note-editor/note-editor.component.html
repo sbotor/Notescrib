@@ -1,45 +1,77 @@
-<div *ngIf="getNote() | async as note; else loading" class="flex-fill flex-col">
+<div *ngIf="note$ | async as note; else loading" class="flex-fill flex-col">
   <mat-toolbar *ngIf="!note.isReadonly">
-    <button mat-icon-button (click)="openEditDialog()">
-      <mat-icon>edit</mat-icon>
-    </button>
+    <mat-icon class="toolbar-icon">note</mat-icon>
     <span>{{note.name}}{{isDirty() ? '*' : ''}}</span>
-    <button mat-icon-button [disabled]="!isDirty()" (click)="save()">
+    <button mat-icon-button [disabled]="!isDirty()" (click)="save()" matTooltip="Save">
       <mat-icon>save</mat-icon>
     </button>
 
     <span class="toolbar-spacer"></span>
 
-    <span>{{getCurrentModeText()}}</span>
-    <button mat-icon-button *ngIf="!note.isReadonly" [matMenuTriggerFor]="viewModeMenu"><mat-icon>settings</mat-icon></button>
+    <button mat-icon-button (click)="openEditDialog()" matTooltip="Options">
+      <mat-icon>settings</mat-icon>
+    </button>
+    <button mat-button *ngIf="!note.isReadonly" [matMenuTriggerFor]="viewModeMenu">
+      <span>{{getCurrentModeText()}}</span>
+      <mat-icon>{{getCurrentModeIcon()}}</mat-icon>
+    </button>
+    <button mat-icon-button (click)="relatedDrawer.toggle()"
+      matTooltip="Related notes"><mat-icon>link</mat-icon></button>
   </mat-toolbar>
 
   <mat-toolbar *ngIf="note.isReadonly" class="toolbar">
+    <mat-icon>note</mat-icon>
     <span>{{note.name}}</span>
   </mat-toolbar>
 
-  <ng-container [ngSwitch]="getMode()">
-    <div *ngSwitchCase="'edit'" class="editor-wrapper">
-      <app-editor-field class="editor-container"></app-editor-field>
-    </div>
+  <mat-drawer-container autosize class="flex-fill">
+    <mat-drawer #relatedDrawer mode="side" position="end" class="related-drawer">
+      <div class="related-drawer-content">
+        <div class="related-notes-header">
+          <h1>Related notes</h1>
+          <button mat-icon-button (click)="openAddRelatedDialog()"><mat-icon>add</mat-icon></button>
+        </div>
+        <mat-divider></mat-divider>
+        <mat-list *ngIf="!!note.related">
+          <mat-list-item *ngFor="let related of note.related">
+            <span matListItemTitle>{{related.name}}</span>
+            <div matListItemMeta>
+              <button mat-button [routerLink]="getNoteRoute(note.id)">Open</button>
+              <button mat-button (click)="removeRelatedNote(note)"><mat-icon>remove</mat-icon>Remove</button>
+            </div>
+          </mat-list-item>
+        </mat-list>
 
-    <div *ngSwitchCase="'preview'" class="editor-wrapper">
-      <app-editor-field class="editor-container"></app-editor-field>
-      <mat-divider [vertical]="true"></mat-divider>
-      <app-editor-preview class="preview-container"></app-editor-preview>
-    </div>
+        <div *ngIf="!note.related">No related notes</div>
+      </div>
+    </mat-drawer>
 
-    <div *ngSwitchCase="'readonly'" class="editor-wrapper">
-      <app-editor-preview class="preview-container"></app-editor-preview>
-    </div>
-  </ng-container>
+    <mat-drawer-content>
+      <ng-container [ngSwitch]="getMode()">
+        <div *ngSwitchCase="'edit'" class="editor-wrapper">
+          <app-editor-field class="editor-container"></app-editor-field>
+        </div>
+
+        <div *ngSwitchCase="'preview'" class="editor-wrapper">
+          <app-editor-field class="editor-container"></app-editor-field>
+          <mat-divider [vertical]="true"></mat-divider>
+          <app-editor-preview class="preview-container"></app-editor-preview>
+        </div>
+
+        <div *ngSwitchCase="'readonly'" class="editor-wrapper">
+          <app-editor-preview class="preview-container"></app-editor-preview>
+        </div>
+      </ng-container>
+    </mat-drawer-content>
+  </mat-drawer-container>
+
 </div>
 
 <mat-menu #viewModeMenu>
   <ng-template matMenuContent>
     <button mat-menu-item (click)="setMode('edit')"><mat-icon>edit</mat-icon>Edit</button>
     <button mat-menu-item (click)="setMode('preview')"><mat-icon>vertical_split</mat-icon>Edit with preview</button>
-    <button mat-menu-item (click)="setMode('readonly')"><mat-icon>visibility</mat-icon>Read only</button>
+    <button mat-menu-item (click)="setMode('readonly')"><mat-icon>visibility</mat-icon>Read</button>
   </ng-template>
 </mat-menu>
 

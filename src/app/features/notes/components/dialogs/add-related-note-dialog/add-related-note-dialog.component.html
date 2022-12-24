@@ -1,0 +1,9 @@
+<div mat-dialog-title>{{data.title}}</div>
+
+<div mat-dialog-content class="note-search">
+  <app-note-search title="Choose related note" (select)="tryClose($event.id)" [isMinimal]="true"></app-note-search>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="close(undefined)">Cancel</button>
+</div>

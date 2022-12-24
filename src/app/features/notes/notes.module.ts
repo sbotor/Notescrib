@@ -15,6 +15,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [NoteEditorComponent],
@@ -33,7 +36,10 @@ import { MatMenuModule } from '@angular/material/menu';
     MatButtonModule,
     MatButtonToggleModule,
     MatDividerModule,
-    MatMenuModule
+    MatMenuModule,
+    MatSidenavModule,
+    MatListModule,
+    MatTooltipModule,
   ],
 })
 export class NotesModule {}

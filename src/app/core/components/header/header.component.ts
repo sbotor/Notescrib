@@ -27,9 +27,9 @@ export class HeaderComponent {
     return this.authService.isLoggedIn();
   }
 
-  public logout() {
+  public async logout() {
     this.authService.logout();
-    this.router.navigate(['']);
+    await this.router.navigate(['']);
   }
 
   public onSidenavToggle() {

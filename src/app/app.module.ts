@@ -8,7 +8,6 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './core/components/header/header.component';
 import { httpInterceptorProviders } from './app.interceptors';
-import { ConfirmationDialogComponent } from './core/components/confirmation-dialog/confirmation-dialog.component';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -28,7 +27,6 @@ import { NotFoundComponent } from './core/pages/not-found/not-found.component';
     AppComponent,
     HeaderComponent,
     HomeComponent,
-    ConfirmationDialogComponent,
     LayoutComponent,
     NotFoundComponent
   ],

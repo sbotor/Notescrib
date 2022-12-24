@@ -15,19 +15,15 @@ import { AuthService } from '../auth.service';
 export class MustBeLoggedInGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
-  canActivate(
+  async canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ):
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree>
-    | boolean
-    | UrlTree {
+  ): Promise<boolean> {
     if (this.authService.isLoggedIn()) {
       return true;
     }
 
-    this.router.navigate(['login']);
+    await this.router.navigate(['login']);
     return false;
   }
 }

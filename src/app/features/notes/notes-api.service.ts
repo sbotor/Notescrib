@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { NoteDetails, NoteOverview } from './notes.models';
@@ -30,6 +30,18 @@ export class NotesApiService {
     return this.client.put(`${NotesApiService.URL}/${id}`, request);
   }
 
+  public addRelatedNotes(id: string, relatedIds: string[]) {
+    return this.client.put(`${NotesApiService.URL}/${id}/related`, relatedIds);
+  }
+
+  public deleteRelatedNotes(id: string, relatedIds: string[]) {
+    const params = new HttpParams().appendAll({ relatedId: relatedIds });
+
+    return this.client.delete(`${NotesApiService.URL}/${id}/related`, {
+      params,
+    });
+  }
+
   public deleteNote(id: string) {
     return this.client.delete(`${NotesApiService.URL}/${id}`);
   }
@@ -39,6 +51,8 @@ export class NotesApiService {
   }
 
   public searchNotes(params: SearchNotesParams) {
-    return this.client.get<PagedList<NoteDetails>>(NotesApiService.URL, { params: {...params} });
+    return this.client.get<PagedList<NoteDetails>>(NotesApiService.URL, {
+      params: { ...params },
+    });
   }
 }

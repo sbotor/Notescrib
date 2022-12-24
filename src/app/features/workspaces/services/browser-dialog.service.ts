@@ -11,7 +11,9 @@ import { EditFolderDialogComponent } from '../components/dialogs/edit-folder-dia
 import { FolderOverview } from '../workspaces.models';
 import { WorkspaceBrowserService } from './workspace-browser.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BrowserDialogService {
   constructor(
     private dialog: MatDialog,
