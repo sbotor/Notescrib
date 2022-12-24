@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   ReplaySubject,
   Subject,
@@ -18,7 +18,7 @@ import { EditorMode } from 'src/app/features/editor/editor.models';
 import { MatDialog } from '@angular/material/dialog';
 import { EditNoteDialogComponent } from '../../components/dialogs/edit-note-dialog/edit-note-dialog.component';
 import { EditNoteDialogData } from '../../components/dialogs/edit-note-dialog/edit-note-dialog.model';
-import { ConfirmationDialogData, DialogData } from 'src/app/core/dialog.models';
+import { DialogData } from 'src/app/core/dialog.models';
 import { AddRelatedNoteDialogComponent } from '../../components/dialogs/add-related-note-dialog/add-related-note-dialog.component';
 import { routeConfig } from 'src/app/route-config';
 import { ConfirmationDialogComponent } from 'src/app/core/components/confirmation-dialog/confirmation-dialog.component';
@@ -44,7 +44,8 @@ export class NoteEditorComponent implements OnInit, OnDestroy {
     route: ActivatedRoute,
     private readonly api: NotesApiService,
     private readonly editorService: EditorService,
-    private readonly dialog: MatDialog
+    private readonly dialog: MatDialog,
+    private readonly router: Router
   ) {
     route.paramMap.pipe(takeUntil(this.destroy$)).subscribe((x) => {
       this.noteId = x.get('id') ?? '';
@@ -125,7 +126,8 @@ export class NoteEditorComponent implements OnInit, OnDestroy {
 
     AddRelatedNoteDialogComponent.open(this.dialog, data)
       .pipe(
-        concatMap((x) => this.api.addRelatedNotes(this.noteId, [x.id])),
+        tap((x) => console.log(x)),
+        concatMap((x) => this.api.addRelatedNotes(this.noteId, [x])),
         switchMap(() => this.api.getNote(this.noteId)),
         takeUntil(this.destroy$)
       )
@@ -133,12 +135,14 @@ export class NoteEditorComponent implements OnInit, OnDestroy {
   }
 
   public removeRelatedNote(note: NoteOverview) {
-    ConfirmationDialogComponent.open(this.dialog)
+    ConfirmationDialogComponent.open(this.dialog, {})
       .pipe(
-        filter(x => !!x),
+        filter((x) => !!x),
         concatMap((_) => this.api.deleteRelatedNotes(this.noteId, [note.id])),
         switchMap(() => this.api.getNote(this.noteId)),
-        takeUntil(this.destroy$));
+        takeUntil(this.destroy$)
+      )
+      .subscribe((x) => this.noteSubject.next(x));
   }
 
   public getCurrentModeText() {
@@ -163,7 +167,12 @@ export class NoteEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  public getNoteRoute(id: string) {
-    return `/${routeConfig.notes}/${id}`;
+  public async navigateToNote(id: string) {
+    await this.router
+      .navigateByUrl('/')
+      .then(
+        async () =>
+          await this.router.navigate(['/', routeConfig.notes.prefix, id])
+      );
   }
 }

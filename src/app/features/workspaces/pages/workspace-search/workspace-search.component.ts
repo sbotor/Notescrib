@@ -1,18 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
-import {
-  BehaviorSubject,
-  ReplaySubject,
-  Subject,
-  combineLatest,
-  debounceTime,
-  distinctUntilChanged,
-  switchMap,
-  takeUntil,
-} from 'rxjs';
-import { AuthService } from 'src/app/features/auth/auth.service';
-import { NotesApiService } from 'src/app/features/notes/notes-api.service';
+
 import { NoteOverview } from 'src/app/features/notes/notes.models';
 import { routeConfig } from 'src/app/route-config';
 

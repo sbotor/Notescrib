@@ -5,7 +5,6 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { DialogData } from 'src/app/core/dialog.models';
-import { AddRelatedNoteDialogData } from './add-related-note-dialog.model';
 import ignoreFalsy from 'src/app/core/operators/ignoreFalsy';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -41,7 +40,7 @@ export class AddRelatedNoteDialogComponent {
       .open<
         AddRelatedNoteDialogComponent,
         DialogData<string>,
-        AddRelatedNoteDialogData
+        string
       >(AddRelatedNoteDialogComponent, { data })
       .afterClosed()
       .pipe(ignoreFalsy());

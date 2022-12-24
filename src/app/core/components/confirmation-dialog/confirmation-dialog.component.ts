@@ -22,7 +22,7 @@ export class ConfirmationDialogComponent {
     this.dialogRef.close(choice);
   }
 
-  public static open(service: MatDialog, data?: ConfirmationDialogData) {
+  public static open(service: MatDialog, data: ConfirmationDialogData) {
     return service
       .open<ConfirmationDialogComponent, ConfirmationDialogData, boolean>(
         ConfirmationDialogComponent,

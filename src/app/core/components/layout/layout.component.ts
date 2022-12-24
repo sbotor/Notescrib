@@ -49,6 +49,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   public async logout() {
     this.authService.logout();
-    await this.router.navigate(['']);
+    await this.router.navigateByUrl('/');
   }
 }

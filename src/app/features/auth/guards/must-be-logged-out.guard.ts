@@ -24,7 +24,7 @@ export class MustBeLoggedOutGuard implements CanActivate {
       return true;
     }
 
-    await this.router.navigate([''])
+    await this.router.navigateByUrl('/')
     return false;
   }
 }

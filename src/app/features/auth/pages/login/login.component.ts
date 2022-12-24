@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { AuthService } from '../../auth.service';
 import { UsersApiService } from 'src/app/features/users/users-api.service';
+import { routeConfig } from 'src/app/route-config';
 
 @Component({
   selector: 'app-login',
@@ -48,7 +49,13 @@ export class LoginComponent implements OnDestroy {
         this.loginForm.controls.password.value
       )
       .pipe(takeUntil(this.destroy$))
-      .subscribe(async () => await this.router.navigate(['workspace/browse']));
+      .subscribe(
+        async () =>
+          await this.router.navigate([
+            routeConfig.workspaces.prefix,
+            routeConfig.workspaces.browse,
+          ])
+      );
   }
 
   public register() {

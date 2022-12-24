@@ -31,12 +31,11 @@ export class NotesApiService {
   }
 
   public addRelatedNotes(id: string, relatedIds: string[]) {
-    return this.client.put(`${NotesApiService.URL}/${id}/related`, relatedIds);
+    return this.client.post(`${NotesApiService.URL}/${id}/related`, relatedIds);
   }
 
   public deleteRelatedNotes(id: string, relatedIds: string[]) {
-    const params = new HttpParams().appendAll({ relatedId: relatedIds });
-
+    const params = new HttpParams().appendAll({ relatedIds });
     return this.client.delete(`${NotesApiService.URL}/${id}/related`, {
       params,
     });

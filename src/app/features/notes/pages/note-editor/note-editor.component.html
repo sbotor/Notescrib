@@ -36,8 +36,8 @@
           <mat-list-item *ngFor="let related of note.related">
             <span matListItemTitle>{{related.name}}</span>
             <div matListItemMeta>
-              <button mat-button [routerLink]="getNoteRoute(note.id)">Open</button>
-              <button mat-button (click)="removeRelatedNote(note)"><mat-icon>remove</mat-icon>Remove</button>
+              <button mat-button (click)="navigateToNote(related.id)">Open</button>
+              <button mat-button (click)="removeRelatedNote(related)"><mat-icon>remove</mat-icon>Remove</button>
             </div>
           </mat-list-item>
         </mat-list>
