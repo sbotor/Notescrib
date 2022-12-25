@@ -5,7 +5,6 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { ConfirmationDialogData } from '../../dialog.models';
-import ignoreFalsy from '../../operators/ignoreFalsy';
 
 @Component({
   selector: 'app-confirmation-dialog',
@@ -28,7 +27,6 @@ export class ConfirmationDialogComponent {
         ConfirmationDialogComponent,
         { data }
       )
-      .afterClosed()
-      .pipe(ignoreFalsy());
+      .afterClosed();
   }
 }

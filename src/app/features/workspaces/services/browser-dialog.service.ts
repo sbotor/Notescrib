@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { concatMap, switchMap } from 'rxjs';
+import { concatMap, filter, switchMap } from 'rxjs';
 import { ConfirmationDialogComponent } from 'src/app/core/components/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogData, DialogData } from 'src/app/core/dialog.models';
 import { EditNoteDialogData } from '../../notes/components/dialogs/edit-note-dialog/edit-note-dialog.model';
@@ -10,14 +10,16 @@ import { EditFolderDialogData } from '../components/dialogs/edit-folder-dialog/e
 import { EditFolderDialogComponent } from '../components/dialogs/edit-folder-dialog/edit-folder-dialog.component';
 import { FolderOverview } from '../workspaces.models';
 import { WorkspaceBrowserService } from './workspace-browser.service';
+import { NoteTemplateChooserDialogComponent } from '../components/dialogs/note-template-chooser-dialog/note-template-chooser-dialog.component';
+import { TemplatesApiService } from '../../templates/templates-api.service';
+import { NoteTemplateDetails } from '../../templates/templates.models';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class BrowserDialogService {
   constructor(
-    private dialog: MatDialog,
-    private browserService: WorkspaceBrowserService
+    private readonly dialog: MatDialog,
+    private readonly browserService: WorkspaceBrowserService,
+    private readonly templatesApi: TemplatesApiService
   ) {}
 
   public editFolder(folder: FolderOverview) {
@@ -37,6 +39,7 @@ export class BrowserDialogService {
     } as ConfirmationDialogData;
 
     return ConfirmationDialogComponent.open(this.dialog, data).pipe(
+      filter((x) => !!x),
       concatMap(() => this.browserService.removeFolder(folder.id))
     );
   }
@@ -79,7 +82,23 @@ export class BrowserDialogService {
     } as ConfirmationDialogData;
 
     return ConfirmationDialogComponent.open(this.dialog, data).pipe(
+      filter((x) => !!x),
       concatMap(() => this.browserService.removeNote(note.id))
     );
+  }
+
+  public createNoteFromTemplate() {
+    return NoteTemplateChooserDialogComponent.open(this.dialog, {
+      title: 'Select template',
+    }).pipe(
+      switchMap((x) => this.templatesApi.getTemplate(x)),
+      switchMap((x) => this.openAddNoteDialog(x))
+    );
+  }
+
+  private openAddNoteDialog(template: NoteTemplateDetails) {
+    return EditNoteDialogComponent.open(this.dialog, {
+      title: `Create note from template: ${template.name}`,
+    }).pipe(concatMap((x) => this.browserService.addNote(x, template.content)));
   }
 }

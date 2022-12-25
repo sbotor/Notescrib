@@ -11,9 +11,6 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { BrowserToolbarComponent } from './components/browser-toolbar/browser-toolbar.component';
-import { WorkspaceBrowserService } from './services/workspace-browser.service';
-import { BrowserDialogService } from './services/browser-dialog.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -32,14 +29,17 @@ import { ConfirmationDialogModule } from 'src/app/core/components/confirmation-d
 import { NoteListModule } from '../notes/components/note-list/note-list.module';
 import { NoteSearcherModule } from '../notes/components/note-searcher/note-searcher.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { NoteTemplateChooserDialogComponent } from './components/dialogs/note-template-chooser-dialog/note-template-chooser-dialog.component';
+import { TemplateSearcherModule } from '../templates/components/template-searcher/template-searcher.module';
+import { BrowserDialogService } from './services/browser-dialog.service';
 
 @NgModule({
   declarations: [
     WorkspaceBrowserComponent,
     EditFolderDialogComponent,
-    BrowserToolbarComponent,
     BrowserListComponent,
     WorkspaceSearchComponent,
+    NoteTemplateChooserDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -50,6 +50,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ConfirmationDialogModule,
     NoteListModule,
     NoteSearcherModule,
+    TemplateSearcherModule,
 
     MatInputModule,
     MatFormFieldModule,
@@ -67,6 +68,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatPaginatorModule,
     MatChipsModule,
     MatTooltipModule
+  ],
+  providers: [
+    BrowserDialogService
   ]
 })
 export class WorkspacesModule {}

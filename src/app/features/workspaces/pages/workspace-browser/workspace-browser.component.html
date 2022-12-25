@@ -1,5 +1,35 @@
 <div *ngIf="folder$ | async as folder; else loading" class="flex-fil flex-col">
-  <app-browser-toolbar [folder]="folder"></app-browser-toolbar>
+  <mat-toolbar>
+    <button *ngIf="canNavigateUp()" mat-icon-button (click)="navigateUp()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span>{{formatPath()}}</span>
+
+    <span class="toolbar-spacer"></span>
+
+    <button mat-icon-button [matMenuTriggerFor]="newItemMenu">
+      <mat-icon matTooltip="Add">add</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <mat-menu #newItemMenu>
+    <button mat-menu-item (click)="createFolder()">
+      <mat-icon>create_new_folder</mat-icon>
+      <span>New folder</span>
+    </button>
+
+    <mat-divider></mat-divider>
+
+    <button mat-menu-item (click)="createNote()">
+      <mat-icon>note_add</mat-icon>
+      <span>New note</span>
+    </button>
+
+    <button mat-menu-item (click)="createNoteFromTemplate()">
+      <mat-icon>library_add</mat-icon>
+      <span>New note from template</span>
+    </button>
+  </mat-menu>
   <app-browser-list></app-browser-list>
 </div>
 

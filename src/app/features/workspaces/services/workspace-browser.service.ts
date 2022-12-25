@@ -75,13 +75,14 @@ export class WorkspaceBrowserService {
     return this.workspacesApi.deleteFolder(id);
   }
 
-  public addNote(data: EditNoteDialogData) {
+  public addNote(data: EditNoteDialogData, content?: string) {
     const currentFolder = this.navigator.getCurrentFolder();
     const request = {
       name: data.name,
       folderId: currentFolder?.id,
       sharingInfo: data.sharingInfo,
       tags: data.tags,
+      content: content
     } as CreateNoteRequest;
 
     return this.notesApi.createNote(request);

@@ -21,6 +21,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { HomeComponent } from './features/home/pages/home-component/home.component';
 import { NotFoundComponent } from './core/pages/not-found/not-found.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -46,6 +49,7 @@ import { NotFoundComponent } from './core/pages/not-found/not-found.component';
     MatListModule,
     MatMenuModule,
     MatProgressBarModule,
+    MatTooltipModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],

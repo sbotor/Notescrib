@@ -139,7 +139,7 @@ export class TemplateSearcherComponent implements OnInit, OnDestroy {
   public delete(template: NoteTemplateOverview) {
     ConfirmationDialogComponent.open(this.dialog, {})
       .pipe(
-        filter((x) => x),
+        filter((x) => !!x),
         switchMap((_) => this.templatesApi.deleteTemplate(template.id)),
         takeUntil(this.destroy$)
       )

@@ -1,5 +1,5 @@
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
-import { ErrorInterceptor } from "./core/error.interceptor";
+import { ErrorInterceptor } from "./core/errors/error.interceptor";
 import { AuthInterceptor } from "./features/auth/auth.interceptor";
 
 export const httpInterceptorProviders = [

@@ -1,0 +1,9 @@
+<div mat-dialog-title>{{data.title}}</div>
+
+<div mat-dialog-content class="note-search">
+  <app-template-searcher (select)="close($event.id)" title="Templates" class="template-search"></app-template-searcher>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="close(undefined)">Cancel</button>
+</div>
