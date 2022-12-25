@@ -12,7 +12,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from "@angular/material/icon";
 import { AddRelatedNoteDialogComponent } from './add-related-note-dialog/add-related-note-dialog.component';
-import { NoteSearchModule } from "../note-search/note-search.module";
+import { NoteSearcherModule } from "../note-searcher/note-searcher.module";
 
 @NgModule({
   declarations: [
@@ -23,7 +23,7 @@ import { NoteSearchModule } from "../note-search/note-search.module";
     CommonModule,
     ReactiveFormsModule,
 
-    NoteSearchModule,
+    NoteSearcherModule,
 
     MatDialogModule,
     MatInputModule,

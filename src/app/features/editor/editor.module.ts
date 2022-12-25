@@ -4,21 +4,33 @@ import { EditorFieldComponent } from './components/editor-field/editor-field.com
 import { EditorPreviewComponent } from './components/editor-preview/editor-preview.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { PreviewEditorComponent } from './components/preview-editor/preview-editor.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { EditorModeIconPipe } from './pipes/editor-mode-icon.pipe';
+import { EditorModeNamePipe } from './pipes/editor-mode-name.pipe';
 
 @NgModule({
   declarations: [
     EditorFieldComponent,
-    EditorPreviewComponent
+    EditorPreviewComponent,
+    PreviewEditorComponent,
+    EditorModeIconPipe,
+    EditorModeNamePipe
   ],
   imports: [
     CommonModule,
 
     MatToolbarModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatDividerModule
   ],
   exports: [
     EditorFieldComponent,
-    EditorPreviewComponent
+    EditorPreviewComponent,
+    PreviewEditorComponent,
+
+    EditorModeIconPipe,
+    EditorModeNamePipe
   ]
 })
 export class EditorModule { }

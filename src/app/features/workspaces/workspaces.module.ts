@@ -30,7 +30,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { CoreModule } from 'src/app/core/core.module';
 import { ConfirmationDialogModule } from 'src/app/core/components/confirmation-dialog/confirmation-dialog.module';
 import { NoteListModule } from '../notes/components/note-list/note-list.module';
-import { NoteSearchModule } from '../notes/components/note-search/note-search.module';
+import { NoteSearcherModule } from '../notes/components/note-searcher/note-searcher.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,7 @@ import { NoteSearchModule } from '../notes/components/note-search/note-search.mo
     CoreModule,
     ConfirmationDialogModule,
     NoteListModule,
-    NoteSearchModule,
+    NoteSearcherModule,
 
     MatInputModule,
     MatFormFieldModule,
@@ -64,7 +65,8 @@ import { NoteSearchModule } from '../notes/components/note-search/note-search.mo
     MatProgressBarModule,
     MatCheckboxModule,
     MatPaginatorModule,
-    MatChipsModule
+    MatChipsModule,
+    MatTooltipModule
   ]
 })
 export class WorkspacesModule {}

@@ -1,7 +1,7 @@
 <div mat-dialog-title>{{data.title}}</div>
 
 <div mat-dialog-content class="note-search">
-  <app-note-search title="Choose related note" (select)="tryClose($event.id)" [isMinimal]="true"></app-note-search>
+  <app-note-searcher title="Choose related note" (select)="tryClose($event.id)" [isMinimal]="true"></app-note-searcher>
 </div>
 
 <div mat-dialog-actions>

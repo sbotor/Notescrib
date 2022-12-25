@@ -1,0 +1,15 @@
+<ng-container [ngSwitch]="getMode()">
+  <div *ngSwitchCase="'edit'" class="editor-wrapper">
+    <app-editor-field class="editor-container"></app-editor-field>
+  </div>
+
+  <div *ngSwitchCase="'preview'" class="editor-wrapper">
+    <app-editor-field class="editor-container"></app-editor-field>
+    <mat-divider [vertical]="true"></mat-divider>
+    <app-editor-preview class="preview-container"></app-editor-preview>
+  </div>
+
+  <div *ngSwitchCase="'readonly'" class="editor-wrapper">
+    <app-editor-preview class="preview-container"></app-editor-preview>
+  </div>
+</ng-container>

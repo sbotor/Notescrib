@@ -6,6 +6,7 @@ export interface CreateNoteRequest {
   folderId?: string;
   sharingInfo?: SharingInfo;
   tags: string[];
+  content?: string;
 }
 
 export interface UpdateNoteRequest {

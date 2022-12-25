@@ -1,7 +1,9 @@
-<div *ngIf="isLoggedIn(); else elseBlock;">
-  <h1 class="header">Hello, {{username$ | async}}</h1>
-</div>
+<div class="wrapper">
+  <div *ngIf="isLoggedIn(); else elseBlock;">
+    <h1>Hello, {{username$ | async}}</h1>
+  </div>
 
-<ng-template #elseBlock>
-  <h1 class="header">Please, login <a routerLink="{{routes.login}}">here</a></h1>
-</ng-template>
+  <ng-template #elseBlock>
+    <h1>Please, login <a routerLink="{{routes.login}}">here</a></h1>
+  </ng-template>
+</div>

@@ -12,8 +12,8 @@
       <mat-icon>settings</mat-icon>
     </button>
     <button mat-button *ngIf="!note.isReadonly" [matMenuTriggerFor]="viewModeMenu">
-      <span>{{getCurrentModeText()}}</span>
-      <mat-icon>{{getCurrentModeIcon()}}</mat-icon>
+      <span>{{getMode() | editorModeName}}</span>
+      <mat-icon>{{getMode() | editorModeIcon}}</mat-icon>
     </button>
     <button mat-icon-button (click)="relatedDrawer.toggle()"
       matTooltip="Related notes"><mat-icon>link</mat-icon></button>
@@ -29,7 +29,7 @@
       <div class="related-drawer-content">
         <div class="related-notes-header">
           <h1>Related notes</h1>
-          <button mat-icon-button (click)="openAddRelatedDialog()"><mat-icon>add</mat-icon></button>
+          <button mat-icon-button (click)="openAddRelatedDialog()" matTooltip="Add"><mat-icon>add</mat-icon></button>
         </div>
         <mat-divider></mat-divider>
         <mat-list *ngIf="!!note.related">
@@ -47,21 +47,7 @@
     </mat-drawer>
 
     <mat-drawer-content>
-      <ng-container [ngSwitch]="getMode()">
-        <div *ngSwitchCase="'edit'" class="editor-wrapper">
-          <app-editor-field class="editor-container"></app-editor-field>
-        </div>
-
-        <div *ngSwitchCase="'preview'" class="editor-wrapper">
-          <app-editor-field class="editor-container"></app-editor-field>
-          <mat-divider [vertical]="true"></mat-divider>
-          <app-editor-preview class="preview-container"></app-editor-preview>
-        </div>
-
-        <div *ngSwitchCase="'readonly'" class="editor-wrapper">
-          <app-editor-preview class="preview-container"></app-editor-preview>
-        </div>
-      </ng-container>
+      <app-preview-editor class="editor"></app-preview-editor>
     </mat-drawer-content>
   </mat-drawer-container>
 

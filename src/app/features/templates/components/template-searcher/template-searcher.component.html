@@ -1,0 +1,48 @@
+<mat-toolbar>
+  <span>{{title}}</span>
+
+  <span class="toolbar-spacer"></span>
+
+  <div class="toolbar-end">
+    <button mat-icon-button matTooltip="Add" (click)="openAddDialog()"><mat-icon>add</mat-icon></button>
+    <mat-form-field style="margin-bottom: -1.25em">
+      <mat-icon matPrefix>search</mat-icon>
+      <input #textInput type="text" matInput (input)="onTextFilterChange(textInput.value)" />
+    </mat-form-field>
+  </div>
+</mat-toolbar>
+
+<div *ngIf="templates$ | async as templates; else loading" class="flex-col flex-fill">
+  <mat-nav-list class="flex-fill">
+    <mat-list-item *ngFor="let template of templates">
+      <mat-icon matListItemIcon (click)="onSelect(template)">library_books</mat-icon>
+      <div matListItemTitle (click)="onSelect(template)">{{template.name}}</div>
+      <div matListItemLine (click)="onSelect(template)">{{(template.updated ?? template.created) | formatDate}}</div>
+      <div matListItemMeta>
+        <button mat-icon-button [matMenuTriggerFor]="templateMenu" [matMenuTriggerData]="{ template }">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </div>
+    </mat-list-item>
+  </mat-nav-list>
+
+  <mat-paginator [pageIndex]="paging.page - 1" [pageSize]="paging.pageSize" [pageSizeOptions]="paging.pageSizeOptions"
+    [length]="paging.totalCount" (page)="onPagingChanged($event)"></mat-paginator>
+</div>
+
+<mat-menu #templateMenu>
+  <ng-template matMenuContent let-template="template">
+    <button mat-menu-item (click)="openEditDialog(template)">
+      <mat-icon>settings</mat-icon>
+      <span>Options</span>
+    </button>
+    <button mat-menu-item (click)="delete(template)">
+      <mat-icon>delete</mat-icon>
+      <span>Remove</span>
+    </button>
+  </ng-template>
+</mat-menu>
+
+<ng-template #loading>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-template>

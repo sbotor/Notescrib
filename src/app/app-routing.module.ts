@@ -22,6 +22,10 @@ const routes: Routes = [
     loadChildren: () => import('./features/notes/notes.module').then(x => x.NotesModule)
   },
   {
+    path: routeConfig.templates.prefix,
+    loadChildren: () => import('./features/templates/templates.module').then(x => x.TemplatesModule)
+  },
+  {
     path: '**',
     component: NotFoundComponent
   }

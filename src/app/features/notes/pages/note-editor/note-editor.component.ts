@@ -32,7 +32,6 @@ export class NoteEditorComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   private noteId = '';
-
   private readonly noteSubject = new ReplaySubject<NoteDetails>(1);
   public readonly note$ = this.noteSubject.pipe(
     tap((x) => {
@@ -79,10 +78,6 @@ export class NoteEditorComponent implements OnInit, OnDestroy {
     return this.editorService.isDirty();
   }
 
-  public getMode() {
-    return this.editorService.getMode();
-  }
-
   public setMode(mode: EditorMode) {
     if (!mode) {
       return;
@@ -111,7 +106,7 @@ export class NoteEditorComponent implements OnInit, OnDestroy {
 
           return EditNoteDialogComponent.open(this.dialog, data);
         }),
-        switchMap((x) => this.api.updateNote(x.id!, x)),
+        switchMap((x) => this.api.updateNote(this.noteId, x)),
         switchMap(() => this.api.getNote(this.noteId)),
         takeUntil(this.destroy$)
       )
@@ -146,25 +141,11 @@ export class NoteEditorComponent implements OnInit, OnDestroy {
   }
 
   public getCurrentModeText() {
-    switch (this.getMode()) {
-      case 'edit':
-        return 'Editing';
-      case 'preview':
-        return 'Editing with preview';
-      case 'readonly':
-        return 'Reading';
-    }
+
   }
 
-  public getCurrentModeIcon() {
-    switch (this.getMode()) {
-      case 'edit':
-        return 'edit';
-      case 'preview':
-        return 'vertical_split';
-      case 'readonly':
-        return 'visibility';
-    }
+  public getMode() {
+    return this.editorService.getMode();
   }
 
   public async navigateToNote(id: string) {

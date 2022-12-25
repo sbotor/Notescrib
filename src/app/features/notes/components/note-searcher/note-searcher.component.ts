@@ -16,11 +16,11 @@ import { NoteOverview } from 'src/app/features/notes/notes.models';
 import { SearchNotesParams } from 'src/app/features/notes/notes.requests';
 
 @Component({
-  selector: 'app-note-search',
-  templateUrl: './note-search.component.html',
-  styleUrls: ['./note-search.component.scss'],
+  selector: 'app-note-searcher',
+  templateUrl: './note-searcher.component.html',
+  styleUrls: ['./note-searcher.component.scss'],
 })
-export class NoteSearchComponent implements OnInit, OnDestroy {
+export class NoteSearcherComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   private readonly notesSubject = new ReplaySubject<NoteOverview[]>();

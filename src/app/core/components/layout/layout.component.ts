@@ -26,6 +26,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
       routeConfig.workspaces.prefix,
       routeConfig.workspaces.search
     ),
+    templateSearch: routeConfig.joinFromRoot(
+      routeConfig.templates.prefix,
+      routeConfig.templates.search
+    )
   };
 
   constructor(

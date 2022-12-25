@@ -16,6 +16,11 @@ export const routeConfig = {
     prefix: 'note',
     editor: ':id',
   },
+  templates: {
+    prefix: 'templates',
+    search: 'search',
+    editor: ':id'
+  },
   join: (...segments: string[]) => segments.join('/'),
   joinFromRoot: (...segments: string[]) => `/${segments.join('/')}`
-};
+} as const;

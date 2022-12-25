@@ -1,0 +1,13 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+.toolbar-icon {
+  margin-right: 10px;
+}
+
+.editor {
+  flex: 1 1 auto;
+}
