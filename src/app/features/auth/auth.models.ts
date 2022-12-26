@@ -5,12 +5,17 @@ export interface AuthModel {
   password: string
 }
 
+export interface AuthResult {
+  success: boolean;
+  message: string;
+}
+
 export interface TokenResponse {
   token: string,
   user: UserDetails
 }
 
-export interface ConfirmEmailData {
+export interface UserTokenData {
   userId: string;
   token: string;
 }

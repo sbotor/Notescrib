@@ -13,7 +13,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
+  MatSnackBarModule,
+} from '@angular/material/snack-bar';
 import { LayoutComponent } from './core/components/layout/layout.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
@@ -22,8 +25,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { HomeComponent } from './features/home/pages/home-component/home.component';
 import { NotFoundComponent } from './core/pages/not-found/not-found.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { MatSelectModule } from '@angular/material/select';
     HeaderComponent,
     HomeComponent,
     LayoutComponent,
-    NotFoundComponent
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,9 +50,19 @@ import { MatSelectModule } from '@angular/material/select';
     MatListModule,
     MatMenuModule,
     MatProgressBarModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
-  providers: [httpInterceptorProviders],
+  providers: [
+    httpInterceptorProviders,
+    {
+      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+      useValue: {
+        duration: 5000,
+        horizontalPosition: 'left',
+        verticalPosition: 'top',
+      },
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

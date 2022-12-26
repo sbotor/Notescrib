@@ -2,10 +2,9 @@ import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { BehaviorSubject, Subject, map, switchMap, takeUntil, tap } from 'rxjs';
 import { UsersApiService } from 'src/app/features/users/users-api.service';
-import { ConfirmEmailData } from '../../auth.models';
+import { AuthResult, UserTokenData } from '../../auth.models';
 import { Buffer } from 'buffer';
 import { routeConfig } from 'src/app/route-config';
-import { ConfirmEmailResult } from './confirm-email.models';
 
 @Component({
   selector: 'app-confirm-email',
@@ -24,7 +23,7 @@ export class ConfirmEmailComponent implements OnDestroy {
   };
 
   private readonly resultSubject = new BehaviorSubject<
-    ConfirmEmailResult | undefined
+    AuthResult | undefined
   >(undefined);
   public readonly result$ = this.resultSubject.asObservable();
 
@@ -44,7 +43,7 @@ export class ConfirmEmailComponent implements OnDestroy {
         error: (_) =>
           this.resultSubject.next({
             success: false,
-            message: 'An error occured',
+            message: 'An error occured.',
           }),
       });
   }
@@ -67,6 +66,6 @@ export class ConfirmEmailComponent implements OnDestroy {
     return {
       userId,
       token,
-    } as ConfirmEmailData;
+    } as UserTokenData;
   }
 }

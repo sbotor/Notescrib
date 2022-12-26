@@ -5,7 +5,8 @@ export const routeConfig = {
   auth: {
     prefix: 'auth',
     login: 'login',
-    confirmEmail: 'confirm'
+    confirmEmail: 'confirm',
+    resetPassword: 'password'
   },
   workspaces: {
     prefix: 'workspace',
@@ -20,6 +21,9 @@ export const routeConfig = {
     prefix: 'templates',
     search: 'search',
     editor: ':id'
+  },
+  users: {
+    prefix: 'user'
   },
   join: (...segments: string[]) => segments.join('/'),
   joinFromRoot: (...segments: string[]) => `/${segments.join('/')}`

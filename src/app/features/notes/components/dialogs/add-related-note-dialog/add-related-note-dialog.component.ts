@@ -26,9 +26,7 @@ export class AddRelatedNoteDialogComponent {
 
   public tryClose(id: string) {
     if (id === this.data?.value) {
-      this.snackBar.open('Cannot choose the current note.', undefined, {
-        duration: 3000,
-      });
+      this.snackBar.open('Cannot choose the current note.');
       return;
     }
 
@@ -37,11 +35,10 @@ export class AddRelatedNoteDialogComponent {
 
   public static open(service: MatDialog, data: DialogData<string>) {
     return service
-      .open<
+      .open<AddRelatedNoteDialogComponent, DialogData<string>, string>(
         AddRelatedNoteDialogComponent,
-        DialogData<string>,
-        string
-      >(AddRelatedNoteDialogComponent, { data })
+        { data }
+      )
       .afterClosed()
       .pipe(ignoreFalsy());
   }

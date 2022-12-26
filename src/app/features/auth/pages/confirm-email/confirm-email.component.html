@@ -4,7 +4,7 @@
     <a mat-raised-button routerLink="{{routes.login}}" color="primary">Login</a>
   </div>
 
-  <div *ngIf="!result.success">
+  <div *ngIf="!result.success" class="msg-wrapper">
     <h1>{{result.message}}</h1>
   </div>
 </div>

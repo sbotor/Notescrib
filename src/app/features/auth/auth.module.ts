@@ -11,12 +11,14 @@ import { LoginComponent } from './pages/login/login.component';
 import { MatButtonModule } from '@angular/material/button';
 import { ConfirmEmailComponent } from './pages/confirm-email/confirm-email.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 
 @NgModule({
   declarations: [
     LoginComponent,
-    ConfirmEmailComponent
+    ConfirmEmailComponent,
+    ResetPasswordComponent
   ],
   imports: [
     CommonModule,

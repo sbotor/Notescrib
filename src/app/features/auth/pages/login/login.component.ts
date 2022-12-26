@@ -65,9 +65,7 @@ export class LoginComponent implements OnDestroy {
 
     const controls = this.registerForm.controls;
     if (controls.password.value !== controls.passwordConfirmation.value) {
-      this.snackBar.open('Passwords do not match.', 'Close', {
-        duration: 1500,
-      });
+      this.snackBar.open('Passwords do not match.');
       return;
     }
 
@@ -77,7 +75,13 @@ export class LoginComponent implements OnDestroy {
         password: controls.password.value,
         passwordConfirmation: controls.passwordConfirmation.value,
       })
-      .pipe(tap(() => this.snackBar.open('Check your email!', 'OK')))
+      .pipe(
+        tap(() =>
+          this.snackBar.open('Please, confirm your email.', 'Ok', {
+            duration: undefined,
+          })
+        )
+      )
       .subscribe(async () => await this.router.navigate(['']));
   }
 }

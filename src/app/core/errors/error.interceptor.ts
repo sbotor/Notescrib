@@ -8,6 +8,8 @@ import {
 } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ErrorResponse } from './error.model';
+import { errorMessages } from './error-messages';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -19,13 +21,44 @@ export class ErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
-        this.snackBar.open(
-          `An error has occured (${err.status}): '${err.message}'`,
-          'Close',
-          { duration: 10000 }
-        );
+        const message = this.extractMessage(err.error);
+        this.snackBar.open(message);
         return throwError(() => err);
       })
     );
+  }
+
+  private extractMessage(err: ErrorResponse) {
+    if (!!err.validationErrors) {
+      return 'Validation errors occured.';
+    }
+
+    if (!!err.errors) {
+      return err.errors.length > 1
+        ? err.errors
+            .map((x) => {
+              const msg = this.getErrorMessage(x.code);
+              return `- ${msg ?? 'Unknown error.'}`;
+            })
+            .join('\n')
+        : err.errors
+            .map((x) => {
+              const msg = this.getErrorMessage(x.code);
+              return msg ?? 'Unknown error.';
+            })
+            .join('\n');
+    }
+
+    return 'An error occured.';
+  }
+
+  private getErrorMessage(code?: string) {
+    if (!code) {
+      return undefined;
+    }
+
+    return code in errorMessages
+      ? errorMessages[code as keyof typeof errorMessages]
+      : undefined;
   }
 }
