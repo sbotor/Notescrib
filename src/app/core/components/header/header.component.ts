@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { map } from 'rxjs';
 import { AuthService } from 'src/app/features/auth/auth.service';
 import { routeConfig } from 'src/app/route-config';
 
@@ -10,10 +9,13 @@ import { routeConfig } from 'src/app/route-config';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-
   public readonly routes = {
     home: routeConfig.root.home,
-    login: routeConfig.joinFromRoot(routeConfig.auth.prefix, routeConfig.auth.login)
+    login: routeConfig.joinFromRoot(
+      routeConfig.auth.prefix,
+      routeConfig.auth.login
+    ),
+    userInfo: routeConfig.joinFromRoot(routeConfig.users.prefix),
   };
 
   @Output()

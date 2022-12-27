@@ -5,8 +5,9 @@ export const routeConfig = {
   auth: {
     prefix: 'auth',
     login: 'login',
-    confirmEmail: 'confirm',
-    resetPassword: 'password'
+    resetPassword: 'password',
+    activate: 'activate',
+    forgottenPassword: 'forgotten-password'
   },
   workspaces: {
     prefix: 'workspace',

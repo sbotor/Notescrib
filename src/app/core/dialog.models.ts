@@ -9,6 +9,6 @@ export interface ConfirmationDialogData extends DialogData<string> {
 }
 
 export interface ConfirmationButton {
-  label: string;
-  color: 'primary' | 'accent' | 'warn';
+  label?: string;
+  color?: 'primary' | 'accent' | 'warn';
 }

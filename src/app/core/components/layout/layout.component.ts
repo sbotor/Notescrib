@@ -29,7 +29,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     templateSearch: routeConfig.joinFromRoot(
       routeConfig.templates.prefix,
       routeConfig.templates.search
-    )
+    ),
   };
 
   constructor(
@@ -54,5 +54,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
   public async logout() {
     this.authService.logout();
     await this.router.navigateByUrl('/');
+  }
+
+  public getRouteClass(route: string) {
+    return this.router.url === route ? 'current-route' : undefined;
   }
 }

@@ -59,7 +59,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
       useValue: {
         duration: 5000,
         horizontalPosition: 'left',
-        verticalPosition: 'top',
+        verticalPosition: 'bottom',
       },
     },
   ],

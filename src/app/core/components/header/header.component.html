@@ -2,30 +2,33 @@
   <button mat-icon-button (click)="onSidenavToggle()">
     <mat-icon>menu</mat-icon>
   </button>
-  <a mat-icon-button [routerLink]="routes.home">
+  <a mat-button [routerLink]="routes.home">
     <mat-icon>home</mat-icon>
+    <span>Home</span>
   </a>
 
   <span class="toolbar-spacer"></span>
 
   <div *ngIf="isUserLoggedIn(); else elseBlock">
-    <button mat-button [matMenuTriggerFor]="userMenu">
-      <mat-icon class="icon">person</mat-icon>
-      <mat-icon class="icon">keyboard_arrow_down</mat-icon>
-    </button>
+    <div *ngIf="user$ | async as user">
+      <button mat-button [matMenuTriggerFor]="userMenu">
+        <mat-icon class="icon">keyboard_arrow_down</mat-icon>
+        <mat-icon class="icon">person</mat-icon>
+        <span class="username">{{user.email}}</span>
+      </button>
+
+      <mat-menu #userMenu>
+        <ng-template matMenuContent>
+          <button mat-menu-item [routerLink]="routes.userInfo"><mat-icon>person_outline</mat-icon>Options</button>
+          <button mat-menu-item (click)="logout()"><mat-icon>exit_to_app</mat-icon>Logout</button>
+        </ng-template>
+      </mat-menu>
+    </div>
   </div>
   <ng-template #elseBlock>
     <a mat-button [routerLink]="routes.login">Login</a>
   </ng-template>
-
 </mat-toolbar>
-
-<mat-menu #userMenu>
-  <ng-template *ngIf="user$| async as user" matMenuContent>
-    <button mat-menu-item disabled>{{user.email}}</button>
-    <button mat-menu-item (click)="logout()">Logout</button>
-  </ng-template>
-</mat-menu>
 
 <ng-template>
   <mat-progress-bar #loading mode="indeterminate"></mat-progress-bar>

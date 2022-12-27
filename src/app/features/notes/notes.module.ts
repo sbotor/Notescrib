@@ -18,6 +18,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { BrowserDialogService } from '../workspaces/services/browser-dialog.service';
 
 @NgModule({
   declarations: [NoteEditorComponent],
@@ -41,5 +42,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatListModule,
     MatTooltipModule,
   ],
+  providers: [BrowserDialogService]
 })
 export class NotesModule {}

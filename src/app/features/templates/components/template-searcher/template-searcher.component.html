@@ -13,18 +13,31 @@
 </mat-toolbar>
 
 <div *ngIf="templates$ | async as templates; else loading" class="flex-col flex-fill">
-  <mat-nav-list class="flex-fill">
-    <mat-list-item *ngFor="let template of templates">
-      <mat-icon matListItemIcon (click)="onSelect(template)">library_books</mat-icon>
-      <div matListItemTitle (click)="onSelect(template)">{{template.name}}</div>
-      <div matListItemLine (click)="onSelect(template)">{{(template.updated ?? template.created) | formatDate}}</div>
-      <div matListItemMeta>
-        <button mat-icon-button [matMenuTriggerFor]="templateMenu" [matMenuTriggerData]="{ template }">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-      </div>
-    </mat-list-item>
-  </mat-nav-list>
+  <div class="flex-fill">
+    <ng-container *ngIf="templates.length > 0; else noTemplates">
+      <mat-nav-list>
+        <mat-list-item *ngFor="let template of templates">
+          <mat-icon matListItemIcon (click)="onSelect(template)">library_books</mat-icon>
+          <div matListItemTitle (click)="onSelect(template)">{{template.name}}</div>
+          <div matListItemLine (click)="onSelect(template)">{{(template.updated ?? template.created) | formatDate}}</div>
+          <div matListItemMeta>
+            <button mat-icon-button [matMenuTriggerFor]="templateMenu" [matMenuTriggerData]="{ template }">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </div>
+        </mat-list-item>
+      </mat-nav-list>
+    </ng-container>
+
+    <ng-template #noTemplates>
+      <mat-list>
+        <mat-list-item>
+          <mat-icon matListItemIcon>clear</mat-icon>
+          <div matListItemTitle>No templates</div>
+        </mat-list-item>
+      </mat-list>
+    </ng-template>
+  </div>
 
   <mat-paginator [pageIndex]="paging.page - 1" [pageSize]="paging.pageSize" [pageSizeOptions]="paging.pageSizeOptions"
     [length]="paging.totalCount" (page)="onPagingChanged($event)"></mat-paginator>

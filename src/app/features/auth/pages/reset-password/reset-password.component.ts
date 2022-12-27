@@ -1,5 +1,15 @@
 import { Component, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subject, map, switchMap, takeUntil, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Subject,
+  map,
+  mergeMap,
+  of,
+  switchMap,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { routeConfig } from 'src/app/route-config';
 import { AuthResult, UserTokenData } from '../../auth.models';
 import { ActivatedRoute, ParamMap } from '@angular/router';
@@ -7,6 +17,9 @@ import { UsersApiService } from 'src/app/features/users/users-api.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UpdateUserPasswordRequest } from 'src/app/features/users/users.requests';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Buffer } from 'buffer';
+import { AuthService } from '../../auth.service';
+import { UserDetails } from 'src/app/features/users/users.models';
 
 @Component({
   selector: 'app-reset-password',
@@ -38,17 +51,25 @@ export class ResetPasswordComponent implements OnDestroy {
   private readonly resultSubject = new BehaviorSubject<AuthResult | undefined>(
     undefined
   );
-  public readonly result$ = this.paramsResultSubject.asObservable();
+  public readonly result$ = this.resultSubject.asObservable();
 
   constructor(
     route: ActivatedRoute,
     private readonly api: UsersApiService,
     private readonly fb: FormBuilder,
-    private readonly snackBar: MatSnackBar
+    private readonly snackBar: MatSnackBar,
+    private readonly authService: AuthService
   ) {
     route.queryParamMap
       .pipe(
+        take(1),
         map(this.extractData),
+        mergeMap((x) =>
+          (this.authService.isLoggedIn()
+            ? this.authService.user$.pipe(take(1))
+            : of(undefined)
+          ).pipe(map((u) => this.checkUser(x, u)))
+        ),
         tap((x) => (this.tokenData = x)),
         takeUntil(this.destroy$)
       )
@@ -68,6 +89,10 @@ export class ResetPasswordComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.destroy$.next();
+  }
+
+  public isUserLoggedIn() {
+    return this.authService.isLoggedIn();
   }
 
   public onSubmit() {
@@ -113,5 +138,13 @@ export class ResetPasswordComponent implements OnDestroy {
       userId,
       token,
     } as UserTokenData;
+  }
+
+  private checkUser(data: UserTokenData, currentUser?: UserDetails) {
+    if (currentUser && currentUser.id !== data.userId) {
+      throw new Error();
+    }
+
+    return data;
   }
 }

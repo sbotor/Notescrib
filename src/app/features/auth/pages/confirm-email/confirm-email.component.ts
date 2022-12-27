@@ -1,10 +1,22 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { BehaviorSubject, Subject, map, switchMap, takeUntil, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Subject,
+  map,
+  mergeMap,
+  of,
+  switchMap,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { UsersApiService } from 'src/app/features/users/users-api.service';
 import { AuthResult, UserTokenData } from '../../auth.models';
 import { Buffer } from 'buffer';
 import { routeConfig } from 'src/app/route-config';
+import { AuthService } from '../../auth.service';
+import { UserDetails } from 'src/app/features/users/users.models';
 
 @Component({
   selector: 'app-confirm-email',
@@ -22,16 +34,29 @@ export class ConfirmEmailComponent implements OnDestroy {
     ),
   };
 
-  private readonly resultSubject = new BehaviorSubject<
-    AuthResult | undefined
-  >(undefined);
+  private readonly resultSubject = new BehaviorSubject<AuthResult | undefined>(
+    undefined
+  );
   public readonly result$ = this.resultSubject.asObservable();
 
-  constructor(route: ActivatedRoute, private readonly api: UsersApiService) {
-    route.queryParamMap
+  constructor(
+    route: ActivatedRoute,
+    private readonly api: UsersApiService,
+    private readonly authService: AuthService
+  ) {
+    route.queryParamMap.pipe(take(1))
       .pipe(
-        map(this.extractData),
-        switchMap((x) => this.api.confirmEmail(x.userId, x.token)),
+        map((x) =>
+          this.extractData(x)
+        ),
+        tap((x) => this.authService.isLoggedIn()),
+        mergeMap((x) =>
+          (this.authService.isLoggedIn()
+            ? this.authService.user$.pipe(take(1))
+            : of(undefined)
+          ).pipe(map((u) => this.checkUser(x, u)))
+        ),
+        switchMap((x) => this.api.activateAccount(x.userId, x.token)),
         takeUntil(this.destroy$)
       )
       .subscribe({
@@ -52,9 +77,9 @@ export class ConfirmEmailComponent implements OnDestroy {
     this.destroy$.next();
   }
 
-  private extractData(params: ParamMap) {
-    let userId = params.get('userId');
-    let token = params.get('token');
+  private extractData(query: ParamMap) {
+    let userId = query.get('userId');
+    let token = query.get('token');
 
     if (!userId || !token) {
       throw new Error();
@@ -67,5 +92,13 @@ export class ConfirmEmailComponent implements OnDestroy {
       userId,
       token,
     } as UserTokenData;
+  }
+
+  private checkUser(data: UserTokenData, currentUser?: UserDetails) {
+    if (currentUser && currentUser.id !== data.userId) {
+      throw new Error();
+    }
+
+    return data;
   }
 }

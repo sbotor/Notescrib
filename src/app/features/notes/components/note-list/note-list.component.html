@@ -1,18 +1,29 @@
-<mat-nav-list>
-  <mat-list-item *ngFor="let note of notes">
-    <mat-icon matListItemIcon (click)="onSelect(note)">note</mat-icon>
-    <div matListItemTitle (click)="onSelect(note)">{{note.name}}</div>
-    <div matListItemLine (click)="onSelect(note)">{{(note.updated ?? note.created) | formatDate}}</div>
-    <div matListItemLine (click)="onSelect(note)">
-      <span>Tags: {{formatTags(note)}}</span>
-    </div>
-    <div matListItemMeta>
-      <button *ngIf="!note.isReadonly" mat-icon-button [matMenuTriggerFor]="noteMenu" [matMenuTriggerData]="{ note }">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-    </div>
-  </mat-list-item>
-</mat-nav-list>
+<ng-container *ngIf="notes.length > 0; else noNotes">
+  <mat-nav-list>
+    <mat-list-item *ngFor="let note of notes">
+      <mat-icon matListItemIcon (click)="onSelect(note)">note</mat-icon>
+      <div matListItemTitle (click)="onSelect(note)">{{note.name}}</div>
+      <div matListItemLine (click)="onSelect(note)">{{(note.updated ?? note.created) | formatDate}}</div>
+      <div matListItemLine (click)="onSelect(note)">
+        <span>Tags: {{formatTags(note)}}</span>
+      </div>
+      <div matListItemMeta>
+        <button *ngIf="!note.isReadonly" mat-icon-button [matMenuTriggerFor]="noteMenu" [matMenuTriggerData]="{ note }">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </div>
+    </mat-list-item>
+  </mat-nav-list>
+</ng-container>
+
+<ng-template #noNotes>
+  <mat-list>
+    <mat-list-item>
+      <mat-icon matListItemIcon>clear</mat-icon>
+      <div matListItemTitle>No notes</div>
+    </mat-list-item>
+  </mat-list>
+</ng-template>
 
 <mat-menu #noteMenu>
   <ng-template matMenuContent let-note="note">

@@ -3,9 +3,16 @@
 <mat-sidenav-container class="flex-fill flex-col" autosize>
   <mat-sidenav #sidenav mode="side" [opened]="layout.isNavbarOpened()" class="sidenav">
     <mat-nav-list *ngIf="isUserLoggedIn(); else loginNavList">
-      <mat-list-item routerLink="{{routes.workspaceBrowser}}">Browse notes</mat-list-item>
-      <mat-list-item routerLink="{{routes.workspaceSearch}}">Search notes</mat-list-item>
-      <mat-list-item routerLink="{{routes.templateSearch}}">Search templates</mat-list-item>
+      <div mat-subheader class="navbar-subheader"><mat-icon class="subheader-icon">note</mat-icon>Notes</div>
+      <mat-list-item routerLink="{{routes.workspaceBrowser}}" [ngClass]="getRouteClass(routes.workspaceBrowser)">Browse
+        notes</mat-list-item>
+      <mat-list-item routerLink="{{routes.workspaceSearch}}" [ngClass]="getRouteClass(routes.workspaceSearch)">Search
+        notes</mat-list-item>
+
+      <div mat-subheader class="navbar-subheader"><mat-icon class="subheader-icon">library_books</mat-icon>Templates
+      </div>
+      <mat-list-item routerLink="{{routes.templateSearch}}" [ngClass]="getRouteClass(routes.templateSearch)">Search
+        templates</mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
 
@@ -22,7 +29,8 @@
 
 <ng-template #loginNavList>
   <mat-nav-list>
-    <mat-list-item routerLink="{{routes.login}}">Log in</mat-list-item>
-    <mat-list-item routerLink="{{routes.workspaceSearch}}">Search public notes</mat-list-item>
+    <mat-list-item routerLink="{{routes.login}}" [ngClass]="getRouteClass(routes.login)">Log in</mat-list-item>
+    <mat-list-item routerLink="{{routes.workspaceSearch}}" [ngClass]="getRouteClass(routes.workspaceSearch)">Search
+      public notes</mat-list-item>
   </mat-nav-list>
 </ng-template>

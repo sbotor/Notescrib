@@ -1,21 +1,31 @@
 <div *ngIf="folder$ | async as folder; else loading">
-  <mat-nav-list>
-    <div mat-subheader>Folders</div>
-    <mat-list-item *ngFor="let child of folder.children">
-      <mat-icon matListItemIcon (click)="navigateDown(child.id)">folder</mat-icon>
-      <div matListItemTitle (click)="navigateDown(child.id)">{{child.name}}</div>
-      <div matListItemLine (click)="navigateDown(child.id)">
-        {{(child.updated ?? folder.created) | formatDate}}
-      </div>
-      <div matListItemMeta>
-        <button mat-icon-button [matMenuTriggerFor]="folderMenu" [matMenuTriggerData]="{ folder: child }">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-      </div>
-    </mat-list-item>
+  <ng-container *ngIf="folder.children.length > 0; else noChildren">
+    <mat-nav-list>
+      <div mat-subheader>Folders</div>
+      <mat-list-item *ngFor="let child of folder.children">
+        <mat-icon matListItemIcon (click)="navigateDown(child.id)">folder</mat-icon>
+        <div matListItemTitle (click)="navigateDown(child.id)">{{child.name}}</div>
+        <div matListItemLine (click)="navigateDown(child.id)">
+          {{(child.updated ?? folder.created) | formatDate}}
+        </div>
+        <div matListItemMeta>
+          <button mat-icon-button [matMenuTriggerFor]="folderMenu" [matMenuTriggerData]="{ folder: child }">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </div>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </mat-nav-list>
+  </ng-container>
 
-    <mat-divider></mat-divider>
-  </mat-nav-list>
+  <ng-template #noChildren>
+    <mat-list>
+      <mat-list-item>
+        <mat-icon matListItemIcon>clear</mat-icon>
+        <div matListItemTitle>No folders</div>
+      </mat-list-item>
+    </mat-list>
+  </ng-template>
 
   <div mat-subheader>Notes</div>
   <app-note-list [notes]="folder.notes" (select)="onNoteSelect($event)"></app-note-list>

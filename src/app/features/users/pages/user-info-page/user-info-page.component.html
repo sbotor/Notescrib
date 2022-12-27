@@ -1,1 +1,19 @@
-<p>user-info-page works!</p>
+<div *ngIf="user$ | async as user; else loading" class="wrapper">
+  <div class="container">
+    <h1 class="title"><mat-icon>person_outline</mat-icon>{{user.email}}</h1>
+    <mat-divider class="divider"></mat-divider>
+    <h2>Reset password</h2>
+    <button mat-button color="primary" (click)="onResetPassword()">Reset my password</button>
+  </div>
+
+  <div class="container justify-center">
+    <mat-divider class="divider"></mat-divider>
+    <h2>Delete account</h2>
+    <button mat-raised-button color="warn" (click)="onDelete()">DELETE MY ACCOUNT</button>
+  </div>
+</div>
+
+<ng-template #loading>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-template>
+

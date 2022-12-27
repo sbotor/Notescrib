@@ -1,24 +1,22 @@
 <div mat-dialog-title>{{data.title}}</div>
 
-<div mat-dialog-content class="dialog-wrapper">
-  <div class="form-wrapper">
-    <div [formGroup]="form" class="form-row">
-      <mat-form-field class="name-field">
-        <mat-label>Name</mat-label>
-        <input type="text" formControlName="name" matInput />
-      </mat-form-field>
+<div mat-dialog-content>
+  <div class="form-wrapper" [formGroup]="form">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input type="text" formControlName="name" matInput required />
+    </mat-form-field>
 
-      <mat-form-field class="visibility-field">
-        <mat-label>Visibility</mat-label>
-        <mat-select formControlName="visibility">
-          <mat-option *ngFor="let option of getVisibilityOptions(); trackBy: trackOption" [value]="option.value">
-            {{option.label}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+    <mat-form-field>
+      <mat-label>Visibility</mat-label>
+      <mat-select formControlName="visibility">
+        <mat-option *ngFor="let option of getVisibilityOptions(); trackBy: trackOption" [value]="option.value">
+          {{option.label}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-    <mat-form-field class="tags-field">
+    <mat-form-field>
       <mat-label>Tags</mat-label>
       <mat-chip-grid #chipGrid>
         <mat-chip-row *ngFor="let tag of tags" (removed)="removeTag(tag)" [editable]="true"

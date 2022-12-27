@@ -7,6 +7,11 @@ import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { Subject } from 'rxjs/internal/Subject';
 import { UsersApiService } from '../../users-api.service';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
+import { ConfirmationDialogComponent } from 'src/app/core/components/confirmation-dialog/confirmation-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { concatMap, filter } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-info-page',
@@ -18,6 +23,8 @@ export class UserInfoPageComponent implements OnInit, OnDestroy {
 
   private user!: UserDetails;
 
+  public readonly user$ = this.authService.user$;
+
   public readonly emailControl = this.fb.nonNullable.control('', [
     Validators.required,
     Validators.email,
@@ -28,24 +35,21 @@ export class UserInfoPageComponent implements OnInit, OnDestroy {
   constructor(
     private readonly fb: FormBuilder,
     private readonly authService: AuthService,
-    private readonly usersApi: UsersApiService
+    private readonly usersApi: UsersApiService,
+    private readonly dialog: MatDialog,
+    private readonly snackBar: MatSnackBar,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
-    this.authService.user$
-      .pipe(take(1), takeUntil(this.destroy$))
-      .subscribe((x) => {
-        this.user = x!;
-        this.emailControl.setValue(this.user.email);
-      });
+    this.user$.pipe(take(1), takeUntil(this.destroy$)).subscribe((x) => {
+      this.user = x!;
+      this.emailControl.setValue(this.user.email);
+    });
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
-  }
-
-  public getUser() {
-    return this.user;
   }
 
   public isEditing() {
@@ -60,24 +64,34 @@ export class UserInfoPageComponent implements OnInit, OnDestroy {
     this.editing = !this.editing;
   }
 
-  public onSubmit() {
-    if (
-      !this.emailControl.valid ||
-      this.emailControl.value === this.user.email
-    ) {
-      return;
-    }
-
-    this.usersApi
-      .updateUser({ email: this.emailControl.value })
+  public onResetPassword() {
+    ConfirmationDialogComponent.open(this.dialog, {
+      value: 'Do you want to reset your password?',
+    })
       .pipe(
-        switchMap(() => this.authService.fetchUser()),
+        filter((x) => !!x),
+        concatMap(() => this.usersApi.initiatePasswordReset()),
         takeUntil(this.destroy$)
       )
-      .subscribe((x) => (this.user = x));
+      .subscribe(() => this.snackBar.open('An email has been sent.'));
   }
 
-  public onPasswordReset() {
-    // TODO
+  public async onDelete() {
+    ConfirmationDialogComponent.open(this.dialog, {
+      title: 'This cannot be undone!',
+      value: 'Do you want to remove your account?',
+      confirmButton: { color: 'warn', label: 'DELETE MY ACCOUNT' },
+    })
+      .pipe(
+        filter((x) => !!x),
+        concatMap(() => this.usersApi.deleteUser()),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(async () => {
+        this.authService.logout();
+        await this.router
+          .navigate([''])
+          .then(() => this.snackBar.open('Account removed.'));
+      });
   }
 }

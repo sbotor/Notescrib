@@ -20,20 +20,16 @@ export class UsersApiService {
     return this.client.get<UserDetails>(UsersApiService.URL);
   }
 
-  public confirmEmail(id: string, token: string) {
-    return this.client.post(`${UsersApiService.URL}/${id}/confirm`, { token });
+  public activateAccount(id: string, token: string) {
+    return this.client.post(`${UsersApiService.URL}/${id}/activate`, { token });
   }
 
   public deleteUser() {
     return this.client.delete(UsersApiService.URL);
   }
 
-  public updateUser(request: UpdateUserRequest) {
-    return this.client.put(UsersApiService.URL, request);
-  }
-
-  public initiatePasswordReset() {
-    return this.client.post(`${UsersApiService.URL}/password`, undefined);
+  public initiatePasswordReset(email?: string) {
+    return this.client.post(`${UsersApiService.URL}/password`, { email });
   }
 
   public resetPassword(id: string, request: UpdateUserPasswordRequest) {

@@ -15,6 +15,13 @@ import { routeConfig } from 'src/app/route-config';
 export class LoginComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
+  public readonly routes = {
+    forgottenPassword: routeConfig.joinFromRoot(
+      routeConfig.auth.prefix,
+      routeConfig.auth.forgottenPassword
+    ),
+  } as const;
+
   public readonly loginForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
