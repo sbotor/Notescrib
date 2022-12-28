@@ -24,10 +24,10 @@ import {
   syntaxHighlighting,
 } from '@codemirror/language';
 import { EditorState } from '@codemirror/state';
-import { markdownHighlighting, theme } from './code-mirror.utils';
+import { customKeymap, markdownHighlighting, theme } from './code-mirror.utils';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EditorService {
   private dirty = false;
@@ -106,7 +106,11 @@ export class EditorService {
           addKeymap: false,
           base: markdownLanguage,
         }),
-        keymap.of([...markdownKeymap, ...defaultKeymap, ...searchKeymap]),
+        keymap.of([
+          ...customKeymap(this),
+          ...markdownKeymap,
+          ...defaultKeymap,
+        ]),
         lineNumbers(),
         highlightActiveLineGutter(),
         indentOnInput(),

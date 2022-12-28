@@ -63,6 +63,14 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
+            },
+            "docker": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
           },
           "defaultConfiguration": "production"
@@ -75,6 +83,9 @@
             },
             "development": {
               "browserTarget": "Notescrib:build:development"
+            },
+            "docker": {
+              "browserTarget": "Notescrib:build:docker"
             }
           },
           "defaultConfiguration": "development"

@@ -5,7 +5,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { routeConfig } from 'src/app/route-config';
 import { ConfirmEmailComponent } from './pages/confirm-email/confirm-email.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
-import { ForgottenPasswordComponent } from './pages/forgotten-password/forgotten-password.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 
 const routes: Routes = [
   {
@@ -24,8 +24,8 @@ const routes: Routes = [
     canActivate: [MustBeLoggedOutGuard]
   },
   {
-    path: routeConfig.auth.forgottenPassword,
-    component: ForgottenPasswordComponent,
+    path: routeConfig.auth.forgotPassword,
+    component: ForgotPasswordComponent,
     canActivate: [MustBeLoggedOutGuard]
   },
   {

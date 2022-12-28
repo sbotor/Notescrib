@@ -6,11 +6,11 @@ import { Subject, takeUntil } from 'rxjs';
 import { UsersApiService } from 'src/app/features/users/users-api.service';
 
 @Component({
-  selector: 'app-forgotten-password',
-  templateUrl: './forgotten-password.component.html',
-  styleUrls: ['./forgotten-password.component.scss'],
+  selector: 'app-forgot-password',
+  templateUrl: './forgot-password.component.html',
+  styleUrls: ['./forgot-password.component.scss'],
 })
-export class ForgottenPasswordComponent implements OnDestroy {
+export class ForgotPasswordComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   public readonly emailControl = this.fb.nonNullable.control('', [

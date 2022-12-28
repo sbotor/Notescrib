@@ -16,9 +16,9 @@ export class LoginComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   public readonly routes = {
-    forgottenPassword: routeConfig.joinFromRoot(
+    forgotPassword: routeConfig.joinFromRoot(
       routeConfig.auth.prefix,
-      routeConfig.auth.forgottenPassword
+      routeConfig.auth.forgotPassword
     ),
   } as const;
 
