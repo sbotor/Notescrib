@@ -1,0 +1,15 @@
+version: '3.5'
+
+services:
+  app:
+    image: notescrib-app
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - 5200:80
+
+networks:
+  default:
+    name: notescrib_network
+    driver: bridge
+
