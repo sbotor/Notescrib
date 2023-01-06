@@ -4,8 +4,6 @@ import { FolderNavInfo } from './workspace-browser.models';
 export default class WorkspaceNavigator implements NavigationInfo {
   private navigationStack: FolderNavInfo[] = [];
 
-  constructor(private roots: FolderNavInfo[]) {}
-
   public getCurrentFolder() {
     return this.navigationStack.length < 1
       ? undefined
@@ -37,8 +35,7 @@ export default class WorkspaceNavigator implements NavigationInfo {
     return this.getCurrentFolder();
   }
 
-  public reset(roots: FolderNavInfo[]) {
+  public reset() {
     this.navigationStack = [];
-    this.roots = roots;
   }
 }

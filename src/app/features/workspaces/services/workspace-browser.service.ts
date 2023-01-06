@@ -24,7 +24,7 @@ import { EditFolderDialogData } from '../components/dialogs/edit-folder-dialog/e
   providedIn: 'root'
 })
 export class WorkspaceBrowserService {
-  private readonly navigator = new WorkspaceNavigator([]);
+  private readonly navigator = new WorkspaceNavigator();
 
   private readonly folderSubject = new ReplaySubject<FolderDetails>(1);
   public readonly folder$ = this.folderSubject
@@ -42,6 +42,10 @@ export class WorkspaceBrowserService {
 
   public navigateUp() {
     return of(this.navigator.up());
+  }
+
+  public resetNavigation() {
+    this.navigator.reset();
   }
 
   public navigateDown(folderId: string) {

@@ -25,6 +25,8 @@ export class WorkspaceBrowserComponent implements OnInit, OnDestroy {
       .fetchFolderDetails()
       .pipe(takeUntil(this.destroy$))
       .subscribe();
+
+    this.browserService.resetNavigation();
   }
 
   ngOnDestroy(): void {
