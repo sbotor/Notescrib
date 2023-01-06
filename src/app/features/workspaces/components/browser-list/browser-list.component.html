@@ -3,7 +3,7 @@
     <mat-nav-list>
       <div mat-subheader>Folders</div>
       <mat-list-item *ngFor="let child of folder.children">
-        <mat-icon matListItemIcon (click)="navigateDown(child.id)">folder</mat-icon>
+        <mat-icon matListItemIcon (click)="navigateDown(child.id)" color="accent">folder</mat-icon>
         <div matListItemTitle (click)="navigateDown(child.id)">{{child.name}}</div>
         <div matListItemLine (click)="navigateDown(child.id)">
           {{(child.updated ?? folder.created) | formatDate}}
@@ -21,7 +21,7 @@
   <ng-template #noChildren>
     <mat-list>
       <mat-list-item>
-        <mat-icon matListItemIcon>clear</mat-icon>
+        <mat-icon matListItemIcon color="warn">clear</mat-icon>
         <div matListItemTitle>No folders</div>
       </mat-list-item>
     </mat-list>

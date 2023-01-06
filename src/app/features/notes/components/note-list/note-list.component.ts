@@ -16,6 +16,9 @@ export class NoteListComponent implements OnDestroy {
   @Input()
   public notes: NoteOverview[] = [];
 
+  @Input()
+  public currentNoteId?: string;
+
   @Output()
   public readonly select = new EventEmitter<NoteOverview>();
 
@@ -27,6 +30,10 @@ export class NoteListComponent implements OnDestroy {
   }
 
   public onSelect(note: NoteOverview) {
+    if (note.id === this.currentNoteId) {
+      return;
+    }
+
     this.select.emit(note);
   }
 

@@ -2,7 +2,7 @@
   <mat-toolbar *ngIf="!note.isReadonly">
     <mat-icon class="toolbar-icon">note</mat-icon>
     <span>{{note.name}}{{isDirty() ? '*' : ''}}</span>
-    <button mat-icon-button [disabled]="!isDirty()" (click)="save()" matTooltip="Save">
+    <button mat-icon-button [disabled]="!isDirty()" (click)="save()" matTooltip="Save" color="accent">
       <mat-icon>save</mat-icon>
     </button>
 

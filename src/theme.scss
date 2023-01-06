@@ -1,1 +1,27 @@
 
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$my-primary: mat.define-palette(mat.$teal-palette, 800, 900, 50);
+$my-accent: mat.define-palette(mat.$amber-palette, 700, A100, 100);
+$my-warn: mat.define-palette(mat.$pink-palette, 500, 100, A700);
+
+$my-typography: mat.define-typography-config(
+  $font-family: 'Signika',
+);
+
+$my-theme: mat.define-light-theme((
+ color: (
+   primary: $my-primary,
+   accent: $my-accent,
+   warn: $my-warn,
+ ),
+ typography: $my-typography,
+));
+
+//@include mat.core-theme($my-theme);
+
+@include mat.all-component-themes($my-theme);
+
+@include mat.typography-hierarchy($my-theme);

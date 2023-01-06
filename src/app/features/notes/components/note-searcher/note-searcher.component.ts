@@ -35,6 +35,9 @@ export class NoteSearcherComponent implements OnInit, OnDestroy {
   @Input()
   public isMinimal = false;
 
+  @Input()
+  public currentNoteId?: string;
+
   private readonly params = {
     textFilter$: new BehaviorSubject<string>(''),
     ownNotesOnly$: new BehaviorSubject<boolean>(false),

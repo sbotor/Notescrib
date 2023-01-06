@@ -14,7 +14,7 @@
 </mat-toolbar>
 
 <div *ngIf="notes$ | async as notes; else loading" class="flex-col flex-fill">
-  <app-note-list [notes]="notes" (select)="select.emit($event)" class="flex-fill"></app-note-list>
+  <app-note-list [notes]="notes" (select)="select.emit($event)" [currentNoteId]="currentNoteId" class="flex-fill"></app-note-list>
   <mat-paginator [pageIndex]="paging.page - 1" [pageSize]="paging.pageSize" [pageSizeOptions]="paging.pageSizeOptions"
     [length]="paging.totalCount" (page)="onPagingChanged($event)"></mat-paginator>
 </div>

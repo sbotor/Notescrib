@@ -17,7 +17,7 @@
     <ng-container *ngIf="templates.length > 0; else noTemplates">
       <mat-nav-list>
         <mat-list-item *ngFor="let template of templates">
-          <mat-icon matListItemIcon (click)="onSelect(template)">library_books</mat-icon>
+          <mat-icon matListItemIcon (click)="onSelect(template)" color="accent">library_books</mat-icon>
           <div matListItemTitle (click)="onSelect(template)">{{template.name}}</div>
           <div matListItemLine (click)="onSelect(template)">{{(template.updated ?? template.created) | formatDate}}</div>
           <div matListItemMeta>
@@ -32,7 +32,7 @@
     <ng-template #noTemplates>
       <mat-list>
         <mat-list-item>
-          <mat-icon matListItemIcon>clear</mat-icon>
+          <mat-icon matListItemIcon color="warn">clear</mat-icon>
           <div matListItemTitle>No templates</div>
         </mat-list-item>
       </mat-list>
