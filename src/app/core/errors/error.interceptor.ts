@@ -22,7 +22,9 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
         const message = this.extractMessage(err.error);
-        this.snackBar.open(message);
+        this.snackBar.open(message, undefined, {
+          panelClass: ['error-snackbar'],
+        });
         return throwError(() => err);
       })
     );
@@ -37,13 +39,13 @@ export class ErrorInterceptor implements HttpInterceptor {
       return err.errors.length > 1
         ? err.errors
             .map((x) => {
-              const msg = this.getErrorMessage(x.code);
+              const msg = this.getErrorMessage(x.code, x.message);
               return `- ${msg ?? 'Unknown error.'}`;
             })
             .join('\n')
         : err.errors
             .map((x) => {
-              const msg = this.getErrorMessage(x.code);
+              const msg = this.getErrorMessage(x.code, x.message);
               return msg ?? 'Unknown error.';
             })
             .join('\n');
@@ -52,7 +54,11 @@ export class ErrorInterceptor implements HttpInterceptor {
     return 'An error occured.';
   }
 
-  private getErrorMessage(code?: string) {
+  private getErrorMessage(code?: string, message?: string) {
+    if (message) {
+      return message;
+    }
+
     if (!code) {
       return undefined;
     }
