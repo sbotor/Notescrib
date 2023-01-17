@@ -6,7 +6,7 @@
         <mat-icon matListItemIcon (click)="navigateDown(child.id)" color="accent">folder</mat-icon>
         <div matListItemTitle (click)="navigateDown(child.id)">{{child.name}}</div>
         <div matListItemLine (click)="navigateDown(child.id)">
-          {{(child.updated ?? folder.created) | formatDate}}
+          {{(child.updated ?? child.created) | formatDate}}
         </div>
         <div matListItemMeta>
           <button mat-icon-button [matMenuTriggerFor]="folderMenu" [matMenuTriggerData]="{ folder: child }">

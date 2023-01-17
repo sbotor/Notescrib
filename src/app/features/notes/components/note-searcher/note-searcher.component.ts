@@ -40,7 +40,7 @@ export class NoteSearcherComponent implements OnInit, OnDestroy {
 
   private readonly params = {
     textFilter$: new BehaviorSubject<string>(''),
-    ownNotesOnly$: new BehaviorSubject<boolean>(false),
+    ownNotesOnly$: new BehaviorSubject<boolean>(true),
     page$: new BehaviorSubject<number>(1),
     pageSize$: new BehaviorSubject<number>(10),
   };
