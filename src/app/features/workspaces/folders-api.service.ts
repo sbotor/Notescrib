@@ -11,7 +11,7 @@ import {
   providedIn: 'root',
 })
 export class FoldersApiService {
-  private static readonly URL = environment.baseApiUrl + '/folders';
+  private static readonly URL = environment.baseApiUrl + 'api/folders';
 
   constructor(private client: HttpClient) {}
 

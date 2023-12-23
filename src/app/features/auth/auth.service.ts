@@ -27,7 +27,7 @@ export class AuthService {
 
   public login(email: string, password: string) {
     return this.client
-      .post<TokenResponse>(environment.baseApiUrl + '/identity/auth', {
+      .post<TokenResponse>(environment.baseAuthUrl + 'api/auth', {
         email,
         password,
       })

@@ -14,7 +14,7 @@ import { PagedList } from 'src/app/core/paging.models';
   providedIn: 'root',
 })
 export class NotesApiService {
-  private static readonly URL = environment.baseApiUrl + '/notes';
+  private static readonly URL = environment.baseApiUrl + 'api/notes';
 
   constructor(private client: HttpClient) {}
 

@@ -1,4 +1,5 @@
 export const environment = {
-  production: false,
-  baseApiUrl: 'api'
+  production: true,
+  baseApiUrl: 'notes/',
+  baseAuthUrl: 'identity/'
 };

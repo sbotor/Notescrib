@@ -8,7 +8,7 @@ import { CreateUserRequest, UpdateUserPasswordRequest, UpdateUserRequest } from 
   providedIn: 'root',
 })
 export class UsersApiService {
-  private static readonly URL = environment.baseApiUrl + '/identity/users';
+  private static readonly URL = environment.baseAuthUrl + 'api/users';
 
   constructor(private readonly client: HttpClient) {}
 

@@ -14,7 +14,7 @@ import { NoteTemplateDetails, NoteTemplateOverview } from './templates.models';
   providedIn: 'root',
 })
 export class TemplatesApiService {
-  private static readonly URL = environment.baseApiUrl + '/templates';
+  private static readonly URL = environment.baseApiUrl + 'api/templates';
 
   constructor(private readonly http: HttpClient) {}
 
